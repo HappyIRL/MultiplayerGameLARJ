@@ -4,12 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LobbyListingsMenu : MonoBehaviourPunCallbacks
+public class RoomListingsMenu : MonoBehaviourPunCallbacks
 {
-	[SerializeField] private LobbyListing _lobbyView;
+	[SerializeField] private RoomListing _roomListing;
 	[SerializeField] private Transform _content;
 
-	private List<LobbyListing> _listings = new List<LobbyListing>();
+	private List<RoomListing> _listings = new List<RoomListing>();
 
 	public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
@@ -26,9 +26,9 @@ public class LobbyListingsMenu : MonoBehaviourPunCallbacks
 			}
 			else
 			{
-				LobbyListing listing = Instantiate(_lobbyView, _content);
-
-				if (listing != null)
+				//Julian: Mir wäre lieber hier einen vergleich zu machen ob der Name oder das GameObject schon vorhanden ist, als die Methode ClearLisings() zu verwenden.
+				RoomListing listing = Instantiate(_roomListing, _content);
+				if(listing != null)
 				{
 					listing.SetRoomInfo(info);
 					_listings.Add(listing);
@@ -36,5 +36,14 @@ public class LobbyListingsMenu : MonoBehaviourPunCallbacks
 			}
 
 		}
+	}
+
+	public void ClearListings()
+	{
+		foreach (RoomListing roomListing in _listings)
+		{
+			Destroy(roomListing.gameObject);
+		}
+		_listings.Clear();
 	}
 }

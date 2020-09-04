@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 8464804051743772724}
   - component: {fileID: 1465067505448754017}
   m_Layer: 5
-  m_Name: CreateLobbyMenu
+  m_Name: CreateRoomMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,7 +332,6 @@ GameObject:
   - component: {fileID: 5271144148608676140}
   - component: {fileID: 9081843245390198412}
   - component: {fileID: 2051122405492045254}
-  - component: {fileID: 398503801}
   m_Layer: 5
   m_Name: CreateLobbyButton
   m_TagString: Untagged
@@ -477,8 +476,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 398503801}
-        m_TargetAssemblyTypeName: JoinInitialLobby, Assembly-CSharp
+      - m_Target: {fileID: 1042747998}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
         m_MethodName: JoinLobby
         m_Mode: 1
         m_Arguments:
@@ -489,18 +488,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
---- !u!114 &398503801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1981296252783798565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 519b5abf53fd3cf47914fa3f761b1bbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2609436203707039712
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,7 +500,7 @@ GameObject:
   - component: {fileID: 2099021148229450663}
   - component: {fileID: 4031508992432595421}
   m_Layer: 5
-  m_Name: CreateLobbyButtonText
+  m_Name: CreateRoomButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -894,7 +881,7 @@ GameObject:
   - component: {fileID: 2450924038827599647}
   - component: {fileID: 5735426703971312034}
   m_Layer: 5
-  m_Name: CreateLobbyButton (TMP)
+  m_Name: CreateRoomButton (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1026,7 +1013,7 @@ GameObject:
   - component: {fileID: 252213786097372030}
   - component: {fileID: 449162502143120537}
   m_Layer: 5
-  m_Name: LobbyNameInput (TMP)
+  m_Name: RoomNameInput (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1412,7 +1399,7 @@ GameObject:
   - component: {fileID: 7387452698593626649}
   - component: {fileID: 1186789910}
   m_Layer: 5
-  m_Name: Lobby View
+  m_Name: Room View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1519,7 +1506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4688582a19731ab43ae107148921712b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lobbyView: {fileID: 2674470079691057662, guid: e17badef7838bd54e946228844bdd597, type: 3}
+  _roomListing: {fileID: 2674470079691057662, guid: e17badef7838bd54e946228844bdd597, type: 3}
   _content: {fileID: 141808961329286290}
 --- !u!1 &5817000295842706244
 GameObject:
@@ -1839,8 +1826,9 @@ GameObject:
   - component: {fileID: 6976707978902932352}
   - component: {fileID: 6976707978902932415}
   - component: {fileID: 6976707978902932414}
+  - component: {fileID: 1042747998}
   m_Layer: 5
-  m_Name: LobbyCanvas
+  m_Name: RoomCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1932,6 +1920,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1042747998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6976707978902932413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519b5abf53fd3cf47914fa3f761b1bbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6976707979555682142
 GameObject:
   m_ObjectHideFlags: 0
@@ -2916,6 +2916,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1042747998}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: JoinLobby
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
