@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class LobbyMenu : MonoBehaviour
 {
+
 	[SerializeField] private RoomListingsMenu _roomListingsMenu;
 
 	public void JoinLobby()
@@ -14,6 +15,7 @@ public class LobbyMenu : MonoBehaviour
 	
 	public void LeaveLobby()
 	{
+		//Julian: Ich denke das diese Reference bzw das aufrufen der ClearListings() Methode hier nicht gut in das Bild des OOP passt.
 		_roomListingsMenu.ClearListings();
 		PhotonNetwork.LeaveLobby();
 	}
