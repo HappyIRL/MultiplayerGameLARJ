@@ -11,10 +11,21 @@ public class JoinLobbyMenu : MonoBehaviour
 	{
 		if (!PhotonNetwork.IsConnected || !(PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer))
 			return;
-		PhotonNetwork.JoinLobby();
+
+		JoinLobby();
+		ChangeUI();
+	}
+
+	private void ChangeUI()
+	{
 		_backButton.SetActive(true);
 		_joinOrCreateRoomMenu.SetActive(true);
 		transform.parent.gameObject.SetActive(false);
+	}
+
+	private void JoinLobby()
+	{
+		PhotonNetwork.JoinLobby();
 		Debug.Log("Joined Lobby");
 	}
 }

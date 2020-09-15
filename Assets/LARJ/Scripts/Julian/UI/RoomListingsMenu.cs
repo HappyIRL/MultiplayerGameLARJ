@@ -9,41 +9,48 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
 	[SerializeField] private RoomListing _roomListing;
 	[SerializeField] private Transform _content;
 
+	private List<RoomInfo> _roomList;
+
 	private List<RoomListing> _listings = new List<RoomListing>();
 
 	public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
-		foreach (RoomInfo info in roomList)
-		{
-			if(info.RemovedFromList)
-			{
-				int index = _listings.FindIndex(x => x.RoomInfo.Name == info.Name);
-				if(index != -1)
-				{
-					Destroy(_listings[index].gameObject);
-					_listings.RemoveAt(index);
-				}
-			}
-			else
-			{
-				//Julian: Mir wäre lieber hier einen Vergleich zu machen ob der Name oder das GameObject schon vorhanden ist, als die Methode ClearLisings() zu verwenden.
-				RoomListing listing = Instantiate(_roomListing, _content);
-				if(listing != null)
-				{
-					listing.SetRoomInfo(info);
-					_listings.Add(listing);
-				}
-			}
-
-		}
+		_roomList = new List<RoomInfo>(roomList);
+		UpdateRoomList();
 	}
 
-	public void ClearListings()
+	public void UpdateRoomList()
 	{
-		foreach (RoomListing roomListing in _listings)
+		if(_roomList != null)
 		{
-			Destroy(roomListing.gameObject);
+			foreach (RoomInfo info in _roomList)
+			{
+				if (info.RemovedFromList)
+				{
+					int index = _listings.FindIndex(x => x.RoomInfo.Name == info.Name);
+					if (index != -1)
+					{
+						Destroy(_listings[index].gameObject);
+						_listings.RemoveAt(index);
+					}
+				}
+				else
+				{
+					int index = _listings.FindIndex(x => x.RoomInfo.Name == info.Name);
+					if (index == -1)
+					{
+						RoomListing listing = Instantiate(_roomListing, _content);
+						if (listing != null)
+						{
+							listing.SetRoomInfo(info);
+							_listings.Add(listing);
+							listing.GetComponent<JoinRoomButton>().RoomName = listing.RoomInfo.Name;
+						}
+					}
+				}
+
+			}
+			Debug.Log("Updated List");
 		}
-		_listings.Clear();
 	}
 }

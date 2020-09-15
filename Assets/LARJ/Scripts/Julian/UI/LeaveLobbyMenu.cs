@@ -1,9 +1,10 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaveLobbyMenu : MonoBehaviour
+public class LeaveLobbyMenu : MonoBehaviourPunCallbacks
 {
 
 	//private RoomListingsMenu _roomListingsMenu;
@@ -14,16 +15,26 @@ public class LeaveLobbyMenu : MonoBehaviour
 
 	public void OnClick_LeaveLobby()
 	{
-		//Julian: Ich denke das diese Reference bzw das aufrufen der ClearListings() Methode hier nicht gut in das Bild des OOP passt.
-		_roomListingsMenu.ClearListings();
+		if (!PhotonNetwork.IsConnected || !(PhotonNetwork.NetworkClientState == ClientState.JoinedLobby))
+			return;
+		LeaveLobby();
+		ChangeUI();
+	}
 
-		if(PhotonNetwork.InRoom)
-			PhotonNetwork.LeaveRoom();
-
+	private void LeaveLobby()
+	{
 		PhotonNetwork.LeaveLobby();
+		Debug.Log("Left lobby and cleared room list");
+	}
+
+	private void ChangeUI()
+	{
 		_joinOrCreateRoomMenu.SetActive(false);
-		gameObject.SetActive(false);
 		_mainMenu.SetActive(true);
-		Debug.Log("Left Lobby");
+	}
+
+	public override void OnLeftRoom()
+	{
+		Debug.Log("Left Room");
 	}
 }
