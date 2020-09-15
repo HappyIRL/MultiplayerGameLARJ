@@ -7,13 +7,13 @@ using UnityEngine;
 public class TestConnect : MonoBehaviourPunCallbacks
 {
 	[SerializeField] private string _gameVersion = "0.0.1";
-
+	[SerializeField]
+	private string _nickName = "Tom";
 	private void Start()
 	{
-		PhotonNetwork.GameVersion = _gameVersion;	// Says in documentation to either "set PhotonNetwork.GameVersion just AFTER 
-													// calling PhotonNetwork.ConnectUsingSettings()" or "set PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion 
-													// BEFORE calling PhotonNetwork.ConnectUsingSettings()"
 		PhotonNetwork.ConnectUsingSettings();
+		PhotonNetwork.GameVersion = _gameVersion;
+		PhotonNetwork.NickName = _nickName;
 	}
 
 	  
@@ -24,7 +24,6 @@ public class TestConnect : MonoBehaviourPunCallbacks
 
 	public override void OnDisconnected(DisconnectCause cause)
 	{
-		// some error occured, 'cause' is an enum of error
 		Debug.Log("Disconnected from server: " + cause.ToString());
 	}  
 	

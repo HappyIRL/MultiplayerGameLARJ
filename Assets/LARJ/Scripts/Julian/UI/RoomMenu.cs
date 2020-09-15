@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class CreateRoomMenu : MonoBehaviourPunCallbacks
+public class RoomMenu : MonoBehaviourPunCallbacks
 {
 	[SerializeField] private TextMeshProUGUI _roomName;
 	[SerializeField] private byte _maxPlayersInRoom = 4;
@@ -21,7 +21,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 			MaxPlayers = _maxPlayersInRoom
 		};
 
-		PhotonNetwork.JoinOrCreateRoom(_roomName.text, options, TypedLobby.Default);
+		Debug.Log(PhotonNetwork.GetCustomRoomList(TypedLobby.Default, null));
+
+		PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
 	}
 
 	public override void OnCreatedRoom()
@@ -33,4 +35,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 	{
 		Debug.Log("Failed creation of room. " + message + this);
 	}
+
+	//public override void OnJoinRoomFailed(short returnCode, string message)
+	//{
+	//	Debug.Log("Failed to join a room. " + message + this);
+	//}
 }
