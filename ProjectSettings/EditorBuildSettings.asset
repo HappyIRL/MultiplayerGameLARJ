@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/LARJ/Scene/JulianTest/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/NetworkTesting/Main.unity
+    path: Assets/LARJ/Scene/AlexTest/NetworkTesting/Main.unity
     guid: 29c71759ccdb873449c0afcde2b9fedd
   - enabled: 1
-    path: Assets/Scenes/NetworkTesting/ChatRoom.unity
+    path: Assets/LARJ/Scene/AlexTest/NetworkTesting/ChatRoom.unity
     guid: 6558da6bb494f7e439d40cd70d965894
   m_configObjects: {}
