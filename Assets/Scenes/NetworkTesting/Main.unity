@@ -245,6 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LobbyScreen: {fileID: 1342310331}
+  _gameVersion: 0.0.1
 --- !u!4 &268647482
 Transform:
   m_ObjectHideFlags: 0

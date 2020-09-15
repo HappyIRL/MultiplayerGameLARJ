@@ -11,7 +11,7 @@ public class Chatbox : MonoBehaviourPunCallbacks
     private Vector2 chatScroll = Vector2.zero;
     private List<string> chatMessages = new List<string>();
 
-    private string message = "";
+    private string _message = "";
 
     private void OnGUI()
     {
@@ -31,24 +31,24 @@ public class Chatbox : MonoBehaviourPunCallbacks
 
         GUILayout.BeginHorizontal();
 
-        message = GUILayout.TextField(message, GUILayout.ExpandWidth(true));
+        _message = GUILayout.TextField(_message, GUILayout.ExpandWidth(true));
 
         if (GUILayout.Button("Send", GUILayout.Width(100f)))
         {
             string nickname = PhotonNetwork.NickName.ToString();
             PhotonView photonView = PhotonView.Get(this);
-            photonView.RPC("AddChat", Photon.Pun.RpcTarget.All);
-            message = "";
+
+
+            photonView.RPC("AddChat", RpcTarget.All, nickname, _message);
+            _message = "";
         }
 
         GUILayout.EndHorizontal();
     }
 
     [PunRPC]
-    void AddChat()
+    void AddChat(string nick, string message)
     {
-        string message = "msg";
-        string nick = "Nick";
         chatMessages.Add(nick + ": " + message);
 
         if(chatMessages.Count > maxMessages)

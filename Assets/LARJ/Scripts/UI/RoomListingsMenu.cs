@@ -26,7 +26,7 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
 			}
 			else
 			{
-				//Julian: Mir wäre lieber hier einen vergleich zu machen ob der Name oder das GameObject schon vorhanden ist, als die Methode ClearLisings() zu verwenden.
+				//Julian: Mir wäre lieber hier einen Vergleich zu machen ob der Name oder das GameObject schon vorhanden ist, als die Methode ClearLisings() zu verwenden.
 				RoomListing listing = Instantiate(_roomListing, _content);
 				if(listing != null)
 				{
