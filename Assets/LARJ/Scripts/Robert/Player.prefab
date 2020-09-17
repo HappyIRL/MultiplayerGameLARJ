@@ -176,3 +176,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementSpeed: 3
   _playerIndex: 0
+  _dashCooldown: 2
+  _dashDistance: 25
