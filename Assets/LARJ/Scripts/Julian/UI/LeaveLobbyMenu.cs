@@ -4,8 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaveLobbyMenu : MonoBehaviour, IInRoomCallbacks
+public class LeaveLobbyMenu : MonoBehaviourPunCallbacks
 {
+
+	//private RoomListingsMenu _roomListingsMenu;
+
 	[SerializeField] private GameObject _joinOrCreateRoomMenu;
 	[SerializeField] private RoomListingsMenu _roomListingsMenu;
 	[SerializeField] private GameObject _mainMenu;
@@ -21,7 +24,7 @@ public class LeaveLobbyMenu : MonoBehaviour, IInRoomCallbacks
 	private void LeaveLobby()
 	{
 		PhotonNetwork.LeaveLobby();
-		Debug.Log("Left lobby");
+		Debug.Log("Left lobby and cleared room list");
 	}
 
 	private void ChangeUI()
@@ -30,13 +33,8 @@ public class LeaveLobbyMenu : MonoBehaviour, IInRoomCallbacks
 		_mainMenu.SetActive(true);
 	}
 
-	public void OnPlayerLeftRoom(Player otherPlayer)
+	public override void OnLeftRoom()
 	{
 		Debug.Log("Left Room");
 	}
-
-	public void OnPlayerEnteredRoom(Player newPlayer){}
-	public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged){}
-	public void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps){}
-	public void OnMasterClientSwitched(Player newMasterClient){}
 }

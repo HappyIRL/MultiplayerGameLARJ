@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomListingsMenu : MonoBehaviour, ILobbyCallbacks
+public class RoomListingsMenu : MonoBehaviourPunCallbacks
 {
 	[SerializeField] private RoomListing _roomListing;
 	[SerializeField] private Transform _content;
@@ -13,7 +13,7 @@ public class RoomListingsMenu : MonoBehaviour, ILobbyCallbacks
 
 	private List<RoomListing> _listings = new List<RoomListing>();
 
-	public void OnRoomListUpdate(List<RoomInfo> roomList)
+	public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
 		_roomList = new List<RoomInfo>(roomList);
 		UpdateRoomList();
@@ -53,8 +53,4 @@ public class RoomListingsMenu : MonoBehaviour, ILobbyCallbacks
 			Debug.Log("Updated List");
 		}
 	}
-
-	public void OnJoinedLobby() { }
-	public void OnLeftLobby() { }
-	public void OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics) { }
 }

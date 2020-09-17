@@ -1,10 +1,9 @@
 ﻿using Photon.Pun;
-using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JoinRoomButton : MonoBehaviour, IMatchmakingCallbacks
+public class JoinRoomButton : MonoBehaviourPunCallbacks
 {
 	public string RoomName = "";
 
@@ -13,23 +12,13 @@ public class JoinRoomButton : MonoBehaviour, IMatchmakingCallbacks
 		PhotonNetwork.JoinRoom(RoomName);
 	}
 
-	public void OnJoinedRoom()
+	public override void OnJoinedRoom()
 	{
 		Debug.Log($"Successfully joined room; Name: {RoomName}");
 	}
 
-	public void OnJoinRandomFailed(short returnCode, string message)
-	{
-		throw new System.NotImplementedException();
-	}
-
-	public void OnJoinRoomFailed(short returnCode, string message)
+	public override void OnJoinRoomFailed(short returnCode, string message)
 	{
 		Debug.Log($"OnJoinRoomFailed; Code: {returnCode}; Message: {message}");
 	}
-
-	public void OnLeftRoom() { }
-	public void OnCreatedRoom() { }
-	public void OnCreateRoomFailed(short returnCode, string message) { }
-	public void OnFriendListUpdate(List<FriendInfo> friendList) { }
 }
