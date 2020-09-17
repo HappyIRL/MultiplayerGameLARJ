@@ -1,22 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Customer : MonoBehaviour
 {
     StateMachine _stateMachine;
+    NavMeshAgent _agent;
     // Object Customer is looking to go to
-    [SerializeField] GameObject _customerDesk;
+    [SerializeField] Transform customerDesk;
+    [SerializeField] float deskRange = 3f;
 
     private void Start()
     {
         _stateMachine = new StateMachine();
+        _agent = GetComponent<NavMeshAgent>();
+        
 
+        // First Registered state will be initial state
         var coming = _stateMachine.CreateState("coming");
-        var inLine = _stateMachine.CreateState("inLine");
-        var waiting = _stateMachine.CreateState("waiting");
-        var leaving = _stateMachine.CreateState("leaving");
-        var angry = _stateMachine.CreateState("angry");
 
         coming.onEnter = delegate 
         { 
@@ -24,24 +26,29 @@ public class Customer : MonoBehaviour
         };
         coming.onFrame = delegate
         {
-            // walks to the queue at counter
+            // walk to the queue at counter
+            _agent.destination = new Vector3(
+                customerDesk.position.x,
+                0,
+                customerDesk.position.z
+                );
 
-            // when in range, transition to inLine
-        };
+            // find distance to counter
+            var distanceToDesk = Vector3.Distance(transform.position, customerDesk.position);
+            // when in range, transition to waiting
+            if(distanceToDesk <= deskRange)
+            {
+                _stateMachine.TransitionTo("waiting");
+            }
+            
 
-        inLine.onEnter = delegate
-        {
-            Debug.Log("Customer is now in line waiting");
-        };
-        inLine.onFrame = delegate
-        {
-            // waits behind other customers if there are any
 
-            // walks to desk if free, transition to waiting
-        };
+        };        
 
+        var waiting = _stateMachine.CreateState("waiting");
         waiting.onEnter = delegate
         {
+            Debug.Log("Customer is now waiting");
             // start wait countdown
         };
         waiting.onFrame = delegate
@@ -50,10 +57,11 @@ public class Customer : MonoBehaviour
 
             // if task was completed during countdown, customer leaves
         };
-
         
-
-
+    }
+    private void Update()
+    {
+        _stateMachine.Update();
     }
 
 
