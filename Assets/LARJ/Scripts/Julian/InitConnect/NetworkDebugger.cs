@@ -33,7 +33,7 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 		}
 	}
 
-	public void CreateGUIButton(Rect rect, string x, System.Action action)
+	public void CreateGUIButton(Rect rect, string x, Action action)
 	{
 		if (GUI.Button(rect, x))
 		{
