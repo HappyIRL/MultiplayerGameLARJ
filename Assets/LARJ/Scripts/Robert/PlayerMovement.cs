@@ -75,6 +75,8 @@ public class PlayerMovement : MonoBehaviour
 
         float i = 0;
         _inDash = true;
+        _dashTimer = 0f;
+        _isDashOnCooldown = true;
         while (i <= 1)
         {
 
@@ -84,11 +86,5 @@ public class PlayerMovement : MonoBehaviour
         }
         _inDash = false;
         yield return null;
-    }
-    private void Daxsh()
-    {
-        _dashTimer = 0f;
-        _isDashOnCooldown = true;
-        _controller.Move(_moveDirection * _dashDistance);
     }
 }
