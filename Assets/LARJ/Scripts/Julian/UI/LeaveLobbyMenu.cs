@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaveLobbyMenu : MonoBehaviour, IInRoomCallbacks
+public class LeaveLobbyMenu : MonoBehaviourPunCallbacks
 {
 	[SerializeField] private GameObject _joinOrCreateRoomMenu;
 	[SerializeField] private RoomListingsMenu _roomListingsMenu;
@@ -30,13 +30,8 @@ public class LeaveLobbyMenu : MonoBehaviour, IInRoomCallbacks
 		_mainMenu.SetActive(true);
 	}
 
-	public void OnPlayerLeftRoom(Player otherPlayer)
+	public override void OnLeftRoom()
 	{
 		Debug.Log("Left Room");
 	}
-
-	public void OnPlayerEnteredRoom(Player newPlayer){}
-	public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged){}
-	public void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps){}
-	public void OnMasterClientSwitched(Player newMasterClient){}
 }
