@@ -1,0 +1,104 @@
+{
+    "name": "PlayerInteractions",
+    "maps": [
+        {
+            "name": "PlayerInteractions",
+            "id": "65cd35f2-cbbd-4720-9b04-554818cc3e9a",
+            "actions": [
+                {
+                    "name": "Press",
+                    "type": "Button",
+                    "id": "69a6f428-7d0b-4ad8-951c-749deaf5cd18",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Hold",
+                    "type": "Button",
+                    "id": "556c4466-338f-4bb3-87aa-6ab924fac99b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold"
+                },
+                {
+                    "name": "Release",
+                    "type": "Button",
+                    "id": "8b79b458-f862-486f-9a0e-6f1552593230",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "cefa0ec1-a2d3-41e2-ada0-fab84df26051",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6923c8de-8357-4c00-9677-1fbf98dd58c2",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c96f1ef1-4425-47e7-be76-5d6d8a5ca6ad",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2d0be77c-77f3-4a4f-8f50-ee72dfdddb24",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e5a23466-caf8-49d5-afc8-9d79e068bf87",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Release",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "339b76e9-e35b-4cc0-b4e5-b599c5413741",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Release",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
