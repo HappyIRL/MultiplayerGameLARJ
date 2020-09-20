@@ -2,53 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [SerializeField] private Transform objectHolder = null;
+    [SerializeField] private Transform _objectHolder = null;
+    [SerializeField] private Image _holdingTimeBar = null;
 
     //Object to interact
     [HideInInspector] public Interactables ObjectToInteract = null;
     [HideInInspector] public InteractionType InteractableInteractionType = InteractionType.PickUp;
     [HideInInspector] public bool CanInteract = false;
+    [HideInInspector] public bool IsPickedUp = false;
 
-    private bool isPickedUp = false;
-    private bool holdingObject = false;
-    private float holdingTimer = 0;
+    private bool _holdingObject = false;
+    private float _holdingTimer = 0;
 
     private void Update()
     {
-        if (holdingObject)
+        if (_holdingObject)
         {
-            holdingTimer += Time.deltaTime;
+            _holdingTimer += Time.deltaTime;
+            _holdingTimeBar.fillAmount = _holdingTimer / ObjectToInteract.HoldingTime;
 
-            if (holdingTimer >= ObjectToInteract.HoldingTime)
+            if (_holdingTimer >= ObjectToInteract.HoldingTime)
             {
-                holdingTimer = 0;
-                holdingObject = false;
+                _holdingTimer = 0f;
+                _holdingObject = false;
                 ObjectToInteract.HoldingInteractionEvent.Invoke();
+                _holdingTimeBar.fillAmount = 0;
             }
         }
 
 
 
-        //Keyboard kb = InputSystem.GetDevice<Keyboard>();
-        //if (kb.wKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.forward, Space.World);
-        //}
-        //if (kb.sKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.back, Space.World);
-        //}
-        //if (kb.aKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.left, Space.World);
-        //}
-        //if (kb.dKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.right, Space.World);
-        //}
+        Keyboard kb = InputSystem.GetDevice<Keyboard>();
+        if (kb.wKey.wasPressedThisFrame)
+        {
+            transform.Translate(Vector3.forward, Space.World);
+        }
+        if (kb.sKey.wasPressedThisFrame)
+        {
+            transform.Translate(Vector3.back, Space.World);
+        }
+        if (kb.aKey.wasPressedThisFrame)
+        {
+            transform.Translate(Vector3.left, Space.World);
+        }
+        if (kb.dKey.wasPressedThisFrame)
+        {
+            transform.Translate(Vector3.right, Space.World);
+        }
     }
 
 
@@ -62,7 +66,7 @@ public class PlayerInteraction : MonoBehaviour
 
             if (InteractableInteractionType == InteractionType.PickUp)
             {               
-                if (isPickedUp)
+                if (IsPickedUp)
                 {
                     Drop();
                 }
@@ -92,7 +96,8 @@ public class PlayerInteraction : MonoBehaviour
     public void OnRelease()
     {
         Debug.Log("OnRelease");
-        holdingObject = false;
+        _holdingObject = false;
+        _holdingTimer = 0f;
     }
 
     private void PickUp()
@@ -101,18 +106,18 @@ public class PlayerInteraction : MonoBehaviour
 
         Debug.Log("PickUp");
 
-        isPickedUp = true;
+        IsPickedUp = true;
         ObjectToInteract.Rb.Sleep();
         ObjectToInteract.transform.parent = transform;
         ObjectToInteract.transform.forward = transform.forward;
-        ObjectToInteract.transform.position = objectHolder.position;
+        ObjectToInteract.transform.position = _objectHolder.position;
     }
     private void Drop()
     {
         if (ObjectToInteract == null) return;
 
         Debug.Log("Drop");
-        isPickedUp = false;
+        IsPickedUp = false;
         ObjectToInteract.Rb.WakeUp();
         ObjectToInteract.transform.parent = null;
     }
@@ -125,6 +130,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (ObjectToInteract == null) return;
 
-        holdingObject = true;
+        _holdingObject = true;
+        _holdingTimeBar.fillAmount = 0;
     }
 }
