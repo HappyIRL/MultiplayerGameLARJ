@@ -689,8 +689,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5320efca9bbb2e4d825cdcd9b904e0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectHolder: {fileID: 7433297014392487680}
-  holdingTimeBar: {fileID: 3871869291746567890}
+  _objectHolder: {fileID: 7433297014392487680}
+  _holdingTimeBar: {fileID: 3871869291746567890}
   ObjectToInteract: {fileID: 0}
   InteractableInteractionType: 0
   CanInteract: 0

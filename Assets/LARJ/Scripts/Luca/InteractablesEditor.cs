@@ -27,10 +27,18 @@ public class InteractablesEditor : Editor
             case InteractionType.PickUp: 
                 break;
             case InteractionType.Press:
+                EditorGUILayout.BeginVertical();
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+                EditorGUILayout.EndVertical();
                 EditorGUILayout.PropertyField(PressInteractionEventProperty);
                 break;
             case InteractionType.Hold:
                 interactables.HoldingTime = EditorGUILayout.FloatField("HoldingTime", interactables.HoldingTime);
+                EditorGUILayout.BeginVertical();
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+                EditorGUILayout.EndVertical();
                 EditorGUILayout.PropertyField(HoldingInteractionEventProperty);
                 break;
         }

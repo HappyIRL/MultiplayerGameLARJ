@@ -13,8 +13,8 @@ public class PlayerInteraction : MonoBehaviour
     [HideInInspector] public Interactables ObjectToInteract = null;
     [HideInInspector] public InteractionType InteractableInteractionType = InteractionType.PickUp;
     [HideInInspector] public bool CanInteract = false;
+    [HideInInspector] public bool IsPickedUp = false;
 
-    private bool _isPickedUp = false;
     private bool _holdingObject = false;
     private float _holdingTimer = 0;
 
@@ -36,23 +36,23 @@ public class PlayerInteraction : MonoBehaviour
 
 
 
-        //Keyboard kb = InputSystem.GetDevice<Keyboard>();
-        //if (kb.wKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.forward, Space.World);
-        //}
-        //if (kb.sKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.back, Space.World);
-        //}
-        //if (kb.aKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.left, Space.World);
-        //}
-        //if (kb.dKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.right, Space.World);
-        //}
+        Keyboard kb = InputSystem.GetDevice<Keyboard>();
+        if (kb.wKey.wasPressedThisFrame)
+        {
+            transform.Translate(Vector3.forward, Space.World);
+        }
+        if (kb.sKey.wasPressedThisFrame)
+        {
+            transform.Translate(Vector3.back, Space.World);
+        }
+        if (kb.aKey.wasPressedThisFrame)
+        {
+            transform.Translate(Vector3.left, Space.World);
+        }
+        if (kb.dKey.wasPressedThisFrame)
+        {
+            transform.Translate(Vector3.right, Space.World);
+        }
     }
 
 
@@ -66,7 +66,7 @@ public class PlayerInteraction : MonoBehaviour
 
             if (InteractableInteractionType == InteractionType.PickUp)
             {               
-                if (_isPickedUp)
+                if (IsPickedUp)
                 {
                     Drop();
                 }
@@ -106,7 +106,7 @@ public class PlayerInteraction : MonoBehaviour
 
         Debug.Log("PickUp");
 
-        _isPickedUp = true;
+        IsPickedUp = true;
         ObjectToInteract.Rb.Sleep();
         ObjectToInteract.transform.parent = transform;
         ObjectToInteract.transform.forward = transform.forward;
@@ -117,7 +117,7 @@ public class PlayerInteraction : MonoBehaviour
         if (ObjectToInteract == null) return;
 
         Debug.Log("Drop");
-        _isPickedUp = false;
+        IsPickedUp = false;
         ObjectToInteract.Rb.WakeUp();
         ObjectToInteract.transform.parent = null;
     }

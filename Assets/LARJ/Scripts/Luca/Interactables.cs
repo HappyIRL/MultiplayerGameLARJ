@@ -44,7 +44,12 @@ public class Interactables : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.GetComponent<PlayerInteraction>().CanInteract = false;
+            PlayerInteraction pi = other.GetComponent<PlayerInteraction>();
+
+            if (!pi.IsPickedUp)
+            {
+                pi.CanInteract = false;
+            }
         }
     }   
 }
