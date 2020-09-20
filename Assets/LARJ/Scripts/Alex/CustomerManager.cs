@@ -9,6 +9,8 @@ public class CustomerManager : MonoBehaviour
 
     public Transform deskWaypoint;
     public bool deskIsFree = true;
+
+    public Transform despawn;
         
 
     void Start()
