@@ -35,7 +35,7 @@
                     "id": "9ea7fc99-2f02-40d1-9604-0642555eacf5",
                     "expectedControlType": "Stick",
                     "processors": "",
-                    "interactions": "Press(behavior=1)"
+                    "interactions": ""
                 },
                 {
                     "name": "Dash",
@@ -43,7 +43,7 @@
                     "id": "94bd1285-3d4c-49da-8bf1-7390dfeb9a39",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=1)"
+                    "interactions": ""
                 }
             ],
             "bindings": [

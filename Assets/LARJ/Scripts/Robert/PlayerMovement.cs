@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _movementSpeed = 3;
     [SerializeField] private int _playerIndex = 0;
     [SerializeField] private float _dashCooldown = 2f;
-    [SerializeField] private float _dashDistance = 2f;
+    [SerializeField] private float _dashDistance = 25f;
 
     private CharacterController _controller;
 
@@ -67,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
         if (inputValue.isPressed && !_isDashOnCooldown)
         {
             StartCoroutine(Dash());
-            //Dash();
         }
     }
     IEnumerator Dash()

@@ -609,6 +609,8 @@ GameObject:
   - component: {fileID: 7433297014272907403}
   - component: {fileID: 7433297014272907509}
   - component: {fileID: 7433297014272907508}
+  - component: {fileID: 1796752649}
+  - component: {fileID: 1796752644}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -694,6 +696,41 @@ MonoBehaviour:
   ObjectToInteract: {fileID: 0}
   InteractableInteractionType: 0
   CanInteract: 0
+  IsPickedUp: 0
+--- !u!143 &1796752649
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741314481945438931}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1796752644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741314481945438931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12276f72a13e284d98aa2320fa8e597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movementSpeed: 3
+  _playerIndex: 0
+  _dashCooldown: 2
+  _dashDistance: 25
 --- !u!1 &1014104327723108996
 GameObject:
   m_ObjectHideFlags: 0
