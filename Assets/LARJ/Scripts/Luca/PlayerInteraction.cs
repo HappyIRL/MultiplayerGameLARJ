@@ -36,23 +36,23 @@ public class PlayerInteraction : MonoBehaviour
 
 
 
-        Keyboard kb = InputSystem.GetDevice<Keyboard>();
-        if (kb.wKey.wasPressedThisFrame)
-        {
-            transform.Translate(Vector3.forward, Space.World);
-        }
-        if (kb.sKey.wasPressedThisFrame)
-        {
-            transform.Translate(Vector3.back, Space.World);
-        }
-        if (kb.aKey.wasPressedThisFrame)
-        {
-            transform.Translate(Vector3.left, Space.World);
-        }
-        if (kb.dKey.wasPressedThisFrame)
-        {
-            transform.Translate(Vector3.right, Space.World);
-        }
+        //Keyboard kb = InputSystem.GetDevice<Keyboard>();
+        //if (kb.wKey.wasPressedThisFrame)
+        //{
+        //    transform.Translate(Vector3.forward, Space.World);
+        //}
+        //if (kb.sKey.wasPressedThisFrame)
+        //{
+        //    transform.Translate(Vector3.back, Space.World);
+        //}
+        //if (kb.aKey.wasPressedThisFrame)
+        //{
+        //    transform.Translate(Vector3.left, Space.World);
+        //}
+        //if (kb.dKey.wasPressedThisFrame)
+        //{
+        //    transform.Translate(Vector3.right, Space.World);
+        //}
     }
 
 
