@@ -59,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         _moveDirection = new Vector3(_inputVector.x, 0, _inputVector.y);
+        GetComponentsInChildren<Transform>()[1].forward = _moveDirection*-1;
         _moveDirection = transform.TransformDirection(_moveDirection);
         _controller.Move(_moveDirection * _movementSpeed * Time.deltaTime);
     }
