@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int _playerIndex = 0;
     [SerializeField] private float _dashCooldown = 2f;
     [SerializeField] private float _dashDistance = 25f;
-
+    [SerializeField] private Transform _bodyTransform;
     private CharacterController _controller;
 
     private Vector3 _moveDirection = Vector3.zero;
@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         _moveDirection = new Vector3(_inputVector.x, 0, _inputVector.y);
-        GetComponentsInChildren<Transform>()[1].forward = _moveDirection*-1;
+        _bodyTransform.forward = _moveDirection*-1;
         _moveDirection = transform.TransformDirection(_moveDirection);
         _controller.Move(_moveDirection * _movementSpeed * Time.deltaTime);
     }
