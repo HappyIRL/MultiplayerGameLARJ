@@ -8,6 +8,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private Transform _objectHolder = null;
     [SerializeField] private Image _holdingTimeBar = null;
+    [SerializeField] private GameObject _holdingTimeBarBG = null;
 
     //Object to interact
     [HideInInspector] public Interactables ObjectToInteract = null;
@@ -28,31 +29,12 @@ public class PlayerInteraction : MonoBehaviour
             if (_holdingTimer >= ObjectToInteract.HoldingTime)
             {
                 _holdingTimer = 0f;
+                _holdingTimeBarBG.SetActive(false);
                 _holdingObject = false;
                 ObjectToInteract.HoldingInteractionEvent.Invoke();
                 _holdingTimeBar.fillAmount = 0;
             }
         }
-
-
-
-        //Keyboard kb = InputSystem.GetDevice<Keyboard>();
-        //if (kb.wKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.forward, Space.World);
-        //}
-        //if (kb.sKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.back, Space.World);
-        //}
-        //if (kb.aKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.left, Space.World);
-        //}
-        //if (kb.dKey.wasPressedThisFrame)
-        //{
-        //    transform.Translate(Vector3.right, Space.World);
-        //}
     }
 
 
@@ -98,6 +80,7 @@ public class PlayerInteraction : MonoBehaviour
         Debug.Log("OnRelease");
         _holdingObject = false;
         _holdingTimer = 0f;
+        _holdingTimeBarBG.SetActive(false);
     }
 
     private void PickUp()
@@ -132,5 +115,6 @@ public class PlayerInteraction : MonoBehaviour
 
         _holdingObject = true;
         _holdingTimeBar.fillAmount = 0;
+        _holdingTimeBarBG.SetActive(true);
     }
 }

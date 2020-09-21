@@ -92,7 +92,11 @@ public class Telephone : MonoBehaviour
 
     public void AnswerCall()
     {
-        StopCoroutine(_lastCoroutine);
+        if (_lastCoroutine != null)
+        {
+            StopCoroutine(_lastCoroutine);
+        }
+
         EndCall();
         ChangeMaterial(_standardScreenMaterial);
 
