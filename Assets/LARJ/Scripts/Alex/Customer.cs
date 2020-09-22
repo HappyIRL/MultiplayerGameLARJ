@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,108 +7,104 @@ using UnityEngine.AI;
 public class Customer : MonoBehaviour
 {
     StateMachine _stateMachine;
-    public CustomerManager CM;
     NavMeshAgent _agent;
+    GameObject _go;
+   
     public CustomerSpawner customerSpawner;
     public ObjectPool customerPool;
 
     private Transform _deskWaypoint;
     private Transform _despawn;
-    //private List<Transform> _queueWaypoints;
 
+    private Transform _transform;
     private float _range = 3f;
-    private Transform _target;
+    private Vector3 _target;
     private int _queuePosition;
+    private bool _isWaiting;
+
+    
 
     private void Start()
     {
+
         // register statemachine and grab neccessary components
         _stateMachine = new StateMachine();
             //First state registered == initState
         var entering = _stateMachine.CreateState("entering");
 
         _agent = GetComponent<NavMeshAgent>();
-        
+        _deskWaypoint = customerSpawner.deskWaypoint;
+        _despawn = customerSpawner.customerDespawnPoint;
 
-        _deskWaypoint = CM.deskWaypoint;
-        _despawn = CM.despawn;
-        
 
-       
         entering.onEnter = delegate 
-        {
-            Debug.Log("Customer Entering!");
-            if (CM.deskIsFree) // Go get served
+        {            
+            if (customerSpawner.deskIsFree) // Go get served
             {
                 _stateMachine.TransitionTo("moveToDesk");                
-            }            
+            }
+            else
+            {
+                QueueUp();   
+            }
         };
         entering.onFrame = delegate
         {
-            for (int i = 0; i < CM.isFreeAtIndex.Length; i++)
-            {
-                if (CM.isFreeAtIndex[i])
-                {
-                    _agent.destination = CM.queueWaypoints[i].position;
-                    _queuePosition = i;
-                    //_customerManager.isFreeAtIndex[i] = false;
-                    _stateMachine.TransitionTo("inQueue");
-                    break;
-                }
-            }
+                     
         };
 
         var moveToDesk = _stateMachine.CreateState("moveToDesk");
         moveToDesk.onEnter = delegate
         {
-            CM.deskIsFree = false;
-
-            _agent.destination = new Vector3(
-                _deskWaypoint.position.x,
-                0,
-                _deskWaypoint.position.z
-                );
+            MoveToDesk();                   
         };
         moveToDesk.onFrame = delegate
-        {
-            CheckDistanceToDesk();
+        {          
+            CheckDistanceToDesk();            
         };
 
         var atDesk = _stateMachine.CreateState("atDesk");
         atDesk.onEnter = delegate
         {
-            Debug.Log("Customer is now waiting at Desk");
+            // Get ready for interaction             
+            _isWaiting = true;
             StartCoroutine("LeaveAfterDelay");
-           
         };
         atDesk.onFrame = delegate
         {
-            // Player interaction here
+            // check for Player interaction here
+            //if (Player is interacting with Customer)
+            {
+
+                StopCoroutine("LeaveAfterDelay");
+
+            }
+
         };
 
         var inQueue = _stateMachine.CreateState("inQueue");
         inQueue.onEnter = delegate
         {
             Debug.LogFormat("Customer waiting in Line. Position:{0}", _queuePosition);
-            CM.isFreeAtIndex[_queuePosition] = false;
+            customerSpawner.isFreeAtIndex[_queuePosition] = false;
         };
         inQueue.onFrame = delegate
         {           
             if(_queuePosition > 0)
             {
-                if (CM.isFreeAtIndex[_queuePosition - 1])
+                if (customerSpawner.isFreeAtIndex[_queuePosition - 1])
                 {
-                    CM.isFreeAtIndex[_queuePosition] = true;
-                    CM.isFreeAtIndex[_queuePosition - 1] = false;
-                    _agent.destination = CM.queueWaypoints[_queuePosition - 1].position;
+                    customerSpawner.isFreeAtIndex[_queuePosition] = true;
+                    customerSpawner.isFreeAtIndex[_queuePosition - 1] = false;
+                    _agent.destination = customerSpawner.queueWaypoints[_queuePosition - 1].position;
                     _queuePosition--;
                 }
             }
             else
             {
-                if (CM.deskIsFree)
+                if (customerSpawner.deskIsFree)
                 {
-                    CM.isFreeAtIndex[0] = true;
+                    customerSpawner.isFreeAtIndex[0] = true;
                     _stateMachine.TransitionTo("moveToDesk");
                 }
             }
@@ -119,7 +116,7 @@ public class Customer : MonoBehaviour
         var leaving = _stateMachine.CreateState("leaving");
         leaving.onEnter = delegate
         {
-            CM.deskIsFree = true;
+            customerSpawner.deskIsFree = true;
             _agent.destination = _despawn.position;//GameObject.Find("CustomerDespawn").GetComponent<Transform>().position;
             
         };
@@ -141,6 +138,31 @@ public class Customer : MonoBehaviour
 
         
     }
+
+    private void MoveToDesk()
+    {
+        _agent.destination = new Vector3(
+                            _deskWaypoint.position.x,
+                            0,
+                            _deskWaypoint.position.z);
+        customerSpawner.deskIsFree = false;         
+    }
+
+    private void QueueUp()
+    {
+        for (int i = 0; i < customerSpawner.queueWaypoints.Count; i++)
+        {
+            if (customerSpawner.isFreeAtIndex[i])
+            {
+                _agent.destination = customerSpawner.queueWaypoints[i].position;
+                _queuePosition = i;
+                //_customerManager.isFreeAtIndex[i] = false;
+                _stateMachine.TransitionTo("inQueue");
+                break;
+            }
+        }
+    }
+
     private void Update()
     {
         _stateMachine.Update();
@@ -148,7 +170,8 @@ public class Customer : MonoBehaviour
 
     private void CheckDistanceToDesk()
     {
-        var distanceToDesk = Vector3.Distance(transform.position, _deskWaypoint.position);       
+        var distanceToDesk = Vector3.Distance(transform.position, _deskWaypoint.position);
+        
         if (distanceToDesk <= _range)
         {
             _stateMachine.TransitionTo("atDesk");
@@ -158,6 +181,13 @@ public class Customer : MonoBehaviour
    IEnumerator LeaveAfterDelay()
     {
         yield return new WaitForSeconds(customerSpawner.patienceTimer);
+        _stateMachine.TransitionTo("leaving");
+    }
+
+    public void LeaveHappy()
+    {
+        StopCoroutine("LeaveAfterDelay");
+        this.GetComponent<Renderer>().material.SetColor("_happy", Color.green);
         _stateMachine.TransitionTo("leaving");
     }
 }

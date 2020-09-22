@@ -5,17 +5,41 @@ using UnityEngine;
 // Implement Wave options
 public class CustomerSpawner : MonoBehaviour
 {
-    [SerializeField] private ObjectPool _customerPool;
-    [SerializeField] CustomerManager _cm;
-
+    
+    
     // SPAWN OPTIONS
-    [SerializeField] float spawnTimer = 5f;
+    [SerializeField] float delayInSecs = 5f;
     [SerializeField] bool randomizeSpawnTime = false;
     [SerializeField] float spawnAmount;
-    [SerializeField] Transform customerSpawnPoint;
+    [HideInInspector] Transform customerSpawnPoint;
+    [HideInInspector] public Transform customerDespawnPoint;
 
     // CUSTOMER OPTIONS
     [SerializeField] public float patienceTimer;
+
+
+    // ENUM WAVE? 
+
+    // References
+    private ObjectPool _customerPool;
+    [HideInInspector] public List <Transform> queueWaypoints;
+    [HideInInspector] public List<bool> isFreeAtIndex;
+    [HideInInspector] public Transform deskWaypoint;
+    [HideInInspector] public bool deskIsFree = true;
+
+    void Awake()
+    {
+        customerSpawnPoint = GameObject.Find("CustomerSpawnPoint").GetComponent<Transform>();
+        _customerPool = GameObject.Find("CustomerPool").GetComponent<ObjectPool>();
+        deskWaypoint = GameObject.Find("DeskWaypoint").GetComponent<Transform>();
+        var queueList =  GameObject.Find("QueueWaypoints").GetComponent<Transform>();
+        foreach (Transform queueWaypoint in queueList)
+        {
+            queueWaypoints.Add(queueWaypoint);
+            isFreeAtIndex.Add(true);
+        }
+        customerDespawnPoint = GameObject.Find("CustomerDespawn").GetComponent<Transform>();       
+    }
 
 
     IEnumerator Start()
@@ -27,7 +51,7 @@ public class CustomerSpawner : MonoBehaviour
 
             var go = _customerPool.GetObject();
             var customer = go.GetComponent<Customer>();
-            customer.CM = _cm;
+       
             customer.customerSpawner = this;
             customer.customerPool = _customerPool;            
 
@@ -35,14 +59,14 @@ public class CustomerSpawner : MonoBehaviour
 
             if (randomizeSpawnTime)
             {
-                var delay = Random.Range(0.1f, spawnTimer);
+                var delay = Random.Range(0.1f, delayInSecs);
                 yield return new WaitForSeconds(delay); 
                 count++;
             }
             else
             {
 
-                yield return new WaitForSeconds(spawnTimer);
+                yield return new WaitForSeconds(delayInSecs);
                 count++;
             }
         }
