@@ -105,7 +105,7 @@ public class PlayerInteraction : MonoBehaviour
 
         IsPickedUp = true;
         ObjectToInteract.Rb.Sleep();
-        ObjectToInteract.transform.parent = transform;
+        ObjectToInteract.transform.parent = _objectHolder;
         ObjectToInteract.transform.forward = transform.forward;
         ObjectToInteract.transform.position = _objectHolder.position;
     }
@@ -114,8 +114,8 @@ public class PlayerInteraction : MonoBehaviour
         if (ObjectToInteract == null) return;
 
         IsPickedUp = false;
-        ObjectToInteract.Rb.WakeUp();
         ObjectToInteract.transform.parent = null;
+        ObjectToInteract.Rb.WakeUp();
     }
     private void PressInteraction()
     {
