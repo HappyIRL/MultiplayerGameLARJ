@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 _moveDirection = Vector3.zero;
     private Vector2 _inputVector = Vector2.zero;
+    private float _initialYPosition;
     private float _dashTimer = 0f;
     private bool _isDashOnCooldown = false;
     private float _dashSpeed = 10;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
+        _initialYPosition = transform.position.y;
     }
     public int GetPlayerIndex()
     {
@@ -36,6 +38,10 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
+        if (transform.position.y != _initialYPosition)
+        {
+            transform.position = new Vector3(transform.position.x, _initialYPosition, transform.position.z);
+        }
         if (!_inDash)
         {
             Move();
