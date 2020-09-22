@@ -2,11 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Task : MonoBehaviour
+namespace Tasks
 {
-    public int CountDown { get; set; }
-    public bool IsTaskFinished { get; set; }
+    public enum TaskType
+    {
+        PhoneCall,
+        Printer,
+        Customer,
+        NotAssigned
+    }
+    public class Task : MonoBehaviour
+    {
+        public TaskType GetTaskType { get; set; } //remove setter later
 
-    public Task FollowUpTask { get; set; }
+        public int CountDown { get; set; }
+        public bool IsTaskFinished { get; set; }
 
+        public Task FollowUpTask { get; set; }
+
+    }
 }
