@@ -8,12 +8,16 @@ using UnityEngine;
 [CustomEditor(typeof(Interactables))]
 public class InteractablesEditor : Editor
 {
-    public SerializedProperty HoldingInteractionEventProperty = null;
+    public SerializedProperty HoldingFinishedInteractionEventProperty = null;
+    public SerializedProperty HoldingStartedInteractionEventProperty = null;
+    public SerializedProperty HoldingFailedInteractionEventProperty = null;
     public SerializedProperty PressInteractionEventProperty = null;
 
     private void OnEnable()
     {
-        HoldingInteractionEventProperty = serializedObject.FindProperty("HoldingInteractionEvent");
+        HoldingFinishedInteractionEventProperty = serializedObject.FindProperty("HoldingFinishedInteractionEvent");
+        HoldingStartedInteractionEventProperty = serializedObject.FindProperty("HoldingStartedInteractionEvent");
+        HoldingFailedInteractionEventProperty = serializedObject.FindProperty("HoldingFailedInteractionEvent");
         PressInteractionEventProperty = serializedObject.FindProperty("PressInteractionEvent");
     }
 
@@ -39,7 +43,9 @@ public class InteractablesEditor : Editor
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
                 EditorGUILayout.EndVertical();
-                EditorGUILayout.PropertyField(HoldingInteractionEventProperty);
+                EditorGUILayout.PropertyField(HoldingStartedInteractionEventProperty);
+                EditorGUILayout.PropertyField(HoldingFinishedInteractionEventProperty);
+                EditorGUILayout.PropertyField(HoldingFailedInteractionEventProperty);
                 break;
         }
         serializedObject.ApplyModifiedProperties();

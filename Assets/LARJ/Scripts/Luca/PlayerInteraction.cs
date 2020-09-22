@@ -17,8 +17,13 @@ public class PlayerInteraction : MonoBehaviour
     [HideInInspector] public bool IsPickedUp = false;
 
     private bool _holdingObject = false;
+    private bool _holdingWasFinished = false;
     private float _holdingTimer = 0;
 
+    private void Start()
+    {
+        _holdingTimeBarBG.SetActive(false);
+    }
     private void Update()
     {
         if (_holdingObject)
@@ -31,7 +36,8 @@ public class PlayerInteraction : MonoBehaviour
                 _holdingTimer = 0f;
                 _holdingTimeBarBG.SetActive(false);
                 _holdingObject = false;
-                ObjectToInteract.HoldingInteractionEvent.Invoke();
+                _holdingWasFinished = true;
+                ObjectToInteract.HoldingFinishedInteractionEvent.Invoke();
                 _holdingTimeBar.fillAmount = 0;
             }
         }
@@ -77,7 +83,16 @@ public class PlayerInteraction : MonoBehaviour
     }
     public void OnRelease()
     {
-        Debug.Log("OnRelease");
+        if (_holdingObject)
+        {
+            if (!_holdingWasFinished)
+            {
+                if (ObjectToInteract == null) return;
+
+                ObjectToInteract.HoldingFailedInteractionEvent.Invoke();
+            }
+        }
+
         _holdingObject = false;
         _holdingTimer = 0f;
         _holdingTimeBarBG.SetActive(false);
@@ -87,7 +102,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (ObjectToInteract == null) return;
 
-        Debug.Log("PickUp");
 
         IsPickedUp = true;
         ObjectToInteract.Rb.Sleep();
@@ -99,7 +113,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (ObjectToInteract == null) return;
 
-        Debug.Log("Drop");
         IsPickedUp = false;
         ObjectToInteract.Rb.WakeUp();
         ObjectToInteract.transform.parent = null;
@@ -114,7 +127,9 @@ public class PlayerInteraction : MonoBehaviour
         if (ObjectToInteract == null) return;
 
         _holdingObject = true;
+        _holdingWasFinished = false;
         _holdingTimeBar.fillAmount = 0;
         _holdingTimeBarBG.SetActive(true);
+        ObjectToInteract.HoldingStartedInteractionEvent.Invoke();
     }
 }

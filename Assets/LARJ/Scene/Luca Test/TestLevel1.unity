@@ -358,7 +358,13 @@ MonoBehaviour:
   PressInteractionEvent:
     m_PersistentCalls:
       m_Calls: []
-  HoldingInteractionEvent:
+  HoldingFinishedInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  HoldingStartedInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  HoldingFailedInteractionEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1350298926
