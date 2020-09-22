@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4940082999008235915}
   - component: {fileID: 5894535082283320545}
   - component: {fileID: 5026484668519212880}
+  - component: {fileID: 7512472803643927533}
   m_Layer: 0
   m_Name: Telephone
   m_TagString: Untagged
@@ -232,7 +233,13 @@ MonoBehaviour:
   PressInteractionEvent:
     m_PersistentCalls:
       m_Calls: []
-  HoldingInteractionEvent:
+  HoldingFinishedInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  HoldingStartedInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  HoldingFailedInteractionEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &5894535082283320545
@@ -252,6 +259,12 @@ MonoBehaviour:
   _redScreenMaterial: {fileID: 2100000, guid: d83c53277de967e49b88cde3cbe2b2ca, type: 2}
   _standardScreenMaterial: {fileID: 2100000, guid: 8d43a69e0ee7c1b45a3d5750b9b8143e, type: 2}
   _ringingSound: {fileID: 8300000, guid: 0d67c9c9a078c15479de5223fa4d0f03, type: 3}
+  FailedToAnswerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  CompletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &5026484668519212880
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -265,3 +278,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.8, z: 1}
   m_Center: {x: -0.00000010430813, y: 0.096297875, z: 0.0000014305115}
+--- !u!114 &7512472803643927533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4450039970984984745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []

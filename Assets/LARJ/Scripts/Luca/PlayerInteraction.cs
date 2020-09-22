@@ -11,7 +11,27 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private GameObject _holdingTimeBarBG = null;
 
     //Object to interact
-    [HideInInspector] public Interactables ObjectToInteract = null;
+    [HideInInspector] public Interactables ObjectToInteract
+    {
+        get { return _objectToInteract; }
+        set
+        {
+            //if there is another object remove outline
+            if (_objectToInteract != null)
+            {
+                _objectToInteract.OutlineRef.enabled = false;
+            }
+
+            _objectToInteract = value;
+
+            if (_objectToInteract != null)
+            {
+                _objectToInteract.OutlineRef.enabled = true;
+            }
+        }
+    }
+    private Interactables _objectToInteract;
+
     [HideInInspector] public InteractionType InteractableInteractionType = InteractionType.PickUp;
     [HideInInspector] public bool CanInteract = false;
     [HideInInspector] public bool IsPickedUp = false;

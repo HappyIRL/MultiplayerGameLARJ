@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3498362968201367378}
   - component: {fileID: 4211217475683619751}
   - component: {fileID: 4262622915552613468}
+  - component: {fileID: 6050696000126299053}
   m_Layer: 0
   m_Name: Printer
   m_TagString: Untagged
@@ -242,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InteractionType: 2
   Rb: {fileID: 0}
+  OutlineRef: {fileID: 0}
   HoldingTime: 5
   PressInteractionEvent:
     m_PersistentCalls:
@@ -308,6 +310,22 @@ MonoBehaviour:
   _printerInSound: {fileID: 8300000, guid: c330c837cf2da574aa8e114261d2cb8f, type: 3}
   _printerInProgressSound: {fileID: 8300000, guid: 2bff79ec55c2289498f0dbb1fef92969, type: 3}
   _printerOutSound: {fileID: 8300000, guid: 0d116f27ffaf30a4ebc6b3db95e4bef6, type: 3}
+--- !u!114 &6050696000126299053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378898358005371294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!1 &1168886378269138564
 GameObject:
   m_ObjectHideFlags: 0
