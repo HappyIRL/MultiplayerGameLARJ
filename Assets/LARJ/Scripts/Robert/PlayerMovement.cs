@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 _moveDirection = Vector3.zero;
     private Vector2 _inputVector = Vector2.zero;
-    private float _initialYPosition;
+    public float _initialYPosition;
     private float _dashTimer = 0f;
     private bool _isDashOnCooldown = false;
     private float _dashSpeed = 10;
@@ -38,10 +38,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        if (transform.position.y != _initialYPosition)
-        {
-            transform.position = new Vector3(transform.position.x, _initialYPosition, transform.position.z);
-        }
+        
         if (!_inDash)
         {
             Move();
@@ -71,6 +68,12 @@ public class PlayerMovement : MonoBehaviour
         }
         _moveDirection = transform.TransformDirection(_moveDirection);
         _controller.Move(_moveDirection * _movementSpeed * Time.deltaTime);
+        if (transform.position.y != _initialYPosition)
+        {
+            Debug.Log("Changed Y.");
+            transform.position = new Vector3(transform.position.x, _initialYPosition, transform.position.z);
+            //transform.Translate(new Vector3(transform.position.x, _initialYPosition, transform.position.z) - transform.position);
+        }
     }
     private void OnDash(InputValue inputValue)
     {
