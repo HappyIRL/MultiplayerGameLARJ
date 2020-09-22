@@ -30,8 +30,6 @@ public class Telephone : MonoBehaviour
         _meshRenderer = GetComponent<MeshRenderer>();
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _ringingSound;
-
-        StartTelephoneRinging();
     }
 
     public void StartTelephoneRinging()

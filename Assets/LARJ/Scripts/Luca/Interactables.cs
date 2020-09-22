@@ -22,7 +22,9 @@ public class Interactables : MonoBehaviour
 
     //Events
     public InteractionEvents PressInteractionEvent = null;
-    public InteractionEvents HoldingInteractionEvent = null;
+    public InteractionEvents HoldingFinishedInteractionEvent = null;
+    public InteractionEvents HoldingStartedInteractionEvent = null;
+    public InteractionEvents HoldingFailedInteractionEvent = null;
 
     private void Awake()
     {
