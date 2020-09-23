@@ -1,13 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 // Implement Wave options
+    public enum SpawnType
+    {
+        Wave,
+        Single
+    }
 public class CustomerSpawner : MonoBehaviour
 {
-    
-    
+
     // SPAWN OPTIONS
+    [SerializeField] int waveCount = 1;
+    [SerializeField] int timeBetweenWaves;
     [SerializeField] float delayInSecs = 5f;
     [SerializeField] bool randomizeSpawnTime = false;
     [SerializeField] float spawnAmount;
@@ -17,8 +24,7 @@ public class CustomerSpawner : MonoBehaviour
     // CUSTOMER OPTIONS
     [SerializeField] public float patienceTimer;
 
-
-    // ENUM WAVE? 
+        
 
     // References
     private ObjectPool _customerPool;
@@ -44,31 +50,45 @@ public class CustomerSpawner : MonoBehaviour
 
     IEnumerator Start()
     {
-        var count = 0;
-        while (count < spawnAmount)
+        for (int i = 0; i < waveCount; i++)
         {
-           
-
-            var go = _customerPool.GetObject();
-            var customer = go.GetComponent<Customer>();
-       
-            customer.customerSpawner = this;
-            customer.customerPool = _customerPool;            
-
-            go.transform.position = customerSpawnPoint.position;
-
-            if (randomizeSpawnTime)
+            var count = 0;
+            while (count < spawnAmount)
             {
-                var delay = Random.Range(0.1f, delayInSecs);
-                yield return new WaitForSeconds(delay); 
+                SpawnCustomer();
+
+                yield return StartCoroutine(DoRandomizeSpawnTime());
                 count++;
             }
-            else
-            {
-
-                yield return new WaitForSeconds(delayInSecs);
-                count++;
-            }
+            yield return new WaitForSeconds(timeBetweenWaves);
         }
+        
+    }
+
+    private IEnumerator DoRandomizeSpawnTime()
+    {
+        if (randomizeSpawnTime)
+        {
+            var delay = UnityEngine.Random.Range(0.1f, delayInSecs);
+            yield return new WaitForSeconds(delay);
+              
+        }
+        else
+        {
+
+            yield return new WaitForSeconds(delayInSecs);
+               
+        }
+    }
+
+    private void SpawnCustomer()
+    {
+        var go = _customerPool.GetObject();
+        var customer = go.GetComponent<Customer>();
+
+        customer.customerSpawner = this;
+        customer.customerPool = _customerPool;
+
+        go.transform.position = customerSpawnPoint.position;
     }
 }
