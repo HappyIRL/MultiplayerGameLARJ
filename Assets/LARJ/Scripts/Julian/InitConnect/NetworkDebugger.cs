@@ -1,5 +1,4 @@
 ﻿using Photon.Pun;
-using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
@@ -8,21 +7,26 @@ using UnityEngine.InputSystem;
 
 public class NetworkDebugger : MonoBehaviourPunCallbacks
 {
+
 	private bool _toggleDebugUI;
 	private string _roomName;
 	private string _roomInfos;
 	private int _roomCount;
 	private string _debugString;
 	private List<String> _debugList = new List<String>();
+	private byte _maxPlayersInRoom = 4;
+
+	public delegate void NetworkSwitchHandler(bool networkingEnabled);
+	public event NetworkSwitchHandler NetworkEnabled;
+	public static bool _networkingEnabled = false;
 
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 	private static void OnSceneLoad()
 	{
 		GameObject go = new GameObject();
 		go.name = "NetworkDebuggerGameObject";
-		go.hideFlags = HideFlags.HideAndDontSave;
+		go.hideFlags = HideFlags.HideInHierarchy;
 		go.AddComponent<NetworkDebugger>();
-
 	}
 
 	private void Update()
@@ -71,36 +75,67 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 		AddToDebugList(message);
 	}
 
+	public void MainNetworkingSwitch()
+	{
+		_networkingEnabled = !_networkingEnabled;
+
+		if (_networkingEnabled)
+		{
+			NetworkEnabled?.Invoke(_networkingEnabled);
+		}
+	}
+
 	private void OnGUI()
 	{
 		if(_toggleDebugUI)
 		{
 			GUI.color = Color.black;
+
+			//NetworkClientState
 			GUI.Box(new Rect(10, 10, 300, 60), $"NetworkClientState: {PhotonNetwork.NetworkClientState}" +
 				$"{Environment.NewLine}Ping: {PhotonNetwork.GetPing()}" +
 				$"{Environment.NewLine}MasterClient : {PhotonNetwork.MasterClient}");
+			
+			//Network debug window
 			GUI.Box(new Rect(10, 800, 600, 15 * _debugList.Count + 5), _debugString);
 
 			switch (PhotonNetwork.NetworkClientState)
 			{
+				//In room
 				case ClientState.Joined:
+					//Leave room button
 					CreateGUIButton(new Rect(10, 80, 300, 20), "Leave Room", () => PhotonNetwork.LeaveRoom());
 					break;
-
+				
+				//In Lobby
 				case ClientState.JoinedLobby:
+					//Leave lobby button
 					CreateGUIButton(new Rect(10, 80, 300, 20), "Leave Lobby", () => PhotonNetwork.LeaveLobby());
+					//Room name enter field
 					_roomName = GUI.TextField(new Rect(160, 110, 150, 20), _roomName);
-					CreateGUIButton(new Rect(10, 110, 150, 20), "Join Room:", () => PhotonNetwork.JoinRoom(_roomName));
+					//Room enter button
+					RoomOptions options = new RoomOptions{ MaxPlayers = _maxPlayersInRoom };
+					CreateGUIButton(new Rect(10, 110, 150, 20), "Join/Create Room:", () => PhotonNetwork.JoinOrCreateRoom(_roomName, options, TypedLobby.Default));
+					//Room info list
 					GUI.Box(new Rect(10, 200, 300, 15 * _roomCount + 5), _roomInfos);
 					break;
 
+				//Connected to Photon
 				case ClientState.ConnectedToMasterServer:
+					//Disconnect button
 					CreateGUIButton(new Rect(10, 80, 300, 20), "Disconnect from Master", () => PhotonNetwork.Disconnect());
+					//Join lobby button
 					CreateGUIButton(new Rect(10, 110, 300, 20), "Join Lobby", () => PhotonNetwork.JoinLobby());
 					break;
 
+				//Disconnected from Photon
 				case ClientState.Disconnected:
+					//Connect button
 					CreateGUIButton(new Rect(10, 80, 300, 20), "Connect to Master", () => PhotonNetwork.ConnectUsingSettings());
+					break;
+				case ClientState.PeerCreated:
+					//Enable Networking
+					CreateGUIButton(new Rect(10, 80, 300, 20), "Switch Networking On", () => MainNetworkingSwitch());
 					break;
 			}
 		}
