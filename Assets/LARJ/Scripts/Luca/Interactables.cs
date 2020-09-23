@@ -22,6 +22,10 @@ public class Interactables : MonoBehaviour
 
     public float HoldingTime = 1f;
 
+    //Button press hints
+    public GameObject KeyboardButtonHintImage = null;
+    public GameObject GamepadButtonHintImage = null;
+
     //Events
     public InteractionEvents PressInteractionEvent = null;
     public InteractionEvents HoldingFinishedInteractionEvent = null;
@@ -35,6 +39,16 @@ public class Interactables : MonoBehaviour
     {
         Rb = GetComponent<Rigidbody>();
         OutlineRef = GetComponent<Outline>();
+    }
+    private void Start()
+    {
+        OutlineRef.enabled = false;
+        DisableButtonHintImages();        
+    }
+
+    private void OnDisable()
+    {
+        DisableButtonHintImages();
         OutlineRef.enabled = false;
     }
 
@@ -74,17 +88,36 @@ public class Interactables : MonoBehaviour
         {
             PlayerInteraction pi = other.GetComponent<PlayerInteraction>();
 
-            OutlineRef.enabled = false;
-            _referenceWasSetInOnTriggerStay = false;
-
-            if (pi.ObjectToInteract == this)
-            {
-                pi.ObjectToInteract = null;
-            }
             if (!pi.IsPickedUp)
             {
+                OutlineRef.enabled = false;
+                DisableButtonHintImages();
+                _referenceWasSetInOnTriggerStay = false;
+
                 pi.CanInteract = false;
+                if (pi.ObjectToInteract == this)
+                {
+                    pi.ObjectToInteract = null;
+                }
             }
         }
     }   
+
+
+    public void DisableButtonHintImages()
+    {
+        KeyboardButtonHintImage.SetActive(false);
+        GamepadButtonHintImage.SetActive(false);
+    }
+    public void EnableButtonHintImage(string currentPlayerControlScheme)
+    {
+        if (currentPlayerControlScheme == "Keyboard")
+        {
+            KeyboardButtonHintImage.SetActive(true);
+        }
+        else if (currentPlayerControlScheme == "Gamepad")
+        {
+            GamepadButtonHintImage.SetActive(true);
+        }
+    }
 }

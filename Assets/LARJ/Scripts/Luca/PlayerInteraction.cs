@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private Transform _objectHolder = null;
@@ -17,9 +18,13 @@ public class PlayerInteraction : MonoBehaviour
         set
         {
             //if there is another object remove outline
-            if (_objectToInteract != null)
+            if (_objectToInteract != value)
             {
-                _objectToInteract.OutlineRef.enabled = false;
+                if (_objectToInteract != null)
+                {
+                    _objectToInteract.OutlineRef.enabled = false;
+                    _objectToInteract.DisableButtonHintImages();
+                }
             }
 
             _objectToInteract = value;
@@ -27,6 +32,7 @@ public class PlayerInteraction : MonoBehaviour
             if (_objectToInteract != null)
             {
                 _objectToInteract.OutlineRef.enabled = true;
+                _objectToInteract.EnableButtonHintImage(_playerInput.currentControlScheme);
             }
         }
     }
@@ -36,28 +42,33 @@ public class PlayerInteraction : MonoBehaviour
     [HideInInspector] public bool CanInteract = false;
     [HideInInspector] public bool IsPickedUp = false;
 
-    private bool _holdingObject = false;
+    private bool _holdingButton = false;
     private bool _holdingWasFinished = false;
     private float _holdingTimer = 0;
+    private PlayerInput _playerInput;
 
+    private void Awake()
+    {
+        _playerInput = GetComponent<PlayerInput>();
+    }
     private void Start()
     {
         _holdingTimeBarBG.SetActive(false);
     }
     private void Update()
     {
-        if (_holdingObject)
+        if (_holdingButton)
         {
             _holdingTimer += Time.deltaTime;
-            _holdingTimeBar.fillAmount = _holdingTimer / ObjectToInteract.HoldingTime;
+            _holdingTimeBar.fillAmount = _holdingTimer / _objectToInteract.HoldingTime;
 
-            if (_holdingTimer >= ObjectToInteract.HoldingTime)
+            if (_holdingTimer >= _objectToInteract.HoldingTime)
             {
                 _holdingTimer = 0f;
                 _holdingTimeBarBG.SetActive(false);
-                _holdingObject = false;
+                _holdingButton = false;
                 _holdingWasFinished = true;
-                ObjectToInteract.HoldingFinishedInteractionEvent.Invoke();
+                _objectToInteract.HoldingFinishedInteractionEvent.Invoke();
                 _holdingTimeBar.fillAmount = 0;
             }
         }
@@ -66,11 +77,9 @@ public class PlayerInteraction : MonoBehaviour
 
     public void OnPress()
     {
-        Debug.Log("OnPress");
-
         if (CanInteract)
         {
-            if (ObjectToInteract == null) return;
+            if (_objectToInteract == null) return;
 
             if (InteractableInteractionType == InteractionType.PickUp)
             {               
@@ -91,8 +100,6 @@ public class PlayerInteraction : MonoBehaviour
     }
     public void OnHold()
     {
-        Debug.Log("OnHold");
-
         if (CanInteract)
         {
             if (InteractableInteractionType == InteractionType.Hold)
@@ -103,53 +110,59 @@ public class PlayerInteraction : MonoBehaviour
     }
     public void OnRelease()
     {
-        if (_holdingObject)
+        if (_holdingButton)
         {
             if (!_holdingWasFinished)
             {
-                if (ObjectToInteract == null) return;
+                if (_objectToInteract == null) return;
 
-                ObjectToInteract.HoldingFailedInteractionEvent.Invoke();
+                _objectToInteract.HoldingFailedInteractionEvent.Invoke();
+                _objectToInteract.EnableButtonHintImage(_playerInput.currentControlScheme);
             }
         }
 
-        _holdingObject = false;
+        _holdingButton = false;
         _holdingTimer = 0f;
         _holdingTimeBarBG.SetActive(false);
     }
 
     private void PickUp()
     {
-        if (ObjectToInteract == null) return;
+        if (_objectToInteract == null) return;
 
 
         IsPickedUp = true;
-        ObjectToInteract.Rb.Sleep();
-        ObjectToInteract.transform.parent = _objectHolder;
-        ObjectToInteract.transform.forward = transform.forward;
-        ObjectToInteract.transform.position = _objectHolder.position;
+        _objectToInteract.Rb.Sleep();
+        _objectToInteract.transform.parent = _objectHolder;
+        _objectToInteract.transform.forward = transform.forward;
+        _objectToInteract.transform.position = _objectHolder.position;
+        _objectToInteract.DisableButtonHintImages();
+        _objectToInteract.OutlineRef.enabled = false;
     }
     private void Drop()
     {
-        if (ObjectToInteract == null) return;
-
+        if (_objectToInteract == null) return;
+        
         IsPickedUp = false;
-        ObjectToInteract.transform.parent = null;
-        ObjectToInteract.Rb.WakeUp();
+        _objectToInteract.transform.parent = null;
+        _objectToInteract.Rb.WakeUp();
+
+        _objectToInteract = null;
     }
     private void PressInteraction()
     {
-        if (ObjectToInteract == null) return;
-        ObjectToInteract.PressInteractionEvent.Invoke();
+        if (_objectToInteract == null) return;
+        _objectToInteract.PressInteractionEvent.Invoke();
     }
     private void HoldingInteraction()
     {
-        if (ObjectToInteract == null) return;
+        if (_objectToInteract == null) return;
 
-        _holdingObject = true;
+        _holdingButton = true;
         _holdingWasFinished = false;
         _holdingTimeBar.fillAmount = 0;
         _holdingTimeBarBG.SetActive(true);
-        ObjectToInteract.HoldingStartedInteractionEvent.Invoke();
+        _objectToInteract.HoldingStartedInteractionEvent.Invoke();
+        _objectToInteract.DisableButtonHintImages();
     }
 }

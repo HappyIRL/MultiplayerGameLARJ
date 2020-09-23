@@ -8,10 +8,15 @@ using UnityEngine;
 [CustomEditor(typeof(Interactables))]
 public class InteractablesEditor : Editor
 {
+    //Events
     public SerializedProperty HoldingFinishedInteractionEventProperty = null;
     public SerializedProperty HoldingStartedInteractionEventProperty = null;
     public SerializedProperty HoldingFailedInteractionEventProperty = null;
     public SerializedProperty PressInteractionEventProperty = null;
+
+    //Button hints
+    public SerializedProperty KeyboardButtonHintProperty = null;   
+    public SerializedProperty GamepadButtonHintProperty = null;
 
     private void OnEnable()
     {
@@ -19,6 +24,9 @@ public class InteractablesEditor : Editor
         HoldingStartedInteractionEventProperty = serializedObject.FindProperty("HoldingStartedInteractionEvent");
         HoldingFailedInteractionEventProperty = serializedObject.FindProperty("HoldingFailedInteractionEvent");
         PressInteractionEventProperty = serializedObject.FindProperty("PressInteractionEvent");
+
+        KeyboardButtonHintProperty = serializedObject.FindProperty("KeyboardButtonHintImage");
+        GamepadButtonHintProperty = serializedObject.FindProperty("GamepadButtonHintImage");
     }
 
     public override void OnInspectorGUI()
@@ -28,9 +36,13 @@ public class InteractablesEditor : Editor
 
         switch (interactables.InteractionType)
         {
-            case InteractionType.PickUp: 
+            case InteractionType.PickUp:
+                EditorGUILayout.PropertyField(KeyboardButtonHintProperty);
+                EditorGUILayout.PropertyField(GamepadButtonHintProperty);
                 break;
             case InteractionType.Press:
+                EditorGUILayout.PropertyField(KeyboardButtonHintProperty);
+                EditorGUILayout.PropertyField(GamepadButtonHintProperty);
                 EditorGUILayout.BeginVertical();
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
@@ -39,6 +51,8 @@ public class InteractablesEditor : Editor
                 break;
             case InteractionType.Hold:
                 interactables.HoldingTime = EditorGUILayout.FloatField("HoldingTime", interactables.HoldingTime);
+                EditorGUILayout.PropertyField(KeyboardButtonHintProperty);
+                EditorGUILayout.PropertyField(GamepadButtonHintProperty);
                 EditorGUILayout.BeginVertical();
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
