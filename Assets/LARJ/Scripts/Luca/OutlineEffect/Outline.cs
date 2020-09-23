@@ -34,8 +34,8 @@ namespace cakeslice
     {
         public Renderer Renderer { get; private set; }
 
-        public int color;
-        public bool eraseRenderer;
+        [HideInInspector] public int color;
+        [HideInInspector] public bool eraseRenderer;
 
         [HideInInspector]
         public int originalLayer;
