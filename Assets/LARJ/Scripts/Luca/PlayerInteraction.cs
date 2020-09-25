@@ -32,7 +32,11 @@ public class PlayerInteraction : MonoBehaviour
             if (_objectToInteract != null)
             {
                 _objectToInteract.OutlineRef.enabled = true;
-                _objectToInteract.EnableButtonHintImage(_playerInput.currentControlScheme);
+
+                if (!IsPickedUp)
+                {
+                    _objectToInteract.EnableButtonHintImage(_playerInput.currentControlScheme);
+                }
             }
         }
     }
@@ -74,7 +78,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-
+    #region Input Events
     public void OnPress()
     {
         if (CanInteract)
@@ -125,7 +129,41 @@ public class PlayerInteraction : MonoBehaviour
         _holdingTimer = 0f;
         _holdingTimeBarBG.SetActive(false);
     }
+    public void OnPickedUpInteractionPress()
+    {
+        if (CanInteract)
+        {
+            if (InteractableInteractionType == InteractionType.PickUp)
+            {
+                if (_objectToInteract == null) return;
 
+                if (_objectToInteract.CanInteractWhenPickedUp)
+                {
+                    _objectToInteract.MousePressInteractionEvent.Invoke();
+                    _objectToInteract.DisablePickedUpInteractionButtonHints();
+                }
+            }
+        }
+    }
+    public void OnPickedUpInteractionRelease()
+    {
+        if (CanInteract)
+        {
+            if (InteractableInteractionType == InteractionType.PickUp)
+            {
+                if (_objectToInteract == null) return;
+
+                if (_objectToInteract.CanInteractWhenPickedUp)
+                {
+                    _objectToInteract.MouseReleaseInteractionEvent.Invoke();
+                    _objectToInteract.EnablePickedUpInteractionHintImage(_playerInput.currentControlScheme);
+                }
+            }
+        }
+    }
+    #endregion
+
+    #region Interaction Events
     private void PickUp()
     {
         if (_objectToInteract == null) return;
@@ -138,6 +176,11 @@ public class PlayerInteraction : MonoBehaviour
         _objectToInteract.transform.position = _objectHolder.position;
         _objectToInteract.DisableButtonHintImages();
         _objectToInteract.OutlineRef.enabled = false;
+
+        if (_objectToInteract.CanInteractWhenPickedUp)
+        {
+            _objectToInteract.EnablePickedUpInteractionHintImage(_playerInput.currentControlScheme);
+        }
     }
     private void Drop()
     {
@@ -165,4 +208,5 @@ public class PlayerInteraction : MonoBehaviour
         _objectToInteract.HoldingStartedInteractionEvent.Invoke();
         _objectToInteract.DisableButtonHintImages();
     }
+    #endregion
 }

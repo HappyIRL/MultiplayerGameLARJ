@@ -712,7 +712,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6819291591463308479, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
   m_PrefabInstance: {fileID: 6819291593348545415}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &1187195943
+--- !u!84 &1141938829
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -909,11 +909,11 @@ MonoBehaviour:
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
   HoldingTime: 1
+  CanInteractWhenPickedUp: 0
   KeyboardButtonHintImage: {fileID: 251022}
   GamepadButtonHintImage: {fileID: 66404447}
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  MousePickedUpInteractionButtonHintImage: {fileID: 0}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
   HoldingFinishedInteractionEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -921,6 +921,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   HoldingFailedInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  PressInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MousePressInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MouseReleaseInteractionEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1350298926
@@ -1505,7 +1514,7 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 5294200040120545904}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &1918259852
+--- !u!84 &1987019878
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1658,8 +1667,8 @@ MonoBehaviour:
   sourceCamera: {fileID: 2015392393}
   outlineCamera: {fileID: 2071236651}
   outlineShaderMaterial: {fileID: 0}
-  renderTexture: {fileID: 1918259852}
-  extraRenderTexture: {fileID: 1187195943}
+  renderTexture: {fileID: 1987019878}
+  extraRenderTexture: {fileID: 1141938829}
 --- !u!1 &2071236650
 GameObject:
   m_ObjectHideFlags: 0
@@ -1710,7 +1719,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 0
   m_RenderingPath: 1
-  m_TargetTexture: {fileID: 1918259852}
+  m_TargetTexture: {fileID: 1987019878}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
@@ -2109,6 +2118,18 @@ PrefabInstance:
     - target: {fileID: 3652087491949695596, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: FailedToAnswerEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5848670649235084398, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5848670649235084398, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5848670649235084398, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6452755402584842902, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -21,16 +21,22 @@ public class Interactables : MonoBehaviour
     [HideInInspector] public Outline OutlineRef;
 
     public float HoldingTime = 1f;
+    public bool CanInteractWhenPickedUp = false;
 
     //Button press hints
     public GameObject KeyboardButtonHintImage = null;
     public GameObject GamepadButtonHintImage = null;
+    public GameObject MousePickedUpInteractionButtonHintImage = null;
+    public GameObject GamepadPickedUpInteractionButtonHintImage = null;
 
     //Events
-    public InteractionEvents PressInteractionEvent = null;
     public InteractionEvents HoldingFinishedInteractionEvent = null;
     public InteractionEvents HoldingStartedInteractionEvent = null;
     public InteractionEvents HoldingFailedInteractionEvent = null;
+    public InteractionEvents PressInteractionEvent = null;
+    public InteractionEvents MousePressInteractionEvent = null;
+    public InteractionEvents MouseReleaseInteractionEvent = null;
+
 
 
     private bool _referenceWasSetInOnTriggerStay = false;
@@ -43,13 +49,24 @@ public class Interactables : MonoBehaviour
     private void Start()
     {
         OutlineRef.enabled = false;
-        DisableButtonHintImages();        
+        DisableButtonHintImages();
+
+        if (CanInteractWhenPickedUp)
+        {
+            DisablePickedUpInteractionButtonHints();
+        }
     }
 
     private void OnDisable()
     {
         DisableButtonHintImages();
+
+        if (CanInteractWhenPickedUp)
+        {
+            DisablePickedUpInteractionButtonHints();
+        }
         OutlineRef.enabled = false;
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -109,6 +126,11 @@ public class Interactables : MonoBehaviour
         KeyboardButtonHintImage.SetActive(false);
         GamepadButtonHintImage.SetActive(false);
     }
+    public void DisablePickedUpInteractionButtonHints()
+    {
+        MousePickedUpInteractionButtonHintImage.SetActive(false);
+        GamepadPickedUpInteractionButtonHintImage.SetActive(false);
+    }
     public void EnableButtonHintImage(string currentPlayerControlScheme)
     {
         if (currentPlayerControlScheme == "Keyboard")
@@ -119,5 +141,16 @@ public class Interactables : MonoBehaviour
         {
             GamepadButtonHintImage.SetActive(true);
         }
+    }
+    public void EnablePickedUpInteractionHintImage(string currentPlayerControlScheme)
+    {
+        if (currentPlayerControlScheme == "Keyboard")
+        {
+            MousePickedUpInteractionButtonHintImage.SetActive(true);
+        }
+        else if (currentPlayerControlScheme == "Gamepad")
+        {
+            GamepadPickedUpInteractionButtonHintImage.SetActive(true);
+        }        
     }
 }
