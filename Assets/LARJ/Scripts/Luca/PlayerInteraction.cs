@@ -24,6 +24,11 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     _objectToInteract.OutlineRef.enabled = false;
                     _objectToInteract.DisableButtonHintImages();
+
+                    if (_objectToInteract.CanInteractWhenPickedUp)
+                    {
+                        _objectToInteract.DisablePickedUpInteractionButtonHints();
+                    }
                 }
             }
 
@@ -172,7 +177,7 @@ public class PlayerInteraction : MonoBehaviour
         IsPickedUp = true;
         _objectToInteract.Rb.Sleep();
         _objectToInteract.transform.parent = _objectHolder;
-        _objectToInteract.transform.forward = transform.forward;
+        _objectToInteract.transform.rotation = _objectHolder.rotation;
         _objectToInteract.transform.position = _objectHolder.position;
         _objectToInteract.DisableButtonHintImages();
         _objectToInteract.OutlineRef.enabled = false;

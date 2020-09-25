@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int _playerIndex = 0;
     [SerializeField] private float _dashCooldown = 2f;
     [SerializeField] private float _dashDistance = 25f;
-    [SerializeField] private Transform _bodyTransform;
+    [SerializeField] private Transform _bodyTransform = null;
     private CharacterController _controller;
 
     private Vector3 _moveDirection = Vector3.zero;

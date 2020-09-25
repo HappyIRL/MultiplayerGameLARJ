@@ -732,6 +732,7 @@ MonoBehaviour:
   _dashCooldown: 2
   _dashDistance: 25
   _bodyTransform: {fileID: 3388098147426324397}
+  _objectHolderTransform: {fileID: 7433297014392487680}
   _initialYPosition: 0
 --- !u!1 &1014104327723108996
 GameObject:
