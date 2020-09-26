@@ -36,10 +36,10 @@ public class PlayerInteraction : MonoBehaviour
 
             if (_objectToInteract != null)
             {
-                _objectToInteract.OutlineRef.enabled = true;
 
                 if (!IsPickedUp)
                 {
+                    _objectToInteract.OutlineRef.enabled = true;
                     _objectToInteract.EnableButtonHintImage(_playerInput.currentControlScheme);
                 }
             }
@@ -194,6 +194,11 @@ public class PlayerInteraction : MonoBehaviour
         IsPickedUp = false;
         _objectToInteract.transform.parent = null;
         _objectToInteract.Rb.WakeUp();
+
+        if (_objectToInteract.CanInteractWhenPickedUp)
+        {
+            _objectToInteract.DisablePickedUpInteractionButtonHints();
+        }
 
         _objectToInteract = null;
     }

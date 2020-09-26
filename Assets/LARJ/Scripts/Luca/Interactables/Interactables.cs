@@ -74,9 +74,13 @@ public class Interactables : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
-            playerInteraction.ObjectToInteract = this;
-            playerInteraction.InteractableInteractionType = InteractionType;
-            playerInteraction.CanInteract = true;
+
+            if (!playerInteraction.IsPickedUp)
+            {
+                playerInteraction.ObjectToInteract = this;
+                playerInteraction.InteractableInteractionType = InteractionType;
+                playerInteraction.CanInteract = true;
+            }
         }
     }
 

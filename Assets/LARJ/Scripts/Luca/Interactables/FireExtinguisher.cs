@@ -9,6 +9,8 @@ public class FireExtinguisher : MonoBehaviour
     [SerializeField] private AudioClip _extinguishSound = null;
 
     private AudioSource _audioSource;
+    private bool _isExtinguishing = false;
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -19,10 +21,36 @@ public class FireExtinguisher : MonoBehaviour
     {
         _audioSource.Play();
         _foamParticles.Play();
+
+        _isExtinguishing = true;
+
+        StartCoroutine(ExtinguishCoroutine());
     }
     public void StopExtinguishing()
     {
         _audioSource.Stop();
         _foamParticles.Stop();
+
+        _isExtinguishing = false;
+    }
+
+    private IEnumerator ExtinguishCoroutine()
+    {
+        RaycastHit hit;
+
+        while (_isExtinguishing)
+        {
+            if (Physics.SphereCast(transform.position, 1f, transform.forward, out hit, 5f))
+            {
+                if (hit.collider.tag == "Fire")
+                {
+                    Fire fire = hit.collider.gameObject.GetComponent<Fire>();
+
+                    fire.TryToExtinguish(2f * Time.deltaTime);
+                }
+            }
+
+            yield return null;
+        }
     }
 }
