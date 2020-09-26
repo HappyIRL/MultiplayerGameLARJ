@@ -37,14 +37,14 @@ public class Interactables : MonoBehaviour
     public InteractionEvents MousePressInteractionEvent = null;
     public InteractionEvents MouseReleaseInteractionEvent = null;
 
-
-
     private bool _referenceWasSetInOnTriggerStay = false;
+    private Collider[] _colliders;
     
     private void Awake()
     {
         Rb = GetComponent<Rigidbody>();
         OutlineRef = GetComponent<Outline>();
+        _colliders = GetComponents<Collider>();
     }
     private void Start()
     {
@@ -54,6 +54,7 @@ public class Interactables : MonoBehaviour
         if (CanInteractWhenPickedUp)
         {
             DisablePickedUpInteractionButtonHints();
+            Rb.Sleep();
         }
     }
 
@@ -156,5 +157,21 @@ public class Interactables : MonoBehaviour
         {
             GamepadPickedUpInteractionButtonHintImage.SetActive(true);
         }        
+    }
+    public void EnableColliders()
+    {
+        for (int i = 0; i < _colliders.Length; i++)
+        {
+            _colliders[i].enabled = true;
+            Rb.useGravity = true;
+        }
+    }
+    public void DisableColliders()
+    {
+        for (int i = 0; i < _colliders.Length; i++)
+        {
+            _colliders[i].enabled = false;
+            Rb.useGravity = false;
+        }
     }
 }

@@ -176,11 +176,12 @@ public class PlayerInteraction : MonoBehaviour
 
         IsPickedUp = true;
         _objectToInteract.Rb.Sleep();
-        _objectToInteract.transform.parent = _objectHolder;
         _objectToInteract.transform.rotation = _objectHolder.rotation;
         _objectToInteract.transform.position = _objectHolder.position;
+        _objectToInteract.transform.parent = _objectHolder;
         _objectToInteract.DisableButtonHintImages();
         _objectToInteract.OutlineRef.enabled = false;
+        _objectToInteract.DisableColliders();
 
         if (_objectToInteract.CanInteractWhenPickedUp)
         {
@@ -194,6 +195,7 @@ public class PlayerInteraction : MonoBehaviour
         IsPickedUp = false;
         _objectToInteract.transform.parent = null;
         _objectToInteract.Rb.WakeUp();
+        _objectToInteract.EnableColliders();
 
         if (_objectToInteract.CanInteractWhenPickedUp)
         {
