@@ -5,6 +5,7 @@ using UnityEngine;
 public class Fire : MonoBehaviour
 {
     [SerializeField] private float _health = 10f;
+    [SerializeField] private float _chanceOfSpawningAnotherFire = 0.01f;
     [SerializeField] private Transform _child1;
     [SerializeField] private Transform _child2;
 
@@ -23,7 +24,22 @@ public class Fire : MonoBehaviour
                 _child1.localScale = Vector3.one * (_health / _maxHealth);
                 _child2.localScale = Vector3.one * (_health / _maxHealth);
             }
+
+            float rnd = Random.Range(0f, 100f);
+
+            if (rnd <= _chanceOfSpawningAnotherFire)
+            {
+                SpawnAnotherFire();
+            }
         }
+    }
+
+    private void SpawnAnotherFire()
+    {
+        Vector3 pos = Random.insideUnitSphere * 2f;
+        pos.y = transform.position.y;
+
+        //TODO: spawn fire from ObjectPool
     }
 
     private void OnEnable()

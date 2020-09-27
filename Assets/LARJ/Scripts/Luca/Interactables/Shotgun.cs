@@ -24,7 +24,7 @@ public class Shotgun : MonoBehaviour
             _canShoot = false;
             _audioSource.Play();
 
-            //Spawn bullets from pool
+            //TODO: Spawn bullets from pool
 
             StartCoroutine(GunRecoil());
         }
