@@ -31,10 +31,10 @@ namespace Photon.Pun
         private static HashSet<byte> blockedSendingGroups = new HashSet<byte>();
 
 
-        /// <summary>
-        /// The photon view list.
-        /// </summary>
-        private static NonAllocDictionary<int, PhotonView> photonViewList = new NonAllocDictionary<int, PhotonView>();
+		/// <summary>
+		/// The photon view list.
+		/// </summary>
+		private static NonAllocDictionary<int, PhotonView> photonViewList = new NonAllocDictionary<int, PhotonView>();
 
         /// <summary>
         /// Gets the photon views.
