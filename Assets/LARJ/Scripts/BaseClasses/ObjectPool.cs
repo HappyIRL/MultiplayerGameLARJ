@@ -35,7 +35,7 @@ public class ObjectPool : MonoBehaviour
         else
         {
             var newObject = Instantiate(_prefab);
-            var poolTag = newObject.AddComponent<PooledObject>();
+            var poolTag = newObject.GetComponent<PooledObject>();
 
             poolTag._pool = this;
             poolTag.hideFlags = HideFlags.HideInInspector;
