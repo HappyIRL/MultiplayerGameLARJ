@@ -20,11 +20,15 @@ public class Customer : MonoBehaviour, IObjectPoolNotifier
     private bool _isWaiting;
 
     private float _timer;
-    
+
+    private void Awake()
+    {
+        _agent = GetComponent<NavMeshAgent>();
+        _agent.enabled = false;       
+    }
 
     private void Start()
     {
-        _agent = GetComponent<NavMeshAgent>();
         _deskWaypoint = customerSpawner.deskWaypoint;
         _despawn = customerSpawner.customerDespawnPoint;
 
@@ -37,8 +41,9 @@ public class Customer : MonoBehaviour, IObjectPoolNotifier
 
         var AtDesk = _stateMachine.CreateState("AtDesk", AtDeskStart, AtDeskUpdate, AtDeskExit);
 
-        var Leaving = _stateMachine.CreateState("Leaving", LeavingStart, LeavingUpdate, LeavingExit);  
+        var Leaving = _stateMachine.CreateState("Leaving", LeavingStart, LeavingUpdate, LeavingExit);
 
+        _agent.enabled = true;
     }
     private void Update()
     {

@@ -106,7 +106,7 @@ NavMeshAgent:
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
-  m_AutoRepath: 1
+  m_AutoRepath: 0
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
@@ -183,23 +183,11 @@ MonoBehaviour:
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
   HoldingTime: 5
+  CanInteractWhenPickedUp: 0
   KeyboardButtonHintImage: {fileID: 1169934690224476992}
   GamepadButtonHintImage: {fileID: 1169934690250524561}
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7417764514217551137}
-        m_TargetAssemblyTypeName: Customer, Assembly-CSharp
-        m_MethodName: LeaveHappy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  MousePickedUpInteractionButtonHintImage: {fileID: 0}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
   HoldingFinishedInteractionEvent:
     m_PersistentCalls:
       m_Calls:
@@ -245,6 +233,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  PressInteractionEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7417764514217551137}
+        m_TargetAssemblyTypeName: Customer, Assembly-CSharp
+        m_MethodName: LeaveHappy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  MousePressInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MouseReleaseInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7216521625424459206
 MonoBehaviour:
   m_ObjectHideFlags: 0

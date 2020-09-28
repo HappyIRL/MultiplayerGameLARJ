@@ -14,7 +14,7 @@ public class CustomerSpawner : MonoBehaviour
 
     [SerializeField] public float patienceTimer;
 
-    [HideInInspector] Transform customerSpawnPoint;
+    [HideInInspector] public Transform customerSpawnPoint;
     [HideInInspector] public Transform customerDespawnPoint;
     private ObjectPool _customerPool;
 
