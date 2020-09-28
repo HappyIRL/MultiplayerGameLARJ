@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(PooledObject))]
 public class ShotgunBullet : MonoBehaviour, IObjectPoolNotifier
 {
     public ObjectPool ShotgunBulletPool = null;
     [SerializeField] private float _lifeTime = 2f;
 
-    private Rigidbody _rb;
+    [HideInInspector] public Rigidbody Rb = null;
     private Coroutine _lastCoroutine;
 
-    private void Start()
+    private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -32,8 +31,13 @@ public class ShotgunBullet : MonoBehaviour, IObjectPoolNotifier
 
     public void OnCreatedOrDequeuedFromPool(bool created)
     {
-        _lastCoroutine = StartCoroutine(BulletLifeCoroutine());
-        _rb.AddForce(transform.forward * 5f);      
+        if (created)
+        {
+            ShotgunBulletPool = gameObject.GetComponent<PooledObject>()._pool;
+            Rb = GetComponent<Rigidbody>();
+        }
+
+        _lastCoroutine = StartCoroutine(BulletLifeCoroutine());    
     }
     private IEnumerator BulletLifeCoroutine()
     {

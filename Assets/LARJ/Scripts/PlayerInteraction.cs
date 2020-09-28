@@ -140,12 +140,15 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (InteractableInteractionType == InteractionType.PickUp)
             {
-                if (_objectToInteract == null) return;
-
-                if (_objectToInteract.CanInteractWhenPickedUp)
+                if (IsPickedUp)
                 {
-                    _objectToInteract.MousePressInteractionEvent.Invoke();
-                    _objectToInteract.DisablePickedUpInteractionButtonHints();
+                    if (_objectToInteract == null) return;
+
+                    if (_objectToInteract.CanInteractWhenPickedUp)
+                    {
+                        _objectToInteract.MousePressInteractionEvent.Invoke();
+                        _objectToInteract.DisablePickedUpInteractionButtonHints();
+                    }
                 }
             }
         }

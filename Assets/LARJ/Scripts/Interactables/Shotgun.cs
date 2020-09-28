@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,11 +26,21 @@ public class Shotgun : MonoBehaviour
             _canShoot = false;
             _audioSource.Play();
 
-            //TODO: Spawn bullets from pool
             for (int i = 0; i < _bulletCount; i++)
             {
                 GameObject bullet = _shotgunBulletPool.GetObject();
                 bullet.transform.position = _bulletSpawnPoint.position;
+                bullet.transform.rotation = _bulletSpawnPoint.rotation;
+
+                Vector3 rotation = bullet.transform.rotation.eulerAngles;
+                rotation.x += Random.Range(-10f, 10f);
+                rotation.y += Random.Range(-10f, 10f);
+                bullet.transform.eulerAngles = rotation;
+
+                Rigidbody rb = bullet.GetComponent<Rigidbody>();
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.AddForce(bullet.transform.forward * 40f, ForceMode.Impulse);
             }
 
             StartCoroutine(GunRecoil());
