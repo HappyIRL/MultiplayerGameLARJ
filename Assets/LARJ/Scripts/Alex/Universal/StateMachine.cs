@@ -27,6 +27,25 @@ public class StateMachine
 
 	public State initState;
 
+
+	public State CreateState(string name, System.Action onEnter,System.Action onFrame,System.Action onExit = null) 
+	{
+		var newState = new State();
+
+		newState.name = name;
+		newState.onEnter = onEnter;
+		newState.onFrame = onFrame;
+		newState.onExit = onExit;
+
+		if(states.Count == 0)
+        {
+			initState = newState;
+        }
+
+		states[name] = newState;
+
+		return newState;
+	}
 	public State CreateState(string name)
 	{
 		var newState = new State();
