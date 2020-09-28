@@ -6,6 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource), typeof(Interactables))]
 public class Shotgun : MonoBehaviour
 {
+    [SerializeField] private float _bulletCount = 6f;
+    [SerializeField] private Transform _bulletSpawnPoint = null;
+    [SerializeField] private ObjectPool _shotgunBulletPool = null;
     [SerializeField] private AudioClip _shotgunShootSound = null;
 
     private AudioSource _audioSource;
@@ -25,6 +28,11 @@ public class Shotgun : MonoBehaviour
             _audioSource.Play();
 
             //TODO: Spawn bullets from pool
+            for (int i = 0; i < _bulletCount; i++)
+            {
+                GameObject bullet = _shotgunBulletPool.GetObject();
+                bullet.transform.position = _bulletSpawnPoint.position;
+            }
 
             StartCoroutine(GunRecoil());
         }
