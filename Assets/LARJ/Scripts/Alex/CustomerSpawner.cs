@@ -2,34 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-// Implement Wave options
-    public enum SpawnType
-    {
-        Wave,
-        Single
-    }
 public class CustomerSpawner : MonoBehaviour
 {
 
     // SPAWN OPTIONS
-    [SerializeField] int waveCount = 1;
-    [SerializeField] int timeBetweenWaves;
-    [SerializeField] float delayInSecs = 5f;
+    [SerializeField] int noOfWaves = 1;
+    [SerializeField] int waveCooldown;
+    [SerializeField] float spawnsPerWave;
+    [SerializeField] float spawnCooldown = 5f;
     [SerializeField] bool randomizeSpawnTime = false;
-    [SerializeField] float spawnAmount;
+
+    [SerializeField] public float patienceTimer;
+
     [HideInInspector] Transform customerSpawnPoint;
     [HideInInspector] public Transform customerDespawnPoint;
+    private ObjectPool _customerPool;
 
     // CUSTOMER OPTIONS
-    [SerializeField] public float patienceTimer;
 
         
 
     // References
-    private ObjectPool _customerPool;
     [HideInInspector] public List <Transform> queueWaypoints;
     [HideInInspector] public List<bool> isFreeAtIndex;
+    
     [HideInInspector] public Transform deskWaypoint;
     [HideInInspector] public bool deskIsFree = true;
 
@@ -50,17 +46,17 @@ public class CustomerSpawner : MonoBehaviour
 
     IEnumerator Start()
     {
-        for (int i = 0; i < waveCount; i++)
+        for (int i = 0; i < noOfWaves; i++)
         {
             var count = 0;
-            while (count < spawnAmount)
+            while (count < spawnsPerWave)
             {
                 SpawnCustomer();
 
                 yield return StartCoroutine(DoRandomizeSpawnTime());
                 count++;
             }
-            yield return new WaitForSeconds(timeBetweenWaves);
+            yield return new WaitForSeconds(waveCooldown);
         }
         
     }
@@ -69,14 +65,14 @@ public class CustomerSpawner : MonoBehaviour
     {
         if (randomizeSpawnTime)
         {
-            var delay = UnityEngine.Random.Range(0.1f, delayInSecs);
+            var delay = UnityEngine.Random.Range(0.1f, spawnCooldown);
             yield return new WaitForSeconds(delay);
               
         }
         else
         {
 
-            yield return new WaitForSeconds(delayInSecs);
+            yield return new WaitForSeconds(spawnCooldown);
                
         }
     }

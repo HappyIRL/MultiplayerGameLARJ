@@ -423,13 +423,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0d01aa34cea0242ac8b7d73c3f3d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveCount: 5
-  timeBetweenWaves: 10
-  delayInSecs: 1.29
+  noOfWaves: 1
+  waveCooldown: 0
+  spawnsPerWave: 5
+  spawnCooldown: 5
   randomizeSpawnTime: 0
-  spawnAmount: 2
-  customerDespawnPoint: {fileID: 0}
   patienceTimer: 10
+  customerDespawnPoint: {fileID: 0}
   queueWaypoints: []
   isFreeAtIndex: 
   deskWaypoint: {fileID: 0}
