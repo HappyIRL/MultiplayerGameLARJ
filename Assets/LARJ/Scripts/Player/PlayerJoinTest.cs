@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test : MonoBehaviour
+public class PlayerJoinTest : MonoBehaviour
 {
 	private ClientNetworkHandler _clientNetworkHandler;
 	private int _playerCount;

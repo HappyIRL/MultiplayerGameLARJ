@@ -11,6 +11,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	public GameObject Player1 { set { _player1 = value; } }
 	public GameObject Player2 { set { _player2 = value; } }
+
 	//[SerializeField] private GameObject _player3;
 	//[SerializeField] private GameObject _player4;
 
