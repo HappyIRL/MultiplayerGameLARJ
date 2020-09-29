@@ -19,7 +19,7 @@
                     "id": "556c4466-338f-4bb3-87aa-6ab924fac99b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold"
+                    "interactions": ""
                 },
                 {
                     "name": "Release",
@@ -57,6 +57,14 @@
                     "name": "PickedUpInteractionRelease",
                     "type": "Button",
                     "id": "340ef58b-be35-44d1-bfec-411cce028d65",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "HighlightTasks",
+                    "type": "Button",
+                    "id": "cb3e6430-e79d-48ef-b572-66ebc86cb95a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -258,6 +266,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "PickedUpInteractionRelease",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c25e45d-e24d-44ae-8d0e-c0d273ae69a1",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HighlightTasks",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
