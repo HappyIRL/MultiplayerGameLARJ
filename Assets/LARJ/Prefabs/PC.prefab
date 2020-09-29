@@ -260,7 +260,7 @@ MonoBehaviour:
   InteractionType: 2
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
-  HoldingTime: 1
+  HoldingTime: 6
   CanInteractWhenPickedUp: 0
   KeyboardButtonHintImage: {fileID: 7407910513109804769}
   GamepadButtonHintImage: {fileID: 7407910513117246000}
@@ -394,7 +394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.315
+      value: 1.49
       objectReference: {fileID: 0}
     - target: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
       propertyPath: m_SizeDelta.x
@@ -427,6 +427,14 @@ PrefabInstance:
     - target: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0015
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0015
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}

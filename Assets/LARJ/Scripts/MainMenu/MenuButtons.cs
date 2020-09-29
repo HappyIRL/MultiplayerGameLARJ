@@ -43,7 +43,6 @@ public class MenuButtons : MonoBehaviour
 
     public void StartLocalGame()
     {
-        //TODo: Fade to play Scene
-        //_sceneChanger.FadeToScene();
+        _sceneChanger.FadeToScene(SceneManager.GetSceneByName("PrototypeLevel").buildIndex);
     }
 }

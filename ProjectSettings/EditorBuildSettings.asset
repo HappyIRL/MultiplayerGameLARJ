@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/LARJ/Scene/PrototypeLevel.unity
+    guid: 140f86d71a31c9e469aa8f1152085769
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 70eec2a8b7567cd49b878d9fe7be9831, type: 2}
