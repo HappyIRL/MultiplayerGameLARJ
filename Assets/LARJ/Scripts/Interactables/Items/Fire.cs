@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fire : MonoBehaviour
+[RequireComponent(typeof(PooledObject))]
+public class Fire : MonoBehaviour, IObjectPoolNotifier
 {
+    [HideInInspector] public ObjectPool FirePool = null;
+    [HideInInspector] public FireSpawner FireSpawner = null;
+
     [SerializeField] private float _maxHealth = 10f;
     [SerializeField] private float _chanceOfSpawningAnotherFire = 0.01f;
     [SerializeField] private Transform _child1;
@@ -48,21 +52,10 @@ public class Fire : MonoBehaviour
 
     private void SpawnAnotherFire()
     {
-        Vector3 pos = Random.insideUnitSphere * 2f;
+        Vector3 pos = Random.insideUnitSphere;
         pos.y = transform.position.y;
 
-        //TODO: spawn fire from ObjectPool
-    }
-
-    private void OnEnable()
-    {
-        _health = _maxHealth;
-        _child1.localScale = Vector3.one;
-        _child2.localScale = Vector3.one;
-
-        UpdateHealthbar();
-        _healthbarImage.gameObject.SetActive(false);
-        _healthbarBackground.gameObject.SetActive(false);
+        FireSpawner.SpawnFireAt(pos);
     }
 
     public void TryToExtinguish(float damage)
@@ -96,6 +89,27 @@ public class Fire : MonoBehaviour
 
     private void DestroyFire()
     {
-        Destroy(gameObject);
+        FirePool.ReturnObject(gameObject);
+    }
+
+    public void OnEnqueuedToPool()
+    {
+        
+    }
+
+    public void OnCreatedOrDequeuedFromPool(bool created)
+    {
+        if (created)
+        {
+            FirePool = GetComponent<PooledObject>()._pool;
+        }
+
+        _health = _maxHealth;
+        _child1.localScale = Vector3.one;
+        _child2.localScale = Vector3.one;
+
+        UpdateHealthbar();
+        _healthbarImage.gameObject.SetActive(false);
+        _healthbarBackground.gameObject.SetActive(false);
     }
 }

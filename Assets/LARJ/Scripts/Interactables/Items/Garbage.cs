@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Garbage : MonoBehaviour
+[RequireComponent(typeof(PooledObject))]
+public class Garbage : MonoBehaviour, IObjectPoolNotifier
 {
+    [SerializeField] private ObjectPool _garbagePool = null;
     [SerializeField] private int _strokesToClean = 5;
     [SerializeField] private Image _healthbar = null;
     [SerializeField] private Image _healthbarBackground = null;
     private int _strokes = 0;
-
-    private void OnEnable()
-    {
-        _strokes = _strokesToClean;
-        UpdateHealthbar();
-        _healthbar.gameObject.SetActive(false);
-        _healthbarBackground.gameObject.SetActive(false);
-    }
 
     public void Clean()
     {
@@ -25,9 +19,7 @@ public class Garbage : MonoBehaviour
 
         if (_strokes <= 0)
         {
-            //TODO: return to pool
-
-            Destroy(gameObject);
+            _garbagePool.ReturnObject(gameObject);
         }
     }
 
@@ -36,5 +28,23 @@ public class Garbage : MonoBehaviour
         _healthbar.gameObject.SetActive(true);
         _healthbarBackground.gameObject.SetActive(true);
         _healthbar.fillAmount = (float)((float)_strokes / (float)_strokesToClean);
+    }
+
+    public void OnEnqueuedToPool()
+    {
+
+    }
+
+    public void OnCreatedOrDequeuedFromPool(bool created)
+    {
+        if (created)
+        {
+            _garbagePool = GetComponent<PooledObject>()._pool;
+        }
+
+        _strokes = _strokesToClean;
+        UpdateHealthbar();
+        _healthbar.gameObject.SetActive(false);
+        _healthbarBackground.gameObject.SetActive(false);
     }
 }
