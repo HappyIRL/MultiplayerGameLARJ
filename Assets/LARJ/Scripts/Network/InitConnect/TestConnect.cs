@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TestConnect : MonoBehaviourPunCallbacks
 {
-	[SerializeField] private NetworkDebugger _networkDebugger;
+	private NetworkDebugger _networkDebugger;
 	private void Start()
 	{
 		_networkDebugger = FindObjectOfType<NetworkDebugger>();

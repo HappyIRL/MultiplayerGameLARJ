@@ -8,8 +8,11 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 {
 	[SerializeField] private GameObject _player1;
 	[SerializeField] private GameObject _player2;
-	[SerializeField] private GameObject _player3;
-	[SerializeField] private GameObject _player4;
+
+	public GameObject Player1 { set { _player1 = value; } }
+	public GameObject Player2 { set { _player2 = value; } }
+	//[SerializeField] private GameObject _player3;
+	//[SerializeField] private GameObject _player4;
 
 	private LARJNetworkID myID = 0;
 
@@ -77,10 +80,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				return _player1;
 			case LARJNetworkID.Player2:
 				return _player2;
-			case LARJNetworkID.Player3:
-				return _player3;
-			case LARJNetworkID.Player4:
-				return _player4;
+			//case LARJNetworkID.Player3:
+			//	return _player3;
+			//case LARJNetworkID.Player4:
+			//	return _player4;
 		}
 		return null;
 	}
