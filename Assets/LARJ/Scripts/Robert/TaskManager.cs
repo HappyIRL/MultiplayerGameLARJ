@@ -31,11 +31,11 @@ namespace Tasks
             if (_timer >= _delayBetweenTasks)
             {
                 _timer = 0f;
-                EnableTask();
+                StartRandomTask();
             }
         }
 
-        private void EnableTask()
+        private void StartRandomTask()
         {
             int i = UnityEngine.Random.Range(0, _possibleTasks.Length);
             Task task = _possibleTasks[i];
