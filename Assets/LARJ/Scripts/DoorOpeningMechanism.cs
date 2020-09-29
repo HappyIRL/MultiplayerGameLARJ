@@ -17,42 +17,41 @@ public class DoorOpeningMechanism : MonoBehaviour
         DoorIsClosingFromOutside
     }
 
-    [SerializeField] private float _distanceToOpen = 5f;
+    [SerializeField] private float _distanceToOpen = 2f;
     [SerializeField] private float _rotationSpeed = 100f;
     [SerializeField] private Transform _door1 = null;
     [SerializeField] private Transform _door2 = null;
 
-    private int _insideCounter = 0;
-    private Coroutine _lastCoroutine;
-
     private DoorState _doorState = DoorState.Closed;
     private List<Transform> _customers = new List<Transform>();
+    private bool _canCheck = true;
 
     private void FixedUpdate()
     {
-        bool customerIsNearby = false;
-
-        Debug.Log("Customers: " + _customers.Count);
-        for (int i = 0; i < _customers.Count; i++)
+        if (_canCheck)
         {
-            if (Vector3.Distance(_customers[i].position, transform.position) <= _distanceToOpen)
-            {
-                customerIsNearby = true;
+            bool customerIsNearby = false;
 
-                if (_doorState != DoorState.OpenAtInside && _doorState != DoorState.OpenAtOutside && _doorState != DoorState.DoorIsOpeningToInside && _doorState != DoorState.DoorIsOpeningToOutside)
+            for (int i = 0; i < _customers.Count; i++)
+            {
+                if (Vector3.Distance(_customers[i].position, transform.position) <= _distanceToOpen)
                 {
-                    Debug.Log("OPEN DOOR");
-                    OpenDoor(_customers[i]);
+                    customerIsNearby = true;
+
+                    if (_doorState != DoorState.OpenAtInside && _doorState != DoorState.OpenAtOutside)
+                    {
+                        OpenDoor(_customers[i]);
+                    }
+                    break;
                 }
             }
-        }
 
-        if (!customerIsNearby)
-        {
-            if (_doorState != DoorState.Closed && _doorState != DoorState.DoorIsClosingFromInside && _doorState != DoorState.DoorIsClosingFromOutside)
+            if (!customerIsNearby)
             {
-                Debug.Log("Close Door");
-                CloseDoor();
+                if (_doorState != DoorState.Closed)
+                {
+                    CloseDoor();
+                }
             }
         }
     }
@@ -71,98 +70,101 @@ public class DoorOpeningMechanism : MonoBehaviour
 
     private void OpenDoor(Transform person)
     {
-        if (_lastCoroutine != null)
-        {
-            StopCoroutine(_lastCoroutine);
-        }
-
         if (person.position.z > transform.position.z) //person is inside the building
         {
-            if (_doorState == DoorState.OpenAtInside || _doorState == DoorState.DoorIsOpeningToInside || _doorState == DoorState.DoorIsClosingFromInside)
+            if (_doorState == DoorState.Closed || _doorState == DoorState.DoorIsOpeningToOutside || _doorState == DoorState.DoorIsClosingFromOutside)
             {
-                _lastCoroutine = StartCoroutine(OpenDoorToInsideCoroutine());
+                OpenDoorToOutside();
             }
             else
             {
-                _lastCoroutine = StartCoroutine(OpenDoorToOutsideCoroutine());
+                OpenDoorToInside();
             }
         }
         else //person is outside the building
         {
-            if (_doorState == DoorState.OpenAtOutside || _doorState == DoorState.DoorIsOpeningToOutside || _doorState == DoorState.DoorIsClosingFromOutside)
+            if (_doorState == DoorState.Closed || _doorState == DoorState.DoorIsOpeningToInside || _doorState == DoorState.DoorIsClosingFromInside)
             {
-                _lastCoroutine = StartCoroutine(OpenDoorToOutsideCoroutine());
+                OpenDoorToInside();
             }
             else
             {
-                _lastCoroutine = StartCoroutine(OpenDoorToInsideCoroutine());
+                OpenDoorToOutside();
             }
         }
     }
     private void CloseDoor()
     {
-        if (_lastCoroutine != null)
+        if (_doorState == DoorState.OpenAtInside || _doorState == DoorState.DoorIsOpeningToInside || _doorState == DoorState.DoorIsClosingFromInside)
         {
-            StopCoroutine(_lastCoroutine);
+            CloseDoorFromInside();
         }
-
-        if (_doorState == DoorState.OpenAtInside || _doorState == DoorState.DoorIsOpeningToInside)
+        else if (_doorState == DoorState.OpenAtOutside || _doorState == DoorState.DoorIsOpeningToOutside || _doorState == DoorState.DoorIsClosingFromOutside)
         {
-            _lastCoroutine = StartCoroutine(CloseDoorFromInsideCoroutine());
-        }
-        else if (_doorState == DoorState.OpenAtOutside || _doorState == DoorState.DoorIsOpeningToOutside)
-        {
-            _lastCoroutine = StartCoroutine(CloseDoorFromOutsideCoroutine());
+            CloseDoorFromOutside();
         }
     }
 
-    private IEnumerator OpenDoorToInsideCoroutine()
+    private void OpenDoorToInside()
     {
         _doorState = DoorState.DoorIsOpeningToInside;
-        while (_door1.rotation.eulerAngles.y < 90 || _door2.rotation.eulerAngles.y > -90)
+        if (_door1.eulerAngles.y < 90 && _door2.eulerAngles.y > -90)
         {
-            _door1.rotation = Quaternion.Euler(_door1.rotation.eulerAngles.x, Mathf.MoveTowardsAngle(_door1.rotation.eulerAngles.y, 90, _rotationSpeed * Time.deltaTime), _door1.rotation.eulerAngles.z);
-            _door2.rotation = Quaternion.Euler(_door2.rotation.eulerAngles.x, Mathf.MoveTowardsAngle(_door2.rotation.eulerAngles.y, -90, _rotationSpeed * Time.deltaTime), _door2.rotation.eulerAngles.z);
-
-            yield return new WaitForFixedUpdate();
+            _door1.rotation = Quaternion.Euler(_door1.eulerAngles.x, Mathf.MoveTowardsAngle(_door1.eulerAngles.y, 90, _rotationSpeed * Time.deltaTime), _door1.eulerAngles.z);
+            _door2.rotation = Quaternion.Euler(_door2.eulerAngles.x, Mathf.MoveTowardsAngle(_door2.eulerAngles.y, -90, _rotationSpeed * Time.deltaTime), _door2.eulerAngles.z);
         }
-        _doorState = DoorState.OpenAtInside;
+        else
+        {
+            _doorState = DoorState.OpenAtInside;
+            StartCoroutine(WaitToCheckAgain());
+        }
     }
-    private IEnumerator OpenDoorToOutsideCoroutine()
+    private void OpenDoorToOutside()
     {
         _doorState = DoorState.DoorIsOpeningToOutside; 
-        while (_door1.rotation.eulerAngles.y > -90 || _door2.rotation.eulerAngles.y < 90)
+        if (_door1.eulerAngles.y > -90 && _door2.eulerAngles.y < 90)
         {
-            _door1.rotation = Quaternion.Euler(_door1.rotation.eulerAngles.x, Mathf.MoveTowardsAngle(_door1.rotation.eulerAngles.y, -90, _rotationSpeed * Time.deltaTime), _door1.rotation.eulerAngles.z);
-            _door2.rotation = Quaternion.Euler(_door2.rotation.eulerAngles.x, Mathf.MoveTowardsAngle(_door2.rotation.eulerAngles.y, 90, _rotationSpeed * Time.deltaTime), _door2.rotation.eulerAngles.z);
-
-            yield return new WaitForFixedUpdate();
+            _door1.rotation = Quaternion.Euler(_door1.eulerAngles.x, Mathf.MoveTowardsAngle(_door1.eulerAngles.y, -90, _rotationSpeed * Time.deltaTime), _door1.eulerAngles.z);
+            _door2.rotation = Quaternion.Euler(_door2.eulerAngles.x, Mathf.MoveTowardsAngle(_door2.eulerAngles.y, 90, _rotationSpeed * Time.deltaTime), _door2.eulerAngles.z);
         }
-        _doorState = DoorState.OpenAtOutside;
+        else
+        {
+            _doorState = DoorState.OpenAtOutside;
+            StartCoroutine(WaitToCheckAgain());
+        }
     }
 
-    private IEnumerator CloseDoorFromInsideCoroutine()
+    private void CloseDoorFromInside()
     {
         _doorState = DoorState.DoorIsClosingFromInside;
-        while (_door1.rotation.eulerAngles.y > 0 || _door2.rotation.eulerAngles.y < 0)
+        if (_door1.eulerAngles.y > 0 && _door2.eulerAngles.y - 360 < 0)
         {
-            _door1.rotation = Quaternion.Euler(_door1.rotation.eulerAngles.x, Mathf.MoveTowardsAngle(_door1.rotation.eulerAngles.y, 0, _rotationSpeed * Time.deltaTime), _door1.rotation.eulerAngles.z);
-            _door2.rotation = Quaternion.Euler(_door2.rotation.eulerAngles.x, Mathf.MoveTowardsAngle(_door2.rotation.eulerAngles.y, 0, _rotationSpeed * Time.deltaTime), _door2.rotation.eulerAngles.z);
-
-            yield return new WaitForFixedUpdate();
+            _door1.rotation = Quaternion.Euler(_door1.eulerAngles.x, Mathf.MoveTowardsAngle(_door1.eulerAngles.y, 0, _rotationSpeed * Time.deltaTime), _door1.eulerAngles.z);
+            _door2.rotation = Quaternion.Euler(_door2.eulerAngles.x, Mathf.MoveTowardsAngle(_door2.eulerAngles.y, 0, _rotationSpeed * Time.deltaTime), _door2.eulerAngles.z);
         }
-        _doorState = DoorState.Closed;
+        else
+        {
+            _doorState = DoorState.Closed;
+        }
     }
-    private IEnumerator CloseDoorFromOutsideCoroutine()
+    private void CloseDoorFromOutside()
     {
         _doorState = DoorState.DoorIsClosingFromOutside;
-        while (_door1.rotation.eulerAngles.y < 0 || _door2.rotation.eulerAngles.y > 0)
+        if (_door1.eulerAngles.y < 0 && _door2.eulerAngles.y > 0)
         {
-            _door1.rotation = Quaternion.Euler(_door1.rotation.eulerAngles.x, Mathf.MoveTowardsAngle(_door1.rotation.eulerAngles.y, 0, _rotationSpeed * Time.deltaTime), _door1.rotation.eulerAngles.z);
-            _door2.rotation = Quaternion.Euler(_door2.rotation.eulerAngles.x, Mathf.MoveTowardsAngle(_door2.rotation.eulerAngles.y, 0, _rotationSpeed * Time.deltaTime), _door2.rotation.eulerAngles.z);
-
-            yield return new WaitForFixedUpdate();
+            _door1.rotation = Quaternion.Euler(_door1.eulerAngles.x, Mathf.MoveTowardsAngle(_door1.eulerAngles.y, 0, _rotationSpeed * Time.deltaTime), _door1.eulerAngles.z);
+            _door2.rotation = Quaternion.Euler(_door2.eulerAngles.x, Mathf.MoveTowardsAngle(_door2.eulerAngles.y, 0, _rotationSpeed * Time.deltaTime), _door2.eulerAngles.z);
         }
-        _doorState = DoorState.Closed;
+        else
+        {
+            _doorState = DoorState.Closed;
+        }
+    }
+
+    private IEnumerator WaitToCheckAgain()
+    {
+        _canCheck = false;
+        yield return new WaitForSeconds(0.5f);
+        _canCheck = true;
     }
 }
