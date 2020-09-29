@@ -12,13 +12,13 @@ public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private GameObject _prefab;
 
-    private Queue<GameObject> _inactiveObjects = new Queue<GameObject>();
+    private Queue<GameObject> InactiveObjects = new Queue<GameObject>();
 
     public GameObject GetObject()
     {
-        if(_inactiveObjects.Count > 0)
+        if(InactiveObjects.Count > 0)
         {
-            var dequeuedObject = _inactiveObjects.Dequeue();
+            var dequeuedObject = InactiveObjects.Dequeue();
 
             dequeuedObject.transform.parent = null;
             dequeuedObject.SetActive(true);
@@ -60,6 +60,6 @@ public class ObjectPool : MonoBehaviour
         go.SetActive(false);
         go.transform.parent = this.transform;
 
-        _inactiveObjects.Enqueue(go);
+        InactiveObjects.Enqueue(go);
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class HighlightInteractables : MonoBehaviour
 {
-	private List<Interactables> _interactables;
-	private bool _outlineEnabled = true;
+	private List<Interactables> _interactables = new List<Interactables>();
+	private bool _outlineEnabled = false;
 	public bool OutlineEnabled { get { return _outlineEnabled; } set { _outlineEnabled = value; } }
 
 	private void Start()
@@ -16,8 +16,7 @@ public class HighlightInteractables : MonoBehaviour
 	}
 
 	public void OnHighlightTasks()
-	{
-		
+	{		
 		OutlineInteractables(_outlineEnabled);
 		_outlineEnabled = !_outlineEnabled;
 		Debug.Log(_outlineEnabled);
@@ -49,6 +48,8 @@ public class HighlightInteractables : MonoBehaviour
 		if (_interactables.Contains(interactables)) return;
 
 		_interactables.Add(interactables);
+
+		OutlineInteractables(!_outlineEnabled, _interactables.Count - 1, 1);
 	}
 	public void AddInteractables(List<Interactables> interactables)
 	{
