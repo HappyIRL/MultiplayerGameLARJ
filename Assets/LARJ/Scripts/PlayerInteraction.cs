@@ -22,7 +22,7 @@ public class PlayerInteraction : MonoBehaviour
             {
                 if (_objectToInteract != null)
                 {
-                    _objectToInteract.OutlineRef.enabled = false;
+                    //_objectToInteract.OutlineRef.enabled = false;
                     _objectToInteract.DisableButtonHintImages();
 
                     if (_objectToInteract.CanInteractWhenPickedUp)
@@ -39,7 +39,7 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (!IsPickedUp)
                 {
-                    _objectToInteract.OutlineRef.enabled = true;
+                    //_objectToInteract.OutlineRef.enabled = true;
                     _objectToInteract.EnableButtonHintImage(_playerInput.currentControlScheme);
                 }
             }
@@ -183,7 +183,7 @@ public class PlayerInteraction : MonoBehaviour
         _objectToInteract.transform.position = _objectHolder.position;
         _objectToInteract.transform.parent = _objectHolder;
         _objectToInteract.DisableButtonHintImages();
-        _objectToInteract.OutlineRef.enabled = false;
+        //_objectToInteract.OutlineRef.enabled = false;
         _objectToInteract.DisableColliders();
 
         if (_objectToInteract.CanInteractWhenPickedUp)

@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 7920260798295475753}
   - component: {fileID: 5767351746770008724}
   - component: {fileID: 6245466841772554634}
-  - component: {fileID: 4415927901614817189}
-  - component: {fileID: 7216521625424459206}
+  - component: {fileID: 7855511948393819193}
+  - component: {fileID: 2093046520855237506}
   m_Layer: 0
   m_Name: Customer
   m_TagString: Untagged
@@ -167,7 +167,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.8624785, y: 0.7677641, z: 3.2701063}
   m_Center: {x: 0.08310139, y: 0.61611795, z: 1.2097464}
---- !u!114 &4415927901614817189
+--- !u!114 &7855511948393819193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7417764514217551163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &2093046520855237506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,41 +251,13 @@ MonoBehaviour:
         m_CallState: 2
   PressInteractionEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7417764514217551137}
-        m_TargetAssemblyTypeName: Customer, Assembly-CSharp
-        m_MethodName: LeaveHappy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   MousePressInteractionEvent:
     m_PersistentCalls:
       m_Calls: []
   MouseReleaseInteractionEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7216521625424459206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7417764514217551163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: 0
-  eraseRenderer: 1
-  originalLayer: 0
-  originalMaterials: []
 --- !u!1001 &6432467945556882878
 PrefabInstance:
   m_ObjectHideFlags: 0

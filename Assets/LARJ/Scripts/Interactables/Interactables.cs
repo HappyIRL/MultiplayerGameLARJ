@@ -48,7 +48,7 @@ public class Interactables : MonoBehaviour
     }
     private void Start()
     {
-        OutlineRef.enabled = false;
+        //OutlineRef.enabled = false;
         DisableButtonHintImages();
 
         if (CanInteractWhenPickedUp)
@@ -66,7 +66,7 @@ public class Interactables : MonoBehaviour
         {
             DisablePickedUpInteractionButtonHints();
         }
-        OutlineRef.enabled = false;
+        //OutlineRef.enabled = false;
 
     }
 
@@ -112,7 +112,7 @@ public class Interactables : MonoBehaviour
 
             if (!pi.IsPickedUp)
             {
-                OutlineRef.enabled = false;
+                //OutlineRef.enabled = false;
                 DisableButtonHintImages();
                 _referenceWasSetInOnTriggerStay = false;
 

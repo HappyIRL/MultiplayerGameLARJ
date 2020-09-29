@@ -12,6 +12,7 @@ public class HighlightInteractables : MonoBehaviour
 	private void Start()
 	{
 		_interactables = FindObjectsOfType<Interactables>().ToList();
+		OnHighlightTasks();
 	}
 
 	public void OnHighlightTasks()
@@ -26,7 +27,7 @@ public class HighlightInteractables : MonoBehaviour
 	{
 		foreach(Interactables interactable in _interactables)
 		{
-			interactable.OutlineRef.enabled = enabled;
+			interactable.OutlineRef.enabled = enabled;           
 		}
 	}
 
@@ -43,8 +44,17 @@ public class HighlightInteractables : MonoBehaviour
 		_interactables = new List<Interactables>(interactables);
 	}
 
-	public void UpdateInteractables(Interactables interactables)
+	public void AddInteractables(Interactables interactables)
 	{
+		if (_interactables.Contains(interactables)) return;
+
 		_interactables.Add(interactables);
+	}
+	public void AddInteractables(List<Interactables> interactables)
+	{
+        foreach (Interactables interactable in interactables)
+        {
+			_interactables.Add(interactable);
+        }
 	}
 }

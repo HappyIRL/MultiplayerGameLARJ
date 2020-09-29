@@ -29,6 +29,8 @@ public class CustomerSpawner : MonoBehaviour
     [HideInInspector] public Transform deskWaypoint;
     [HideInInspector] public bool deskIsFree = true;
 
+    [SerializeField] private HighlightInteractables _highlightInteractables = null;
+
     void Awake()
     {
         customerSpawnPoint = GameObject.Find("CustomerSpawnPoint").GetComponent<Transform>();
@@ -86,5 +88,10 @@ public class CustomerSpawner : MonoBehaviour
         customer.customerPool = _customerPool;
 
         go.transform.position = customerSpawnPoint.position;
+
+        if (_highlightInteractables != null)
+        {
+            _highlightInteractables.AddInteractables(go.GetComponent<Interactables>());
+        }
     }
 }
