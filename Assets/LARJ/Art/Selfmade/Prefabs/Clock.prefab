@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 5343396600510811627}
   - component: {fileID: 9045573793471595086}
   - component: {fileID: 6515761128329836164}
+  - component: {fileID: 6838300218096891192}
   m_Layer: 0
   m_Name: Clock
   m_TagString: Untagged
@@ -217,6 +218,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6838300218096891192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4714246578947905361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df7e72cf8da1814a80d5a9f86c8042c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimeText: {fileID: 1867361058002255954}
 --- !u!1 &5715490212945811853
 GameObject:
   m_ObjectHideFlags: 0

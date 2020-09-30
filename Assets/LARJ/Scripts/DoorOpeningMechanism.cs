@@ -26,7 +26,7 @@ public class DoorOpeningMechanism : MonoBehaviour
     private List<Transform> _customers = new List<Transform>();
     private bool _canCheck = true;
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (_canCheck)
         {
