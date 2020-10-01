@@ -35,7 +35,7 @@ public class ClientNetworkData
 	{
 		List<byte> newArray = new List<byte>();
 		
-		if(startIndex + cutLength < array.Length)
+		if(startIndex + cutLength > array.Length)
 		{
 			Debug.LogError($"Index would go of bounds, where: {this}. StartIndex: {startIndex} + CutLength: {cutLength} > Array: {array.Length}");
 			return null;

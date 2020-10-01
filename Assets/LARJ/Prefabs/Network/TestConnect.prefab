@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 814120802701138770}
   - component: {fileID: 7832093145529491075}
+  - component: {fileID: 514965376}
   m_Layer: 0
   m_Name: TestConnect
   m_TagString: Untagged
@@ -43,3 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1612a538a8aae2140975ddf06b9e7c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &514965376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814120802701138768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e3f4225e66377447b21fce46d66f5ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPrefab: {fileID: 741314481945438931, guid: a1181f0ca05aa15429308b6233432870, type: 3}
+  _simulatedPlayer: {fileID: 741314481945438931, guid: b2eabb3d8b6f8a946b6e29761a0a7ad8, type: 3}

@@ -4,16 +4,14 @@ using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public enum LARJNetworkEvents
+{
+	PCUpdate = 128
+}
+
 public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 {
-	[SerializeField] private GameObject _player1;
-	[SerializeField] private GameObject _player2;
-
-	public GameObject Player1 { set { _player1 = value; } }
-	public GameObject Player2 { set { _player2 = value; } }
-
-	//[SerializeField] private GameObject _player3;
-	//[SerializeField] private GameObject _player4;
+	[SerializeField] private GameObject[] _players = new GameObject[4];
 
 	private LARJNetworkID myID = 0;
 
@@ -25,21 +23,20 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		Player4 = 3
 	}
 
-	public enum LARJNetworkEvents
-	{
-		PCUpdate = 128
-	}
-
-
 	private void Start()
 	{
-		PhotonPeer.RegisterType(typeof(ClientNetworkData), (byte)LARJNetworkEvents.PCUpdate, ClientNetworkData.SerializeMethod, ClientNetworkData.DeserializeMethod);
+		PhotonNetwork.AddCallbackTarget(this);
 	}
 
 	private void Update()
 	{
-		myID = (LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber;
+		myID = (LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1;
 		UpdateLocalPlayerController();
+	}
+
+	public void SetPlayers(GameObject[] go)
+	{
+		_players = go;
 	}
 
 	private void UpdateLocalPlayerController()
@@ -69,28 +66,32 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 		else
 		{
-			Debug.LogError("Player is null ID: " + myID);
+			Debug.Log("Player is null ID: " + myID);
+			return;
 		}
 	}
 
 	private GameObject GetPlayerFromID(LARJNetworkID id)
 	{
-		switch(id)
+		switch (id)
 		{
 			case LARJNetworkID.Player1:
-				return _player1;
+				return _players[0];
 			case LARJNetworkID.Player2:
-				return _player2;
-			//case LARJNetworkID.Player3:
-			//	return _player3;
-			//case LARJNetworkID.Player4:
-			//	return _player4;
+				return _players[1];
+			case LARJNetworkID.Player3:
+				return _players[2];
+			case LARJNetworkID.Player4:
+				return _players[3];
 		}
 		return null;
 	}
 	private void ReceiveUpdatePC(ClientNetworkData data)
 	{
 		GameObject player = GetPlayerFromID((LARJNetworkID)data.ID);
+
+		Debug.Log(player);
+
 		if(player != null)
 		{
 			player.transform.position = data.Position;
@@ -102,6 +103,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		LARJNetworkEvents eventCode = (LARJNetworkEvents)photonEvent.Code;
 
+		Debug.Log("OnEvent called");
+
+		Debug.Log(eventCode);
+
 		switch(eventCode)
 		{
 			case LARJNetworkEvents.PCUpdate:
@@ -110,3 +115,4 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 	}
 }
+
