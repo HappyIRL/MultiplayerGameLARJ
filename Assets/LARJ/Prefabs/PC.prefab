@@ -12,11 +12,9 @@ GameObject:
   - component: {fileID: 6181773461524535842}
   - component: {fileID: 6181773461523405026}
   - component: {fileID: 6771794430523954086}
-  - component: {fileID: 3866868060605537489}
   - component: {fileID: 6666914651309296177}
   - component: {fileID: 5291383747513813885}
   - component: {fileID: 7764389319381591149}
-  - component: {fileID: 4538484766267169013}
   - component: {fileID: 8389501005499365270}
   m_Layer: 0
   m_Name: PC
@@ -104,19 +102,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7243798, y: 0.6536514, z: 0.6694736}
   m_Center: {x: 0.17514533, y: 0.32943955, z: 0.018761963}
---- !u!65 &3866868060605537489
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6181773461525399074}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.44, y: 1.2, z: 1}
-  m_Center: {x: 0.17514533, y: 0.32943955, z: -0.49}
 --- !u!54 &6666914651309296177
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -245,81 +230,6 @@ MonoBehaviour:
   eraseRenderer: 0
   originalLayer: 0
   originalMaterials: []
---- !u!114 &4538484766267169013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6181773461525399074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d11a7a4d88b2ad42bc594e6ed4e59c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractionType: 2
-  Rb: {fileID: 0}
-  OutlineRef: {fileID: 0}
-  HoldingTime: 6
-  CanInteractWhenPickedUp: 0
-  KeyboardButtonHintImage: {fileID: 7407910513109804769}
-  GamepadButtonHintImage: {fileID: 7407910513117246000}
-  MousePickedUpInteractionButtonHintImage: {fileID: 0}
-  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
-  HoldingFinishedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8389501005499365270}
-        m_TargetAssemblyTypeName: PC, Assembly-CSharp
-        m_MethodName: StopTyping
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  HoldingStartedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8389501005499365270}
-        m_TargetAssemblyTypeName: PC, Assembly-CSharp
-        m_MethodName: StartTyping
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  HoldingFailedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8389501005499365270}
-        m_TargetAssemblyTypeName: PC, Assembly-CSharp
-        m_MethodName: StopTyping
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  MousePressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  MouseReleaseInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &8389501005499365270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +242,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d330ffcbdb84124daeda3905325914e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractionType: 2
+  Rb: {fileID: 0}
+  OutlineRef: {fileID: 0}
+  KeyboardButtonHintImage: {fileID: 7407910513109804769}
+  GamepadButtonHintImage: {fileID: 6370283080590301652}
+  MousePickedUpInteractionButtonHintImage: {fileID: 0}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
+  HoldingTime: 5
+  CanInteractWhenPickedUp: 0
   _keyboardTypingSound: {fileID: 8300000, guid: ccf871373d66aa840a93775aef8cd226, type: 3}
 --- !u!1001 &3438192368282959903
 PrefabInstance:
@@ -448,8 +367,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5294200040120493822, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 3438192368282959903}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7407910513117246000 stripped
+--- !u!1 &6370283080590301652 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5294200040146547247, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8633720494919719371, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 3438192368282959903}
   m_PrefabAsset: {fileID: 0}

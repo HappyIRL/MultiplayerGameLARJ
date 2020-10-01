@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class HighlightInteractables : MonoBehaviour
 {
-	private List<Interactables> _interactables = new List<Interactables>();
+	private List<Interactable> _interactables = new List<Interactable>();
 	private bool _outlineEnabled = false;
 	public bool OutlineEnabled { get { return _outlineEnabled; } set { _outlineEnabled = value; } }
 
 	private void Start()
 	{
-		_interactables = FindObjectsOfType<Interactables>().ToList();
+		_interactables = FindObjectsOfType<Interactable>().ToList();
 		OnHighlightTasks();
 	}
 
@@ -24,7 +24,7 @@ public class HighlightInteractables : MonoBehaviour
 
 	public void OutlineInteractables(bool enabled)
 	{
-		foreach(Interactables interactable in _interactables)
+		foreach(Interactable interactable in _interactables)
 		{
 			interactable.OutlineRef.enabled = enabled;           
 		}
@@ -38,12 +38,12 @@ public class HighlightInteractables : MonoBehaviour
 		}
 	}
 
-	public void UpdateInteractables(List<Interactables> interactables)
+	public void UpdateInteractables(List<Interactable> interactables)
 	{
-		_interactables = new List<Interactables>(interactables);
+		_interactables = new List<Interactable>(interactables);
 	}
 
-	public void AddInteractables(Interactables interactables)
+	public void AddInteractables(Interactable interactables)
 	{
 		if (_interactables.Contains(interactables)) return;
 
@@ -51,9 +51,9 @@ public class HighlightInteractables : MonoBehaviour
 
 		OutlineInteractables(!_outlineEnabled, _interactables.Count - 1, 1);
 	}
-	public void AddInteractables(List<Interactables> interactables)
+	public void AddInteractables(List<Interactable> interactables)
 	{
-        foreach (Interactables interactable in interactables)
+        foreach (Interactable interactable in interactables)
         {
 			_interactables.Add(interactable);
         }

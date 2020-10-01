@@ -5308,11 +5308,9 @@ GameObject:
   - component: {fileID: 1899172453194074606}
   - component: {fileID: 856888333310277873}
   - component: {fileID: 6982807936168611494}
-  - component: {fileID: 4398826266910549465}
   - component: {fileID: 3811703202895706119}
   - component: {fileID: 1888704517525190993}
   - component: {fileID: 731414809811324206}
-  - component: {fileID: 6370787665423480525}
   - component: {fileID: 546670210217868937}
   m_Layer: 0
   m_Name: FireExtinguisher
@@ -5402,19 +5400,6 @@ CapsuleCollider:
   m_Height: 1.1
   m_Direction: 1
   m_Center: {x: 0, y: -0.1, z: 0}
---- !u!65 &4398826266910549465
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4377697798098910065}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2, y: 1.2, z: 1.2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3811703202895706119
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5543,69 +5528,6 @@ MonoBehaviour:
   eraseRenderer: 0
   originalLayer: 0
   originalMaterials: []
---- !u!114 &6370787665423480525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4377697798098910065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d11a7a4d88b2ad42bc594e6ed4e59c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractionType: 0
-  Rb: {fileID: 0}
-  OutlineRef: {fileID: 0}
-  HoldingTime: 1
-  CanInteractWhenPickedUp: 1
-  KeyboardButtonHintImage: {fileID: 3781724844142232729}
-  GamepadButtonHintImage: {fileID: 3781724844163895368}
-  MousePickedUpInteractionButtonHintImage: {fileID: 779834517275851692}
-  GamepadPickedUpInteractionButtonHintImage: {fileID: 5000610078547127272}
-  HoldingFinishedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingStartedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingFailedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  MousePressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 546670210217868937}
-        m_TargetAssemblyTypeName: FireExtinguisher, Assembly-CSharp
-        m_MethodName: StartExtinguishing
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  MouseReleaseInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 546670210217868937}
-        m_TargetAssemblyTypeName: FireExtinguisher, Assembly-CSharp
-        m_MethodName: StopExtinguishing
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &546670210217868937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5618,6 +5540,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9af1f7702a41a14ca4d87c18e394b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractionType: 0
+  Rb: {fileID: 0}
+  OutlineRef: {fileID: 0}
+  KeyboardButtonHintImage: {fileID: 3781724844142232729}
+  GamepadButtonHintImage: {fileID: 3781724844163895368}
+  MousePickedUpInteractionButtonHintImage: {fileID: 779834517275851692}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 5000610078547127272}
+  HoldingTime: 1
+  CanInteractWhenPickedUp: 1
   _foamParticles: {fileID: 462005735760976290}
   _extinguishSound: {fileID: 8300000, guid: 58ce60a7b03ae6c41838df96416cf7a5, type: 3}
 --- !u!1 &5000610078547127272

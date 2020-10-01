@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource), typeof(Interactables))]
-public class Shotgun : MonoBehaviour
+[RequireComponent(typeof(AudioSource)), Serializable]
+public class Shotgun : Interactable
 {
+    [Header("Shotgun")]
     [SerializeField] private float _bulletCount = 6f;
     [SerializeField] private Transform _bulletSpawnPoint = null;
     [SerializeField] private ObjectPool _shotgunBulletPool = null;
@@ -13,13 +15,15 @@ public class Shotgun : MonoBehaviour
     private AudioSource _audioSource;
     private bool _canShoot = true;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
+
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _shotgunShootSound;
     }
 
-    public void Shoot()
+    private void Shoot()
     {
         if (_canShoot)
         {
@@ -33,8 +37,8 @@ public class Shotgun : MonoBehaviour
                 bullet.transform.rotation = _bulletSpawnPoint.rotation;
 
                 Vector3 rotation = bullet.transform.rotation.eulerAngles;
-                rotation.x += Random.Range(-10f, 10f);
-                rotation.y += Random.Range(-10f, 10f);
+                rotation.x += UnityEngine.Random.Range(-10f, 10f);
+                rotation.y += UnityEngine.Random.Range(-10f, 10f);
                 bullet.transform.eulerAngles = rotation;
 
                 Rigidbody rb = bullet.GetComponent<Rigidbody>();
@@ -47,7 +51,7 @@ public class Shotgun : MonoBehaviour
         }
     }
 
-    public IEnumerator GunRecoil()
+    private IEnumerator GunRecoil()
     {
         float originAngle = transform.eulerAngles.x;
         float targetAngle = originAngle - 10f;
@@ -76,4 +80,33 @@ public class Shotgun : MonoBehaviour
         _canShoot = true;
     }
 
+    public override void HoldingStartedEvent()
+    {
+        
+    }
+
+    public override void HoldingFailedEvent()
+    {
+       
+    }
+
+    public override void HoldingFinishedEvent()
+    {
+        
+    }
+
+    public override void PressEvent()
+    {
+        
+    }
+
+    public override void MousePressEvent()
+    {
+        Shoot();
+    }
+
+    public override void MouseReleaseEvent()
+    {
+
+    }
 }

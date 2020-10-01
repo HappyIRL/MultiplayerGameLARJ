@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(MeshRenderer), typeof(AudioSource), typeof(Interactables))]
-public class Telephone : MonoBehaviour
+[RequireComponent(typeof(MeshRenderer), typeof(AudioSource)), Serializable]
+public class Telephone : Interactable
 {
+    [Header("Telephone")]
     [Header("Ringing")]
     [SerializeField] private float _ringingTimeInSecs = 20f;
     [SerializeField] private float _lightSwitchTimeInSecs = 1f;
@@ -17,16 +19,19 @@ public class Telephone : MonoBehaviour
     [SerializeField] private AudioClip _ringingSound = null;
 
     [Header("Events")]
-    public UnityEvent FailedToAnswerEvent;
-    public UnityEvent CompletedEvent;
+    [SerializeField] private UnityEvent _failedToAnswerEvent;
+    [SerializeField] private UnityEvent _completedEvent;
 
     private MeshRenderer _meshRenderer;
     private AudioSource _audioSource;
     private bool _callAnswered = false;
     private Coroutine _lastCoroutine;
 
-    void Start()
+
+    public override void Start()
     {
+        base.Start();
+
         _meshRenderer = GetComponent<MeshRenderer>();
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _ringingSound;
@@ -69,7 +74,7 @@ public class Telephone : MonoBehaviour
 
         if (!_callAnswered)
         {
-            FailedToAnswerEvent.Invoke();
+            _failedToAnswerEvent.Invoke();
         }
 
         EndCall();
@@ -98,6 +103,36 @@ public class Telephone : MonoBehaviour
         EndCall();
         ChangeMaterial(_standardScreenMaterial);
 
-        CompletedEvent.Invoke();
+        _completedEvent.Invoke();
+    }
+
+    public override void HoldingStartedEvent()
+    {
+        
+    }
+
+    public override void HoldingFailedEvent()
+    {
+        EndCall();
+    }
+
+    public override void HoldingFinishedEvent()
+    {
+        AnswerCall();
+    }
+
+    public override void PressEvent()
+    {
+        
+    }
+
+    public override void MousePressEvent()
+    {
+        
+    }
+
+    public override void MouseReleaseEvent()
+    {
+        
     }
 }

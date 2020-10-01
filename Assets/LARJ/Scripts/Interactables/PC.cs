@@ -1,27 +1,61 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource), typeof(Interactables))]
-public class PC : MonoBehaviour
+[RequireComponent(typeof(AudioSource)), Serializable]
+public class PC : Interactable
 {
+    [Header("PC")]
     [SerializeField] private AudioClip _keyboardTypingSound = null;
     private AudioSource _audioSource;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
+
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _keyboardTypingSound;
     }
 
-    public void StartTyping()
+    private void StartTyping()
     {
         _audioSource.Play();
     }
 
-    public void StopTyping()
+    private void StopTyping()
     {
         _audioSource.Stop();
+    }
+
+    public override void HoldingStartedEvent()
+    {
+        StartTyping();
+    }
+
+    public override void HoldingFailedEvent()
+    {
+        StopTyping();
+    }
+
+    public override void HoldingFinishedEvent()
+    {
+        StopTyping();
+    }
+
+    public override void PressEvent()
+    {
+        
+    }
+
+    public override void MousePressEvent()
+    {
+        
+    }
+
+    public override void MouseReleaseEvent()
+    {
+        
     }
 }
 

@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource), typeof(Interactables))]
-public class Printer : MonoBehaviour
+[RequireComponent(typeof(AudioSource)), Serializable]
+public class Printer : Interactable
 {
     [Header("Paper")]
+    [Header("Printer")]
     [SerializeField] private GameObject _paperPrefab = null;
     [SerializeField] private Transform _paperSpawnPoint = null;
 
@@ -17,8 +19,10 @@ public class Printer : MonoBehaviour
     private AudioSource _audioSource;
     private Coroutine _lastCoroutine;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
+
         _audioSource = GetComponent<AudioSource>();
     }
 
@@ -28,7 +32,7 @@ public class Printer : MonoBehaviour
         _audioSource.Play();
     }
 
-    public void StartPrinting()
+    private void StartPrinting()
     {
         _lastCoroutine = StartCoroutine(StartPrintingSoundCoroutine());
     }
@@ -41,7 +45,7 @@ public class Printer : MonoBehaviour
         _audioSource.loop = true;
     }
 
-    public void FinishPrinting()
+    private void FinishPrinting()
     {
         StopCoroutine(_lastCoroutine);
         PlaySound(_printerOutSound);
@@ -49,11 +53,40 @@ public class Printer : MonoBehaviour
 
         Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
     }
-    public void CancelPrinting()
+    private void CancelPrinting()
     {
         StopCoroutine(_lastCoroutine);
         _audioSource.Stop();
         _audioSource.loop = false;
     }
 
+    public override void HoldingStartedEvent()
+    {
+        StartPrinting();
+    }
+
+    public override void HoldingFailedEvent()
+    {
+        CancelPrinting();
+    }
+
+    public override void HoldingFinishedEvent()
+    {
+        FinishPrinting();
+    }
+
+    public override void PressEvent()
+    {
+        
+    }
+
+    public override void MousePressEvent()
+    {
+        
+    }
+
+    public override void MouseReleaseEvent()
+    {
+        
+    }
 }

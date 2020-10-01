@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Customer : MonoBehaviour, IObjectPoolNotifier
+public class Customer : Interactable, IObjectPoolNotifier
 {
     private StateMachine _stateMachine;
     NavMeshAgent _agent;
 
+    [Header("Customer")]
     public CustomerSpawner customerSpawner;
     public ObjectPool customerPool;
 
@@ -21,14 +22,18 @@ public class Customer : MonoBehaviour, IObjectPoolNotifier
 
     private float _timer;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
+
         _agent = GetComponent<NavMeshAgent>();
         _agent.enabled = false;       
     }
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
+
         _deskWaypoint = customerSpawner.deskWaypoint;
         _despawn = customerSpawner.customerDespawnPoint;
 
@@ -154,18 +159,18 @@ public class Customer : MonoBehaviour, IObjectPoolNotifier
         }
         
     }
-    public void OnEnterTalk()
+    private void OnEnterTalk()
     {
         StopCoroutine("LeaveAfterDelay");
     }
-    public void OnFinishedTalk()
+    private void OnFinishedTalk()
     {
         // Log Successful Talk
         var color = Color.green;
         GetComponent<Renderer>().material.color = color;
         _stateMachine.TransitionTo("Leaving");
     }
-    public void OnFailedTalk()
+    private void OnFailedTalk()
     {
         StartCoroutine("LeaveAfterDelay");
     }
@@ -229,4 +234,36 @@ public class Customer : MonoBehaviour, IObjectPoolNotifier
             _stateMachine.TransitionTo("Entry");
         }
     }
+
+    #region Interactable Events
+    public override void HoldingStartedEvent()
+    {
+        OnEnterTalk();
+    }
+
+    public override void HoldingFailedEvent()
+    {
+        OnFailedTalk();
+    }
+
+    public override void HoldingFinishedEvent()
+    {
+        OnFinishedTalk();
+    }
+
+    public override void PressEvent()
+    {
+        
+    }
+
+    public override void MousePressEvent()
+    {
+        
+    }
+
+    public override void MouseReleaseEvent()
+    {
+        
+    }
+    #endregion
 }
