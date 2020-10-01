@@ -101,12 +101,17 @@ public class Customer : MonoBehaviour, IObjectPoolNotifier
     {
         _isWaiting = true;
         StartCoroutine("LeaveAfterDelay");
+        var rot = transform.rotation.eulerAngles;
+        _agent.updateRotation = false;
+        transform.Rotate(-rot);
+
     }
     private void AtDeskUpdate()
     {
     }   
     private void AtDeskExit()
     {
+        _agent.updateRotation = true;
     }
     #endregion
     #region Leaving State
