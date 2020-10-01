@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource), typeof(Interactables))]
-public class CleaningBroom : MonoBehaviour
+[RequireComponent(typeof(AudioSource)), Serializable]
+public class CleaningBroom : Interactable
 {
+    [Header("CleaningBroom")]
     [SerializeField] private AudioClip _cleaningSound = null;
     [SerializeField] private Animator _animator = null;
     [SerializeField] private Transform _broomBottom = null;
@@ -13,8 +15,10 @@ public class CleaningBroom : MonoBehaviour
     private AudioSource _audioSource;
     private bool _isCleaning = false;
 
-    void Start()
+    public override void Start()
     {
+        base.Start();
+
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _cleaningSound;
     }
@@ -36,17 +40,46 @@ public class CleaningBroom : MonoBehaviour
         }
     }
 
-    public void StartCleaning()
+    private void StartCleaning()
     {
         _audioSource.Play();
         _animator.SetBool("IsCleaning", true);
         _isCleaning = true;
     }
-    public void StopCleaning()
+    private void StopCleaning()
     {
         _audioSource.Stop();
         _animator.SetBool("IsCleaning", false);
         _isCleaning = false;
     }
 
+    public override void HoldingStartedEvent()
+    {
+        
+    }
+
+    public override void HoldingFailedEvent()
+    {
+        
+    }
+
+    public override void HoldingFinishedEvent()
+    {
+        
+    }
+
+    public override void PressEvent()
+    {
+       
+    }
+
+    public override void MousePressEvent()
+    {
+        StartCleaning();
+    }
+
+    public override void MouseReleaseEvent()
+    {
+        StopCleaning();
+    }
 }

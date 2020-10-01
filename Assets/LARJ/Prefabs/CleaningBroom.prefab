@@ -11,14 +11,12 @@ GameObject:
   - component: {fileID: 1578999011716892119}
   - component: {fileID: 1578999011717694967}
   - component: {fileID: 1578999011718793015}
-  - component: {fileID: 5809584959650247381}
   - component: {fileID: 3442089420589795626}
   - component: {fileID: 4997566228843203948}
   - component: {fileID: 7878200397261442016}
   - component: {fileID: 5058914048157704513}
-  - component: {fileID: 5719022479543455140}
-  - component: {fileID: 1981994746255620576}
   - component: {fileID: 2901196193876241837}
+  - component: {fileID: 270617607539160691}
   m_Layer: 0
   m_Name: CleaningBroom
   m_TagString: Untagged
@@ -91,19 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5809584959650247381
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578999011716864503}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.62, y: 1.49, z: 1.32}
-  m_Center: {x: 0, y: 0, z: -0.000000014901161}
 --- !u!136 &3442089420589795626
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -246,87 +231,6 @@ MonoBehaviour:
   eraseRenderer: 0
   originalLayer: 0
   originalMaterials: []
---- !u!114 &5719022479543455140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578999011716864503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d11a7a4d88b2ad42bc594e6ed4e59c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractionType: 0
-  Rb: {fileID: 0}
-  OutlineRef: {fileID: 0}
-  HoldingTime: 1
-  CanInteractWhenPickedUp: 1
-  KeyboardButtonHintImage: {fileID: 4921847132119208788}
-  GamepadButtonHintImage: {fileID: 4921847132162033541}
-  MousePickedUpInteractionButtonHintImage: {fileID: 8855216007362587745}
-  GamepadPickedUpInteractionButtonHintImage: {fileID: 3842475420648324133}
-  HoldingFinishedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingStartedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingFailedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  MousePressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1981994746255620576}
-        m_TargetAssemblyTypeName: CleaningBroom, Assembly-CSharp
-        m_MethodName: StartCleaning
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  MouseReleaseInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1981994746255620576}
-        m_TargetAssemblyTypeName: CleaningBroom, Assembly-CSharp
-        m_MethodName: StopCleaning
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1981994746255620576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578999011716864503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dab66b259513b094b931bf556d4c6902, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cleaningSound: {fileID: 8300000, guid: 654aee01d3c7bca43a5c5d826067b312, type: 3}
-  _animator: {fileID: 2901196193876241837}
-  _broomBottom: {fileID: 2293765770267134895}
-  _garbageLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!95 &2901196193876241837
 Animator:
   serializedVersion: 3
@@ -346,6 +250,33 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &270617607539160691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578999011716864503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab66b259513b094b931bf556d4c6902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractionType: 0
+  Rb: {fileID: 0}
+  OutlineRef: {fileID: 0}
+  KeyboardButtonHintImage: {fileID: 4921847132119208788}
+  GamepadButtonHintImage: {fileID: 4921847132162033541}
+  MousePickedUpInteractionButtonHintImage: {fileID: 8855216007362587745}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 3842475420648324133}
+  HoldingTime: 1
+  CanInteractWhenPickedUp: 1
+  _cleaningSound: {fileID: 8300000, guid: 654aee01d3c7bca43a5c5d826067b312, type: 3}
+  _animator: {fileID: 2901196193876241837}
+  _broomBottom: {fileID: 2293765770267134895}
+  _garbageLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &3059098807662588850
 GameObject:
   m_ObjectHideFlags: 0

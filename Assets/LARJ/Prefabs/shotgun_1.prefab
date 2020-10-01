@@ -12,11 +12,9 @@ GameObject:
   - component: {fileID: 33573031097832386}
   - component: {fileID: 23821919225675564}
   - component: {fileID: 1875334279583380460}
-  - component: {fileID: 2542543374946601283}
   - component: {fileID: 7235123307782242045}
   - component: {fileID: 536594205416238761}
   - component: {fileID: 2763954665801535321}
-  - component: {fileID: 8700527969450492011}
   - component: {fileID: 5725133893544037448}
   m_Layer: 0
   m_Name: shotgun_1
@@ -104,19 +102,6 @@ CapsuleCollider:
   m_Height: 3.24
   m_Direction: 2
   m_Center: {x: -0.0015351996, y: 0, z: 0.4607271}
---- !u!65 &2542543374946601283
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059664846651778}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.77, y: 1.77, z: 4.94}
-  m_Center: {x: -0.0015351996, y: 0, z: 0.38}
 --- !u!54 &7235123307782242045
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -245,57 +230,6 @@ MonoBehaviour:
   eraseRenderer: 0
   originalLayer: 0
   originalMaterials: []
---- !u!114 &8700527969450492011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059664846651778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d11a7a4d88b2ad42bc594e6ed4e59c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractionType: 0
-  Rb: {fileID: 0}
-  OutlineRef: {fileID: 0}
-  HoldingTime: 1
-  CanInteractWhenPickedUp: 1
-  KeyboardButtonHintImage: {fileID: 5587210549809962723}
-  GamepadButtonHintImage: {fileID: 5587210549785676338}
-  MousePickedUpInteractionButtonHintImage: {fileID: 8295674002411774422}
-  GamepadPickedUpInteractionButtonHintImage: {fileID: 4365989761579020690}
-  HoldingFinishedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingStartedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingFailedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  MousePressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5725133893544037448}
-        m_TargetAssemblyTypeName: Shotgun, Assembly-CSharp
-        m_MethodName: Shoot
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  MouseReleaseInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5725133893544037448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,6 +242,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce28c544db90d594983dae2fe294c9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractionType: 0
+  Rb: {fileID: 0}
+  OutlineRef: {fileID: 0}
+  KeyboardButtonHintImage: {fileID: 5587210549809962723}
+  GamepadButtonHintImage: {fileID: 5587210549785676338}
+  MousePickedUpInteractionButtonHintImage: {fileID: 8295674002411774422}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 4365989761579020690}
+  HoldingTime: 1
+  CanInteractWhenPickedUp: 1
   _bulletCount: 6
   _bulletSpawnPoint: {fileID: 6951704535786342548}
   _shotgunBulletPool: {fileID: 0}

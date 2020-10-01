@@ -1,23 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource), typeof(Interactables))]
-public class FireExtinguisher : MonoBehaviour
+[RequireComponent(typeof(AudioSource)), Serializable]
+public class FireExtinguisher : Interactable
 {
+    [Header("FireExtinguisher")]
     [SerializeField] private ParticleSystem _foamParticles = null;
     [SerializeField] private AudioClip _extinguishSound = null;
 
     private AudioSource _audioSource;
     private bool _isExtinguishing = false;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
+
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _extinguishSound;
     }
 
-    public void StartExtinguishing()
+    private void StartExtinguishing()
     {
         _audioSource.Play();
         _foamParticles.Play();
@@ -26,7 +30,7 @@ public class FireExtinguisher : MonoBehaviour
 
         StartCoroutine(ExtinguishCoroutine());
     }
-    public void StopExtinguishing()
+    private void StopExtinguishing()
     {
         _audioSource.Stop();
         _foamParticles.Stop();
@@ -52,5 +56,35 @@ public class FireExtinguisher : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public override void HoldingStartedEvent()
+    {
+        
+    }
+
+    public override void HoldingFailedEvent()
+    {
+        
+    }
+
+    public override void HoldingFinishedEvent()
+    {
+        
+    }
+
+    public override void PressEvent()
+    {
+        
+    }
+
+    public override void MousePressEvent()
+    {
+        StartExtinguishing();
+    }
+
+    public override void MouseReleaseEvent()
+    {
+        StopExtinguishing();
     }
 }

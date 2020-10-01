@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 4187705875427919526}
   - component: {fileID: 2159844389975913068}
   - component: {fileID: 5142430352716286957}
-  - component: {fileID: 5844458866127879695}
   - component: {fileID: 4403143820716018119}
-  - component: {fileID: 4608350168794996182}
   - component: {fileID: 5726189216276506122}
+  - component: {fileID: 6371534892996970530}
   m_Layer: 0
   m_Name: Paper
   m_TagString: Untagged
@@ -100,19 +99,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0069592833, y: 0.009468036, z: 0.0004031887}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &5844458866127879695
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502630160131806137}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.02, z: 0.01}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4403143820716018119
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -129,36 +115,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4608350168794996182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502630160131806137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d11a7a4d88b2ad42bc594e6ed4e59c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractionType: 0
-  Rb: {fileID: 0}
-  OutlineRef: {fileID: 0}
-  HoldingTime: 1
-  KeyboardButtonHintImage: {fileID: 4562060469178529320}
-  GamepadButtonHintImage: {fileID: 4562060469204574969}
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingFinishedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingStartedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingFailedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5726189216276506122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +131,27 @@ MonoBehaviour:
   eraseRenderer: 0
   originalLayer: 0
   originalMaterials: []
+--- !u!114 &6371534892996970530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502630160131806137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbeef7835842ee4bbeeb8010c4e677f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractionType: 0
+  Rb: {fileID: 0}
+  OutlineRef: {fileID: 0}
+  KeyboardButtonHintImage: {fileID: 4562060469178529320}
+  GamepadButtonHintImage: {fileID: 4562060469204574969}
+  MousePickedUpInteractionButtonHintImage: {fileID: 0}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
+  HoldingTime: 1
+  CanInteractWhenPickedUp: 0
 --- !u!114 &5690055473500903219
 MonoBehaviour:
   m_ObjectHideFlags: 0

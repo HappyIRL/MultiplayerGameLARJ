@@ -91,7 +91,7 @@ public class CustomerSpawner : MonoBehaviour
 
         if (_highlightInteractables != null)
         {
-            _highlightInteractables.AddInteractables(go.GetComponent<Interactables>());
+            _highlightInteractables.AddInteractables(go.GetComponent<Interactable>());
         }
     }
 }

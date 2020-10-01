@@ -14,9 +14,7 @@ GameObject:
   - component: {fileID: 4450039970984887820}
   - component: {fileID: 2680293571960138390}
   - component: {fileID: 4044187137241445878}
-  - component: {fileID: 4940082999008235915}
   - component: {fileID: 5894535082283320545}
-  - component: {fileID: 5026484668519212880}
   - component: {fileID: 7512472803643927533}
   m_Layer: 0
   m_Name: Telephone
@@ -216,57 +214,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &4940082999008235915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4450039970984984745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d11a7a4d88b2ad42bc594e6ed4e59c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractionType: 1
-  Rb: {fileID: 0}
-  OutlineRef: {fileID: 0}
-  HoldingTime: 1
-  CanInteractWhenPickedUp: 0
-  KeyboardButtonHintImage: {fileID: 9013294063391081175}
-  GamepadButtonHintImage: {fileID: 9013294063438697990}
-  MousePickedUpInteractionButtonHintImage: {fileID: 0}
-  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
-  HoldingFinishedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingStartedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingFailedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5894535082283320545}
-        m_TargetAssemblyTypeName: Telephone, Assembly-CSharp
-        m_MethodName: AnswerCall
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  MousePressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  MouseReleaseInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5894535082283320545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,30 +226,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb95e553182e2354e85a1635e5922a85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractionType: 2
+  Rb: {fileID: 0}
+  OutlineRef: {fileID: 0}
+  KeyboardButtonHintImage: {fileID: 9013294063391081175}
+  GamepadButtonHintImage: {fileID: 4880849605402476002}
+  MousePickedUpInteractionButtonHintImage: {fileID: 0}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
+  HoldingTime: 1
+  CanInteractWhenPickedUp: 0
   _ringingTimeInSecs: 20
   _lightSwitchTimeInSecs: 1
   _redScreenMaterial: {fileID: 2100000, guid: d83c53277de967e49b88cde3cbe2b2ca, type: 2}
   _standardScreenMaterial: {fileID: 2100000, guid: 8d43a69e0ee7c1b45a3d5750b9b8143e, type: 2}
   _ringingSound: {fileID: 8300000, guid: 0d67c9c9a078c15479de5223fa4d0f03, type: 3}
-  FailedToAnswerEvent:
+  _failedToAnswerEvent:
     m_PersistentCalls:
       m_Calls: []
-  CompletedEvent:
+  _completedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!65 &5026484668519212880
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4450039970984984745}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.8, z: 1}
-  m_Center: {x: -0.00000010430813, y: 0.096297875, z: 0.0000014305115}
 --- !u!114 &7512472803643927533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,8 +377,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5294200040120493822, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 3777783211664188457}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &9013294063438697990 stripped
+--- !u!1 &4880849605402476002 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5294200040146547247, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8633720494919719371, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 3777783211664188457}
   m_PrefabAsset: {fileID: 0}

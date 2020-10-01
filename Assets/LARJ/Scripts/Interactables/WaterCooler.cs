@@ -1,21 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource), typeof(Interactables))]
-public class WaterCooler : MonoBehaviour
+[RequireComponent(typeof(AudioSource)), Serializable]
+public class WaterCooler : Interactable
 {
+    [Header("WaterCooler")]
     [SerializeField] private AudioClip _waterDrippingSound = null;
     [SerializeField] private ParticleSystem _waterParticles = null;
     private AudioSource _audioSource;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
+
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _waterDrippingSound;
     }
 
-    public void PlayParticles()
+    private void PlayParticles()
     {
         if (!_waterParticles.isEmitting)
         {
@@ -28,5 +32,35 @@ public class WaterCooler : MonoBehaviour
     {
         yield return new WaitForSeconds(_waterParticles.main.duration);
         _audioSource.Stop();
+    }
+
+    public override void HoldingStartedEvent()
+    {
+        
+    }
+
+    public override void HoldingFailedEvent()
+    {
+        
+    }
+
+    public override void HoldingFinishedEvent()
+    {
+        
+    }
+
+    public override void PressEvent()
+    {
+        PlayParticles();
+    }
+
+    public override void MousePressEvent()
+    {
+        
+    }
+
+    public override void MouseReleaseEvent()
+    {
+        
     }
 }

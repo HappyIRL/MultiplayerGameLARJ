@@ -11,12 +11,10 @@ GameObject:
   - component: {fileID: 109506897868103115}
   - component: {fileID: 109506897867333099}
   - component: {fileID: 109506897866333995}
-  - component: {fileID: 109506897868228430}
-  - component: {fileID: 9050622635136786566}
   - component: {fileID: 3598284247710110747}
   - component: {fileID: 4433836202865642167}
+  - component: {fileID: 1876881033855506956}
   - component: {fileID: 943869285316643715}
-  - component: {fileID: 8463324471593206717}
   - component: {fileID: 5411768077252566202}
   m_Layer: 0
   m_Name: WaterCooler
@@ -90,33 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &109506897868228430
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109506897868325355}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.31747615
-  m_Height: 2.3589578
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &9050622635136786566
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109506897868325355}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.02, y: 2.3589578, z: 1.04}
-  m_Center: {x: 0, y: 0, z: -0.38}
 --- !u!54 &3598284247710110747
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -229,6 +200,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &1876881033855506956
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109506897868325355}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6349523, y: 2.3589578, z: 0.6176503}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &943869285316643715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,57 +229,6 @@ MonoBehaviour:
   eraseRenderer: 0
   originalLayer: 0
   originalMaterials: []
---- !u!114 &8463324471593206717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109506897868325355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d11a7a4d88b2ad42bc594e6ed4e59c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractionType: 1
-  Rb: {fileID: 0}
-  OutlineRef: {fileID: 0}
-  HoldingTime: 1
-  CanInteractWhenPickedUp: 0
-  KeyboardButtonHintImage: {fileID: 3145751835523090832}
-  GamepadButtonHintImage: {fileID: 3145751835459296577}
-  MousePickedUpInteractionButtonHintImage: {fileID: 0}
-  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
-  HoldingFinishedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingStartedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HoldingFailedInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  PressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5411768077252566202}
-        m_TargetAssemblyTypeName: WaterCooler, Assembly-CSharp
-        m_MethodName: PlayParticles
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  MousePressInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  MouseReleaseInteractionEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5411768077252566202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,6 +241,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7f4541f39cc42546a1b7cd569ee5095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractionType: 1
+  Rb: {fileID: 0}
+  OutlineRef: {fileID: 0}
+  KeyboardButtonHintImage: {fileID: 3145751835523090832}
+  GamepadButtonHintImage: {fileID: 3145751835459296577}
+  MousePickedUpInteractionButtonHintImage: {fileID: 0}
+  GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
+  HoldingTime: 1
+  CanInteractWhenPickedUp: 0
   _waterDrippingSound: {fileID: 8300000, guid: 87e57324a369fe44082410887b9d370c, type: 3}
   _waterParticles: {fileID: 9123445676083017853}
 --- !u!1 &5229166204130564829
