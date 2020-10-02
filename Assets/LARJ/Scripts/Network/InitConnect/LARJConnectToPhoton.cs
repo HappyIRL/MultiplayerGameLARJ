@@ -5,8 +5,7 @@ using UnityEngine;
 public enum LARJNetworkState
 {
 	Local,
-	Photon,
-	PhotonAndLobby
+	Photon
 }
 
 public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
@@ -34,13 +33,6 @@ public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 				PhotonNetwork.GameVersion = MasterManager.Instance.GameSettings.GameVersion;
 				PhotonNetwork.ConnectUsingSettings();
 				LARJNetworkStatusEvent?.Invoke(LARJNetworkState.Photon);
-				break;
-			
-			case LARJNetworkState.PhotonAndLobby:
-				PhotonNetwork.NickName = MasterManager.Instance.GameSettings.NickName;
-				PhotonNetwork.GameVersion = MasterManager.Instance.GameSettings.GameVersion;
-				PhotonNetwork.ConnectUsingSettings();
-				LARJNetworkStatusEvent?.Invoke(LARJNetworkState.PhotonAndLobby);
 				break;
 		}
 	}
