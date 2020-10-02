@@ -1,11 +1,8 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public enum LARJNetworkStatus
+public enum LARJNetworkState
 {
 	Local,
 	Photon
@@ -13,24 +10,24 @@ public enum LARJNetworkStatus
 
 public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 {
-	public delegate void LARJNetworkSwitchHandler(LARJNetworkStatus status);
-	public event LARJNetworkSwitchHandler LARJNetworkStatusEvent;
+	public delegate void LARJNetworkStatusHandler(LARJNetworkState state);
+	public event LARJNetworkStatusHandler LARJNetworkStatusEvent;
 
 	//Called with a LARJNetworkStatus. Invokes LARJNetworkStatusEvent.
-	public void SwitchToNetworkState(LARJNetworkStatus status)
+	public void SwitchToNetworkState(LARJNetworkState state)
 	{
-		switch(status)
+		switch(state)
 		{
-			case LARJNetworkStatus.Local:
+			case LARJNetworkState.Local:
 				PhotonNetwork.Disconnect();
-				LARJNetworkStatusEvent?.Invoke(LARJNetworkStatus.Local);
+				LARJNetworkStatusEvent?.Invoke(LARJNetworkState.Local);
 				break;
 
-			case LARJNetworkStatus.Photon:
+			case LARJNetworkState.Photon:
 				PhotonNetwork.NickName = MasterManager.Instance.GameSettings.NickName;
 				PhotonNetwork.GameVersion = MasterManager.Instance.GameSettings.GameVersion;
 				PhotonNetwork.ConnectUsingSettings();
-				LARJNetworkStatusEvent?.Invoke(LARJNetworkStatus.Photon);
+				LARJNetworkStatusEvent?.Invoke(LARJNetworkState.Photon);
 				break;
 		}
 	}

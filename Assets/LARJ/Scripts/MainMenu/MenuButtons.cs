@@ -13,6 +13,8 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] private GameObject _mainMenuScreen = null;
     [SerializeField] private GameObject _startPlayScreen = null;
     [SerializeField] private GameObject _networkSectionScreen = null;
+
+    [SerializeField] private LARJConnectToPhoton _larjConnectToPhoton;
     private AudioSource _audioSource;
 
     private void Start()
@@ -47,9 +49,17 @@ public class MenuButtons : MonoBehaviour
         _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
+    public void EnterLocalSection()
+	{
+        _startPlayScreen.SetActive(true);
+        _networkSectionScreen.SetActive(false);
+        _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local);
+    }
+
 	public void EnterNetworkSection()
 	{
         _startPlayScreen.SetActive(false);
         _networkSectionScreen.SetActive(true);
+        _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
     }
 }

@@ -121,7 +121,7 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 				//Connected to Photon
 				case ClientState.ConnectedToMasterServer:
 					//Disconnect button
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Disconnect from Master", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkStatus.Local));
+					CreateGUIButton(new Rect(10, 80, 300, 20), "Disconnect from Master", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local));
 					//Join lobby button
 					CreateGUIButton(new Rect(10, 110, 300, 20), "Join Lobby", () => PhotonNetwork.JoinLobby());
 					break;
@@ -133,7 +133,7 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 					break;
 				case ClientState.PeerCreated:
 					//Enable Networking
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Switch Networking On", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkStatus.Photon));
+					CreateGUIButton(new Rect(10, 80, 300, 20), "Switch Networking On", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon));
 					break;
 			}
 		}
