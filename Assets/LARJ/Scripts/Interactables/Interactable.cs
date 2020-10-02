@@ -80,8 +80,11 @@ public abstract class Interactable : MonoBehaviour
 
     private void DisableButtonHintImages()
     {
-        KeyboardButtonHintImage.SetActive(false);
-        GamepadButtonHintImage.SetActive(false);
+        if(KeyboardButtonHintImage != null || GamepadButtonHintImage != null)
+		{
+            KeyboardButtonHintImage.SetActive(false);
+            GamepadButtonHintImage.SetActive(false);
+		}
     }
     private void DisablePickedUpInteractionButtonHints()
     {

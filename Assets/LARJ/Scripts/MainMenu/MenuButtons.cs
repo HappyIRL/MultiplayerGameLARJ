@@ -12,6 +12,7 @@ public class MenuButtons : MonoBehaviour
     [Header("Screens")]
     [SerializeField] private GameObject _mainMenuScreen = null;
     [SerializeField] private GameObject _startPlayScreen = null;
+    [SerializeField] private GameObject _networkSectionScreen = null;
     private AudioSource _audioSource;
 
     private void Start()
@@ -43,6 +44,12 @@ public class MenuButtons : MonoBehaviour
 
     public void StartLocalGame()
     {
-        _sceneChanger.FadeToScene(SceneManager.GetSceneByName("PrototypeLevel").buildIndex);
+        _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
+	public void EnterNetworkSection()
+	{
+        _startPlayScreen.SetActive(false);
+        _networkSectionScreen.SetActive(true);
     }
 }

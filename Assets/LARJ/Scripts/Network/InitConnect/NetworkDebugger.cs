@@ -15,10 +15,9 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 	private string _debugString;
 	private List<String> _debugList = new List<String>();
 	private byte _maxPlayersInRoom = 4;
+	private LARJConnectToPhoton _larjConnectToPhoton;
 
-	public delegate void NetworkSwitchHandler(bool networkingEnabled);
-	public event NetworkSwitchHandler NetworkEnabled;
-	public static bool _networkingEnabled = false;
+	public bool _networkingEnabled = false;
 
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 	private static void OnSceneLoad()
@@ -27,6 +26,15 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 		go.name = "NetworkDebuggerGameObject";
 		go.hideFlags = HideFlags.HideInHierarchy;
 		go.AddComponent<NetworkDebugger>();
+	}
+
+	private void Start()
+	{
+		var x = FindObjectsOfType<LARJConnectToPhoton>();
+		if (x.Length > 1) { Debug.LogError($"Found more than one of {x}"); }
+		if(x == null) { Debug.LogError($"Can't find the LARJConnectTophoton.cs"); }
+
+		else { _larjConnectToPhoton = x[0]; }
 	}
 
 	private void Update()
@@ -75,16 +83,6 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 		AddToDebugList(message);
 	}
 
-	public void MainNetworkingSwitch()
-	{
-		_networkingEnabled = !_networkingEnabled;
-
-		if (_networkingEnabled)
-		{
-			NetworkEnabled?.Invoke(_networkingEnabled);
-		}
-	}
-
 	private void OnGUI()
 	{
 		if(_toggleDebugUI)
@@ -123,7 +121,7 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 				//Connected to Photon
 				case ClientState.ConnectedToMasterServer:
 					//Disconnect button
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Disconnect from Master", () => PhotonNetwork.Disconnect());
+					CreateGUIButton(new Rect(10, 80, 300, 20), "Disconnect from Master", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkStatus.Local));
 					//Join lobby button
 					CreateGUIButton(new Rect(10, 110, 300, 20), "Join Lobby", () => PhotonNetwork.JoinLobby());
 					break;
@@ -135,7 +133,7 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 					break;
 				case ClientState.PeerCreated:
 					//Enable Networking
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Switch Networking On", () => MainNetworkingSwitch());
+					CreateGUIButton(new Rect(10, 80, 300, 20), "Switch Networking On", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkStatus.Photon));
 					break;
 			}
 		}
