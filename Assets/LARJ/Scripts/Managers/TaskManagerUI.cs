@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Tasks;
 using UnityEngine;
 
 public class TaskManagerUI : MonoBehaviour
@@ -10,21 +11,47 @@ public class TaskManagerUI : MonoBehaviour
     [SerializeField] private Transform _firstTaskPoint = null;
     [SerializeField] private float _spaceBetweenTasks = 10f;
 
+    [Header("Icons")]
+    [SerializeField] private Sprite _telephoneIcon = null;
+    [SerializeField] private Sprite _mailIcon = null;
+    [SerializeField] private Sprite _customerIcon = null;
+    [SerializeField] private Sprite _cleaningIcon = null;
+    [SerializeField] private Sprite _fireExtinguisherIcon = null;
+    [SerializeField] private Sprite _printerIcon = null;
+
     private List<TaskUI> _activeUITasks = new List<TaskUI>();
 
-    public void SpawnUITask(string taskName, string rewardText, float timeToCompleteTask)
+    public void SpawnUITask(TaskType taskType, int rewardMoney, float timeToCompleteTask)
     {
         GameObject obj = _taskUIPool.GetObject();
         TaskUI task = obj.GetComponent<TaskUI>();
-
-        task.TaskTitle = taskName;
-        task.TaskRewardText = rewardText;
-        task.TimeToComplete = timeToCompleteTask;
 
         obj.transform.parent = _parentCanvas;
         obj.transform.position = _taskSpawnPoint.position;
         _activeUITasks.Add(task);
 
+        string title = null;
+        Sprite icon = null;
+
+        switch (taskType)
+        {
+            case TaskType.PhoneCall:
+                title = "Answer Phone!";
+                icon = _telephoneIcon;
+                break;
+            case TaskType.Printer:
+                title = "Print something!";
+                icon = _printerIcon;
+                break;
+            case TaskType.Customer:
+                title = "Serve Customer!";
+                icon = _customerIcon;
+                break;
+            case TaskType.NotAssigned:
+                break;
+        }
+
+        task.SetUIValues(title, rewardMoney, timeToCompleteTask, icon);
         AlignTaskUI();
     }
 
@@ -54,7 +81,6 @@ public class TaskManagerUI : MonoBehaviour
         AlignTaskUI();
         
     }
-
     private void AlignTaskUI()
     {
         if (_activeUITasks.Count <= 0) return;
@@ -70,4 +96,5 @@ public class TaskManagerUI : MonoBehaviour
             _activeUITasks[i].MoveTo(x);
         }
     }
+
 }

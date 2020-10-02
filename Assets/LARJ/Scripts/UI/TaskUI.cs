@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Tasks;
 using TMPro;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +13,12 @@ public class TaskUI : MonoBehaviour, IObjectPoolNotifier
     [HideInInspector] public RectTransform RectTransform = null;
 
     [Header("Attributes")]
-    [SerializeField] private TextMeshProUGUI _titleText = null;
     [SerializeField] private TextMeshProUGUI _rewardText = null;
+    [SerializeField] private TextMeshProUGUI _titleText = null;
     [SerializeField] private Image _timerImage = null;
-    [HideInInspector] public string TaskTitle = "";
-    [HideInInspector] public string TaskRewardText = "";
-    [HideInInspector] public float TimeToComplete = 0f;
+    [SerializeField] private Image _taskIcon = null;
 
+    private float _timeToComplete = 0f;
     private Coroutine _lastCoroutine;
 
     private void Start()
@@ -71,10 +72,6 @@ public class TaskUI : MonoBehaviour, IObjectPoolNotifier
             TaskUIPool = GetComponent<PooledObject>()._pool;
         }
 
-        _titleText.text = TaskTitle;
-        _rewardText.text = TaskRewardText;
-        _timerImage.fillAmount = 1f;
-
         StartCoroutine(StartTaskTimerCorutine());
     }
 
@@ -87,11 +84,19 @@ public class TaskUI : MonoBehaviour, IObjectPoolNotifier
     {
         float timer = 0f;
 
-        while (timer < TimeToComplete)
+        while (timer < _timeToComplete)
         {
             timer += Time.deltaTime;
-            _timerImage.fillAmount = (TimeToComplete - timer) / TimeToComplete;
+            _timerImage.fillAmount = (_timeToComplete - timer) / _timeToComplete;
             yield return null;
         }
+    }
+
+    public void SetUIValues(string taskTitle, int rewardMoney, float taskTime, Sprite taskIcon)
+    {
+        _titleText.text = taskTitle;
+        _rewardText.text = rewardMoney.ToString();
+        _timeToComplete = taskTime;
+        _taskIcon.sprite = taskIcon;
     }
 }
