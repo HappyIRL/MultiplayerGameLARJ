@@ -5,7 +5,8 @@ using UnityEngine;
 public enum LARJNetworkState
 {
 	Local,
-	Photon
+	Photon,
+	PhotonAndLobby
 }
 
 public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
@@ -14,6 +15,11 @@ public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 	public event LARJNetworkStatusHandler LARJNetworkStatusEvent;
 
 	//Called with a LARJNetworkStatus. Invokes LARJNetworkStatusEvent.
+	private void Start()
+	{
+		PhotonNetwork.AutomaticallySyncScene = true;
+	}
+
 	public void SwitchToNetworkState(LARJNetworkState state)
 	{
 		switch(state)
@@ -29,11 +35,19 @@ public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 				PhotonNetwork.ConnectUsingSettings();
 				LARJNetworkStatusEvent?.Invoke(LARJNetworkState.Photon);
 				break;
+			
+			case LARJNetworkState.PhotonAndLobby:
+				PhotonNetwork.NickName = MasterManager.Instance.GameSettings.NickName;
+				PhotonNetwork.GameVersion = MasterManager.Instance.GameSettings.GameVersion;
+				PhotonNetwork.ConnectUsingSettings();
+				LARJNetworkStatusEvent?.Invoke(LARJNetworkState.PhotonAndLobby);
+				break;
 		}
 	}
 
     public override void OnConnectedToMaster()
 	{
+		PhotonNetwork.JoinLobby();
 		Debug.Log($"OnConnectedToMaster was called. Connected with Nick: {PhotonNetwork.LocalPlayer.NickName}");
 	}
 

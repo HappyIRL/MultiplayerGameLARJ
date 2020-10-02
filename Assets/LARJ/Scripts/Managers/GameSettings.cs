@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class GameSettings : ScriptableObject
 	private string _gameVersion = "0.0.1";
 	[SerializeField]
 	private string _nickName = "Player";
+
 	public string GameVersion { get { return _gameVersion; } }
 
 	public string NickName

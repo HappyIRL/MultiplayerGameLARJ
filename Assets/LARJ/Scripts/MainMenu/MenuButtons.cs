@@ -13,8 +13,12 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] private GameObject _mainMenuScreen = null;
     [SerializeField] private GameObject _startPlayScreen = null;
     [SerializeField] private GameObject _networkSectionScreen = null;
+    [SerializeField] private GameObject _gameTitle = null;
 
     [SerializeField] private LARJConnectToPhoton _larjConnectToPhoton;
+
+    private Vector3 _gTSavedPos;
+    private RectTransform _gTSavedRect;
     private AudioSource _audioSource;
 
     private void Start()
@@ -54,12 +58,21 @@ public class MenuButtons : MonoBehaviour
         _startPlayScreen.SetActive(true);
         _networkSectionScreen.SetActive(false);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local);
+        RectTransform rt = (RectTransform)_gameTitle.transform;
+        rt.sizeDelta = _gTSavedRect.sizeDelta;
+
     }
 
 	public void EnterNetworkSection()
 	{
         _startPlayScreen.SetActive(false);
         _networkSectionScreen.SetActive(true);
+        _gTSavedPos = _gameTitle.transform.position;
+        _gTSavedRect = (RectTransform)_gameTitle.transform;
+
+        _gameTitle.transform.position = new Vector3(1600, _gameTitle.transform.position.y, _gameTitle.transform.position.z);
+        RectTransform rt = (RectTransform)_gameTitle.transform;
+        rt.sizeDelta = new Vector2(500, 300);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
     }
 }
