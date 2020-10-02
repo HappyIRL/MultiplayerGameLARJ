@@ -16,9 +16,6 @@ public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 	public delegate void LARJNetworkSwitchHandler(LARJNetworkStatus status);
 	public event LARJNetworkSwitchHandler LARJNetworkStatusEvent;
 
-	private bool _networkingEnabled = false;
-
-
 	//Called with a LARJNetworkStatus. Invokes LARJNetworkStatusEvent.
 	public void SwitchToNetworkState(LARJNetworkStatus status)
 	{
@@ -28,6 +25,7 @@ public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 				PhotonNetwork.Disconnect();
 				LARJNetworkStatusEvent?.Invoke(LARJNetworkStatus.Local);
 				break;
+
 			case LARJNetworkStatus.Photon:
 				PhotonNetwork.NickName = MasterManager.Instance.GameSettings.NickName;
 				PhotonNetwork.GameVersion = MasterManager.Instance.GameSettings.GameVersion;
