@@ -58,8 +58,7 @@ public class MenuButtons : MonoBehaviour
         _startPlayScreen.SetActive(true);
         _networkSectionScreen.SetActive(false);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local);
-        RectTransform rt = (RectTransform)_gameTitle.transform;
-        rt.sizeDelta = _gTSavedRect.sizeDelta;
+        _gameTitle.transform.position = _gTSavedPos;
 
     }
 
@@ -71,8 +70,6 @@ public class MenuButtons : MonoBehaviour
         _gTSavedRect = (RectTransform)_gameTitle.transform;
 
         _gameTitle.transform.position = new Vector3(1600, _gameTitle.transform.position.y, _gameTitle.transform.position.z);
-        RectTransform rt = (RectTransform)_gameTitle.transform;
-        rt.sizeDelta = new Vector2(500, 300);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
     }
 }
