@@ -2,16 +2,17 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public enum LARJNetworkEvents
 {
-	PCUpdate = 128
+	PCUpdate = 128,
+	InteractabnleUpdate = 129
 }
 
 public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 {
 	[SerializeField] private GameObject[] _players = new GameObject[4];
+	[SerializeField] private PlayerInteraction _playerInteraction;
 
 	private LARJNetworkID myID = 0;
 
@@ -26,12 +27,18 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void Start()
 	{
 		PhotonNetwork.AddCallbackTarget(this);
+		_playerInteraction.LARJInteractableUse += UpdateLocalInteractables;
 	}
 
 	private void Update()
 	{
 		myID = (LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1;
 		UpdateLocalPlayerController();
+	}
+
+	private void UpdateLocalInteractables(InteractableObjectID id, InteractableUseType type)
+	{
+
 	}
 
 	public void SetPlayers(GameObject[] go)
