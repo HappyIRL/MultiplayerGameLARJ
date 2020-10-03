@@ -67,8 +67,6 @@ public class MenuButtons : MonoBehaviour
         _startPlayScreen.SetActive(false);
         _networkSectionScreen.SetActive(true);
         _gTSavedPos = _gameTitle.transform.position;
-        _gTSavedRect = (RectTransform)_gameTitle.transform;
-
         _gameTitle.transform.position = new Vector3(1600, _gameTitle.transform.position.y, _gameTitle.transform.position.z);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
     }
