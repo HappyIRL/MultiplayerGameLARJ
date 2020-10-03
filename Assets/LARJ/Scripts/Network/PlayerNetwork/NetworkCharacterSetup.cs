@@ -1,6 +1,7 @@
 ﻿using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,7 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 {
 	[SerializeField] private GameObject _playerPrefab;
 	[SerializeField] private GameObject _simulatedPlayer;
+	[SerializeField] private List<GameObject> _interactables = new List<GameObject>();
 
 	private GameObject[] _players = new GameObject[4];
 
@@ -18,6 +20,7 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 	{
 
 		PhotonPeer.RegisterType(typeof(ClientNetworkData), (byte)LARJNetworkEvents.PCUpdate, ClientNetworkData.SerializeMethod, ClientNetworkData.DeserializeMethod);
+		PhotonPeer.RegisterType(typeof(InteractableNetworkData), (byte)LARJNetworkEvents.InteractableUpdate, InteractableNetworkData.SerializeMethod, InteractableNetworkData.DeserializeMethod);
 
 		if (PhotonNetwork.IsConnected)
 		{
@@ -43,6 +46,7 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 			}
 
 			_clientNetworkHandler.SetPlayers(_players);
+			_clientNetworkHandler.SetInteractables(_interactables);
 		}
 	}
 
