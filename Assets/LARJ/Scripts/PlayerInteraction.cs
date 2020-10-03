@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+public enum InteractableUseType
+{
+    PickUp,
+    Drop,
+    PressInteraction,
+    HoldInteraction
+}
+
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerInteraction : MonoBehaviour
 {
@@ -19,6 +27,9 @@ public class PlayerInteraction : MonoBehaviour
     private InteractionType InteractableInteractionType = InteractionType.PickUp;
     private bool _canInteract = false;
     private bool _isPickedUp = false;
+
+    public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type);
+    public event LARJInteractableUseEvent LARJInteractableUse;
 
     //Object to interact
     private Interactable _objectToInteract;
@@ -244,6 +255,8 @@ public class PlayerInteraction : MonoBehaviour
         _objectToInteract.DisableButtonHints();
         _objectToInteract.DisableColliders();
 
+        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.PickUp);
+
         if (_objectToInteract.CanInteractWhenPickedUp)
         {
             _objectToInteract.EnablePickedUpButtonHints(_playerInput.currentControlScheme);
@@ -257,6 +270,7 @@ public class PlayerInteraction : MonoBehaviour
         _objectToInteract.transform.parent = null;
         _objectToInteract.Rb.WakeUp();
         _objectToInteract.EnableColliders();
+        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.Drop);
 
         if (_objectToInteract.CanInteractWhenPickedUp)
         {
@@ -268,6 +282,8 @@ public class PlayerInteraction : MonoBehaviour
     private void PressInteraction()
     {
         if (_objectToInteract == null) return;
+
+        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.PressInteraction);
         _objectToInteract.PressEvent();
     }
     private void HoldingInteraction()
@@ -280,6 +296,7 @@ public class PlayerInteraction : MonoBehaviour
         _holdingTimeBarBG.SetActive(true);
         _objectToInteract.HoldingStartedEvent();
         _objectToInteract.DisableButtonHints();
+        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.HoldInteraction);
     }
     #endregion
 }

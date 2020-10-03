@@ -12,6 +12,8 @@ public class Telephone : Interactable
     [Header("Ringing")]
     [SerializeField] private float _ringingTimeInSecs = 20f;
     [SerializeField] private float _lightSwitchTimeInSecs = 1f;
+    [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
+    [SerializeField] private int _interactableID;
 
     [Header("References")]
     [SerializeField] private Material _redScreenMaterial = null;
@@ -31,7 +33,7 @@ public class Telephone : Interactable
     public override void Start()
     {
         base.Start();
-
+        interactableID = (InteractableObjectID)_interactableID;
         _meshRenderer = GetComponent<MeshRenderer>();
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _ringingSound;

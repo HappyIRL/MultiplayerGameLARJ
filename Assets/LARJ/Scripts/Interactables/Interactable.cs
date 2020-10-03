@@ -9,6 +9,18 @@ public enum InteractionType
     Press,
     Hold,
 }
+public enum InteractableObjectID
+{
+    Broom = 64,
+    Telephone1 = 65,
+    Telephone2 = 66,
+    FireExtinguisher = 67,
+    Paper = 68,
+    PC = 69,
+    Printer = 70,
+    Shotgun = 71,
+    WaterCooler = 72
+}
 
 [Serializable]
 public class InteractionEvents : UnityEvent { }
@@ -31,6 +43,8 @@ public abstract class Interactable : MonoBehaviour
 
     [HideInInspector] public float HoldingTime = 1f;
     [HideInInspector] public bool CanInteractWhenPickedUp = false;
+
+    public InteractableObjectID interactableID { get; protected set; }
 
     public virtual void Awake()
     {
@@ -58,7 +72,6 @@ public abstract class Interactable : MonoBehaviour
             DisablePickedUpInteractionButtonHints();
         }
     }
-
 
     #region UI
     public void DisableButtonHints()

@@ -11,6 +11,8 @@ public class Shotgun : Interactable
     [SerializeField] private Transform _bulletSpawnPoint = null;
     [SerializeField] private ObjectPool _shotgunBulletPool = null;
     [SerializeField] private AudioClip _shotgunShootSound = null;
+    [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
+    [SerializeField] private int _interactableID;
 
     private AudioSource _audioSource;
     private bool _canShoot = true;
@@ -18,7 +20,7 @@ public class Shotgun : Interactable
     public override void Awake()
     {
         base.Awake();
-
+        interactableID = (InteractableObjectID)_interactableID;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _shotgunShootSound;
     }

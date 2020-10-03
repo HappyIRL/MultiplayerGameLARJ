@@ -152,6 +152,7 @@ MonoBehaviour:
   GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
   HoldingTime: 1
   CanInteractWhenPickedUp: 0
+  _interactableID: 68
 --- !u!114 &5690055473500903219
 MonoBehaviour:
   m_ObjectHideFlags: 0

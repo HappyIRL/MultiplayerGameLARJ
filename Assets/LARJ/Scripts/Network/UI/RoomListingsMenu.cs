@@ -44,7 +44,7 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
 						{
 							listing.SetRoomInfo(info);
 							_listings.Add(listing);
-							listing.GetComponent<JoinRoomButton>().RoomName = listing.RoomInfo.Name;
+							listing.GetComponent<JoinRoomButton>().SetRoomName(listing.RoomInfo.Name);
 						}
 					}
 				}

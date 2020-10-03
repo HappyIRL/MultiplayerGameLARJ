@@ -15,6 +15,8 @@ public class Printer : Interactable
     [SerializeField] private AudioClip _printerInSound = null;
     [SerializeField] private AudioClip _printerInProgressSound = null;
     [SerializeField] private AudioClip _printerOutSound = null;
+    [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
+    [SerializeField] private int _interactableID;
 
     private AudioSource _audioSource;
     private Coroutine _lastCoroutine;
@@ -22,7 +24,7 @@ public class Printer : Interactable
     public override void Start()
     {
         base.Start();
-
+        interactableID = (InteractableObjectID)_interactableID;
         _audioSource = GetComponent<AudioSource>();
     }
 
