@@ -16,33 +16,34 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 
 	private void Start()
 	{
+
 		PhotonPeer.RegisterType(typeof(ClientNetworkData), (byte)LARJNetworkEvents.PCUpdate, ClientNetworkData.SerializeMethod, ClientNetworkData.DeserializeMethod);
-	}
 
-	public override void OnJoinedRoom()
-	{
-		_clientNetworkHandler = gameObject.AddComponent<ClientNetworkHandler>();
-		Destroy(FindObjectOfType<PlayerInputManager>());
-		foreach(PlayerInput x in FindObjectsOfType<PlayerInput>())
+		if (PhotonNetwork.IsConnected)
 		{
-			Destroy(x.gameObject);
-		}
-
-		for (int i = 0; i < 4; i++)
-		{
-			if(PhotonNetwork.LocalPlayer.ActorNumber - 1 == i)
+			_clientNetworkHandler = gameObject.AddComponent<ClientNetworkHandler>();
+			Destroy(FindObjectOfType<PlayerInputManager>());
+			foreach (PlayerInput x in FindObjectsOfType<PlayerInput>())
 			{
-				_players[i] = Instantiate(_playerPrefab);
+				Destroy(x.gameObject);
 			}
-			else
-			{
-				_players[i] = Instantiate(_simulatedPlayer);
-				var simPlayer = _players[i].GetComponent<SimulatedPlayer>();
-				simPlayer.SetHairColor(Color.HSVToRGB((float)i / 4, 1 , 1));
-			}
-		}
 
-		_clientNetworkHandler.SetPlayers(_players);
+			for (int i = 0; i < 4; i++)
+			{
+				if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == i)
+				{
+					_players[i] = Instantiate(_playerPrefab);
+				}
+				else
+				{
+					_players[i] = Instantiate(_simulatedPlayer);
+					var simPlayer = _players[i].GetComponent<SimulatedPlayer>();
+					simPlayer.SetHairColor(Color.HSVToRGB((float)i / 4, 1, 1));
+				}
+			}
+
+			_clientNetworkHandler.SetPlayers(_players);
+		}
 	}
 
 	public override void OnPlayerLeftRoom(Player otherPlayer)
