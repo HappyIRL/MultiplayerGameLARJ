@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,7 +19,6 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] private LARJConnectToPhoton _larjConnectToPhoton;
 
     private Vector3 _gTSavedPos;
-    private RectTransform _gTSavedRect;
     private AudioSource _audioSource;
 
     private void Start()
@@ -29,7 +29,7 @@ public class MenuButtons : MonoBehaviour
         OpenMainMenuScreen();
     }
 
-    public void PlayButtonClickSound()
+	public void PlayButtonClickSound()
     {
         _audioSource.Play();
     }
@@ -48,9 +48,9 @@ public class MenuButtons : MonoBehaviour
         _startPlayScreen.SetActive(true);
     }
 
-    public void StartLocalGame()
+    public void StartGame()
     {
-        _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex - 1);
+        _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void EnterLocalSection()

@@ -8,6 +8,7 @@ public class JoinRoomButton : MonoBehaviourPunCallbacks
 {
 	public string RoomName = "";
 
+
     public void OnClick_JoinRoom()
 	{
 		PhotonNetwork.JoinRoom(RoomName);
@@ -16,11 +17,6 @@ public class JoinRoomButton : MonoBehaviourPunCallbacks
 	public override void OnJoinedRoom()
 	{
 		Debug.Log($"Successfully joined room; Name: {RoomName}");
-	}
-
-	public override void OnJoinRandomFailed(short returnCode, string message)
-	{
-		throw new System.NotImplementedException();
 	}
 
 	public override void OnJoinRoomFailed(short returnCode, string message)

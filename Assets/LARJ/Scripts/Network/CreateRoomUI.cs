@@ -11,6 +11,9 @@ public class CreateRoomUI : MonoBehaviourPunCallbacks
 	[SerializeField] private byte _maxPlayersInRoom = 4;
 	[SerializeField] private TextMeshProUGUI _placeHolder;
 
+	public delegate void LARJOnRoomCreatedEvent();
+	public event LARJOnRoomCreatedEvent LARJOnRoomCreated;
+
 	public void OnClick_CreateRoom()
 	{
 		if (!PhotonNetwork.IsConnected || !(PhotonNetwork.NetworkClientState == ClientState.JoinedLobby))
@@ -26,6 +29,7 @@ public class CreateRoomUI : MonoBehaviourPunCallbacks
 
 	public override void OnCreatedRoom()
 	{
+		LARJOnRoomCreated?.Invoke();
 		Debug.Log("Created room successfully. " + this);
 	}
 

@@ -103,8 +103,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		LARJNetworkEvents eventCode = (LARJNetworkEvents)photonEvent.Code;
 
-		Debug.Log("OnEvent called");
-
 		Debug.Log(eventCode);
 
 		switch(eventCode)
