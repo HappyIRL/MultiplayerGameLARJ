@@ -15,6 +15,7 @@ namespace Tasks
         [SerializeField] private float _delayBetweenTasks;
         [SerializeField] private float _variationOfTaskDelay;
         [SerializeField] private TextMeshProUGUI _scoreText;
+        [SerializeField] private TextMeshProUGUI _scoreAddText;
         [SerializeField] private TaskManagerUI _taskManagerUI;
 
         public delegate void LARJTaskEvent(Interactable interactable, bool active);
@@ -155,6 +156,8 @@ namespace Tasks
 
         private void UpdateScore(int reward, bool positive)
         {
+            _scoreAddText.text = positive ? "+" + reward.ToString() : "-" + reward.ToString();
+            _scoreAddText.color = positive ? Color.green : Color.red;
             _score += positive ? reward : -reward;
             _score = _score < 0 ? 0 : _score;
             _scoreText.text = _score.ToString();
