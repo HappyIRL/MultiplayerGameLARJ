@@ -639,12 +639,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TaskUIPool: {fileID: 0}
   RectTransform: {fileID: 0}
-  _titleText: {fileID: 6242393899320176998}
   _rewardText: {fileID: 6242393899897763297}
+  _titleText: {fileID: 6242393899320176998}
   _timerImage: {fileID: 223912544196748924}
-  TaskTitle: 
-  TaskRewardText: 
-  TimeToComplete: 0
+  _taskIcon: {fileID: 6242393899801874927}
 --- !u!1 &6242393901191882101
 GameObject:
   m_ObjectHideFlags: 0

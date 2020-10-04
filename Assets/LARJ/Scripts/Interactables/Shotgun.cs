@@ -82,43 +82,10 @@ public class Shotgun : Interactable
         _canShoot = true;
     }
 
-    public override void HoldingStartedEvent()
-    {
-        
-    }
-
-    public override void HoldingFailedEvent()
-    {
-       
-    }
-
-    public override void HoldingFinishedEvent()
-    {
-        
-    }
-
-    public override void PressEvent()
-    {
-        
-    }
 
     public override void MousePressEvent()
     {
         Shoot();
     }
 
-    public override void MouseReleaseEvent()
-    {
-
-    }
-
-    public override void EnableInteractible()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void DisableInteractible()
-    {
-        throw new NotImplementedException();
-    }
 }

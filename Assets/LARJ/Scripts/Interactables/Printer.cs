@@ -86,29 +86,13 @@ public class Printer : Interactable
         FinishPrinting();
     }
 
-    public override void PressEvent()
-    {
 
+    public override void StartInteractible()
+    {
     }
 
-    public override void MousePressEvent()
+    public override void StopInteractible()
     {
-
-    }
-
-    public override void MouseReleaseEvent()
-    {
-
-    }
-
-    public override void EnableInteractible()
-    {
-        enabled = true;
-    }
-
-    public override void DisableInteractible()
-    {
-        enabled = false;
         CancelPrinting();
     }
 }

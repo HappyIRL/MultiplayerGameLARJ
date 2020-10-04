@@ -29,7 +29,6 @@ public class Telephone : Interactable
     private bool _callAnswered = false;
     private Coroutine _lastCoroutine;
 
-
     public override void Start()
     {
         base.Start();
@@ -54,7 +53,6 @@ public class Telephone : Interactable
         while (timer <= _ringingTimeInSecs)
         {
             timer += Time.deltaTime;
-
             if (timer >= lightSwitchTimer)
             {
                 lightSwitchTimer = timer + _lightSwitchTimeInSecs;
@@ -70,14 +68,12 @@ public class Telephone : Interactable
                     lightIsNormal = true;
                 }
             }
-
             yield return null;
         }
         if (!_callAnswered)
         {
             _failedToAnswerEvent.Invoke();
         }
-
         EndCall();
     }
 
@@ -107,11 +103,6 @@ public class Telephone : Interactable
         _completedEvent.Invoke();
     }
 
-    public override void HoldingStartedEvent()
-    {
-        
-    }
-
     public override void HoldingFailedEvent()
     {
         EndCall();
@@ -122,33 +113,13 @@ public class Telephone : Interactable
         AnswerCall();
     }
 
-    public override void PressEvent()
+    public override void StartInteractible()
     {
-        
-    }
-
-    public override void MousePressEvent()
-    {
-        
-    }
-
-    public override void MouseReleaseEvent()
-    {
-        
-    }
-
-    public override void EnableInteractible()
-    {
-        enabled = true;
         StartTelephoneRinging();
-        //Whast else do I need here?
-        
     }
 
-    public override void DisableInteractible()
+    public override void StopInteractible()
     {
         EndCall();
-        enabled = false;
-        //What else needs to be disabled?
     }
 }

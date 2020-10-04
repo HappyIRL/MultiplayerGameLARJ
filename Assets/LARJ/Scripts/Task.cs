@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,13 +36,14 @@ namespace Tasks
         public float GetTimeToFinishTask { get => _timeToFinishTask; }
         public bool IsTaskActive { get => _isTaskActive; set => _isTaskActive = value; }
 
+        
         private void Awake()
         {
             _interactable = GetComponent<Interactable>();
         }
         public void StartTask()
         {
-            _interactable.EnableInteractible();
+            _interactable.StartInteractible();
             _cooldownCoroutine = StartCoroutine(StartTaskCooldown());
         }
         IEnumerator StartTaskCooldown()
@@ -66,7 +68,8 @@ namespace Tasks
         public void StopTask()
         {
             StopTaskCoolDown();
-            _interactable.DisableInteractible();
+            _interactable.StopInteractible();
+
         }
     }
 }

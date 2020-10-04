@@ -266,12 +266,12 @@ public class Customer : Interactable, IObjectPoolNotifier
         
     }
 
-    public override void EnableInteractible()
+    public override void StartInteractible()
     {
         throw new NotImplementedException();
     }
 
-    public override void DisableInteractible()
+    public override void StopInteractible()
     {
         throw new NotImplementedException();
     }

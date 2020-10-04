@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -34,9 +36,12 @@ public class PlayerInteraction : MonoBehaviour
 
     public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type);
     public event LARJInteractableUseEvent LARJInteractableUse;
+    private List<Interactable> _allowedInteractibles = new List<Interactable>();
 
     //Object to interact
     private Interactable _objectToInteract;
+    private TaskManager _taskManager;
+
     public Interactable ObjectToInteract
     {
         get { return _objectToInteract; }
@@ -57,7 +62,28 @@ public class PlayerInteraction : MonoBehaviour
     private void Start()
     {
         _holdingTimeBarBG.SetActive(false);
+        _taskManager = FindObjectOfType<TaskManager>();
+        _taskManager.OnTask += ActivateInteractible;
     }
+
+    private void ActivateInteractible(Interactable interactable, bool active)
+    {
+        if (active)
+        {
+            if (!_allowedInteractibles.Contains(interactable))
+            {
+                _allowedInteractibles.Add(interactable);
+            }
+        }
+        else
+        {
+            if (_allowedInteractibles.Contains(interactable))
+            {
+                _allowedInteractibles.Remove(interactable);
+            }
+        }
+    }
+
     private void Update()
     {
         if (_holdingButton)
@@ -87,9 +113,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                ObjectToInteract = interactable;
-                InteractableInteractionType = interactable.InteractionType;
-                _canInteract = true;
+                if (_allowedInteractibles.Contains(interactable))
+                {
+
+                    ObjectToInteract = interactable;
+                    InteractableInteractionType = interactable.InteractionType;
+                    _canInteract = true;
+                }
             }
         }
     }
@@ -102,13 +132,16 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (ObjectToInteract == null)
             {
-                ObjectToInteract = interactable;
-                InteractableInteractionType = interactable.InteractionType;
-                _canInteract = true;
+                if (_allowedInteractibles.Contains(interactable))
+                {
+                    ObjectToInteract = interactable;
+                    InteractableInteractionType = interactable.InteractionType;
+                    _canInteract = true;
+
+                }
             }
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         Interactable interactable = other.GetComponent<Interactable>();
@@ -163,7 +196,7 @@ public class PlayerInteraction : MonoBehaviour
             if (_objectToInteract == null) return;
 
             if (InteractableInteractionType == InteractionType.PickUp)
-            {               
+            {
                 if (_isPickedUp)
                 {
                     Drop();
@@ -171,11 +204,11 @@ public class PlayerInteraction : MonoBehaviour
                 else
                 {
                     PickUp();
-                }               
+                }
             }
             else if (InteractableInteractionType == InteractionType.Press)
             {
-                PressInteraction();                
+                PressInteraction();
             }
         }
     }
@@ -184,8 +217,8 @@ public class PlayerInteraction : MonoBehaviour
         if (_canInteract)
         {
             if (InteractableInteractionType == InteractionType.Hold)
-            {                  
-                HoldingInteraction();                             
+            {
+                HoldingInteraction();
             }
         }
     }
@@ -273,7 +306,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Drop()
     {
         if (_objectToInteract == null) return;
-        
+
         _isPickedUp = false;
         _objectToInteract.transform.parent = null;
         _objectToInteract.Rb.WakeUp();

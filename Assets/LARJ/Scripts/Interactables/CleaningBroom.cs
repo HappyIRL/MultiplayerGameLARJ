@@ -54,25 +54,6 @@ public class CleaningBroom : Interactable
         _isCleaning = false;
     }
 
-    public override void HoldingStartedEvent()
-    {
-        
-    }
-
-    public override void HoldingFailedEvent()
-    {
-        
-    }
-
-    public override void HoldingFinishedEvent()
-    {
-        
-    }
-
-    public override void PressEvent()
-    {
-       
-    }
 
     public override void MousePressEvent()
     {
@@ -84,11 +65,11 @@ public class CleaningBroom : Interactable
         StopCleaning();
     }
 
-    public override void EnableInteractible()
+    public override void StartInteractible()
     {
     }
 
-    public override void DisableInteractible()
+    public override void StopInteractible()
     {
     }
 }

@@ -60,25 +60,6 @@ public class FireExtinguisher : Interactable
         }
     }
 
-    public override void HoldingStartedEvent()
-    {
-        
-    }
-
-    public override void HoldingFailedEvent()
-    {
-        
-    }
-
-    public override void HoldingFinishedEvent()
-    {
-        
-    }
-
-    public override void PressEvent()
-    {
-        
-    }
 
     public override void MousePressEvent()
     {
@@ -90,12 +71,12 @@ public class FireExtinguisher : Interactable
         StopExtinguishing();
     }
 
-    public override void EnableInteractible()
+    public override void StartInteractible()
     {
         throw new NotImplementedException();
     }
 
-    public override void DisableInteractible()
+    public override void StopInteractible()
     {
         throw new NotImplementedException();
     }

@@ -1,5 +1,6 @@
 ﻿using cakeslice;
 using System;
+using Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,6 +45,7 @@ public abstract class Interactable : MonoBehaviour
 
     [HideInInspector] public float HoldingTime = 1f;
     [HideInInspector] public bool CanInteractWhenPickedUp = false;
+    private TaskManager _taskManager;
 
     public InteractableObjectID interactableID { get; protected set; }
 
@@ -63,6 +65,7 @@ public abstract class Interactable : MonoBehaviour
             Rb.Sleep();
         }
     }
+
 
     public virtual void OnDisable()
     {
@@ -147,13 +150,13 @@ public abstract class Interactable : MonoBehaviour
     }
 
     #region Events
-    public abstract void HoldingStartedEvent();
-    public abstract void HoldingFailedEvent();
-    public abstract void HoldingFinishedEvent();
-    public abstract void PressEvent();
-    public abstract void MousePressEvent();
-    public abstract void MouseReleaseEvent();
-    public abstract void EnableInteractible();
-    public abstract void DisableInteractible();
+    public virtual void HoldingStartedEvent() { }
+    public virtual void HoldingFailedEvent() { }
+    public virtual void HoldingFinishedEvent() { }
+    public virtual void PressEvent() { }
+    public virtual void MousePressEvent() { }
+    public virtual void MouseReleaseEvent() { }
+    public virtual void StartInteractible() { }
+    public virtual void StopInteractible() { }
     #endregion
 }

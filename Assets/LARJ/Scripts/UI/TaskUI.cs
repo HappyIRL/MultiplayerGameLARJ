@@ -100,7 +100,7 @@ namespace Tasks
             _titleText.text = taskTitle;
             _rewardText.text = rewardMoney.ToString();
             _timeToComplete = taskTime;
-            //_taskIcon.sprite = taskIcon;
+            _taskIcon.sprite = taskIcon;
         }
     }
 }

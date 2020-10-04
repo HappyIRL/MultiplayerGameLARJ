@@ -13,41 +13,13 @@ public class Paper : Interactable
 	{
         interactableID = (InteractableObjectID)_interactableID;
     }
-	public override void HoldingFailedEvent()
-    {
-        
-    }
+	
 
-    public override void HoldingFinishedEvent()
-    {
-        
-    }
-
-    public override void HoldingStartedEvent()
-    {
-        
-    }
-
-    public override void MousePressEvent()
-    {
-       
-    }
-
-    public override void MouseReleaseEvent()
-    {
-        
-    }
-
-    public override void PressEvent()
-    {
-        
-    }
-
-    public override void EnableInteractible()
+    public override void StartInteractible()
     {
     }
 
-    public override void DisableInteractible()
+    public override void StopInteractible()
     {
     }
 }

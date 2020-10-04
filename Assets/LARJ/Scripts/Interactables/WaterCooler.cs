@@ -36,42 +36,19 @@ public class WaterCooler : Interactable
         _audioSource.Stop();
     }
 
-    public override void HoldingStartedEvent()
-    {
-        
-    }
-
-    public override void HoldingFailedEvent()
-    {
-        
-    }
-
-    public override void HoldingFinishedEvent()
-    {
-        
-    }
 
     public override void PressEvent()
     {
         PlayParticles();
     }
 
-    public override void MousePressEvent()
-    {
-        
-    }
 
-    public override void MouseReleaseEvent()
-    {
-        
-    }
-
-    public override void EnableInteractible()
+    public override void StartInteractible()
     {
         enabled = true;
     }
 
-    public override void DisableInteractible()
+    public override void StopInteractible()
     {
         enabled = false;
     }
