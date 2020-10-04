@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 _moveDirection = Vector3.zero;
     private Vector2 _inputVector = Vector2.zero;
-    public float _initialYPosition;
+    private float _initialYPosition;
     private float _dashTimer = 0f;
     private bool _isDashOnCooldown = false;
     private float _dashSpeed = 10;
@@ -91,7 +91,6 @@ public class PlayerMovement : MonoBehaviour
         _isDashOnCooldown = true;
         while (i <= 1)
         {
-
             _controller.Move(_moveDirection * _dashDistance * Time.deltaTime);
             i += Time.deltaTime * _dashSpeed;
             yield return null;
