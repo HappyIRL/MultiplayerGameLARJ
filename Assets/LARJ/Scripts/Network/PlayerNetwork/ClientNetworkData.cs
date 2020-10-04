@@ -11,7 +11,7 @@ public class ClientNetworkData
 	public static byte[] SerializeMethod(object customObject)
 	{
 		ClientNetworkData data = (ClientNetworkData)customObject;
-		byte[] result = new byte[25];
+		byte[] result = new byte[29];
 		
 		result[0] = data.ID;
 		data.Vector3ToByte(data.Position).CopyTo(result, 1);

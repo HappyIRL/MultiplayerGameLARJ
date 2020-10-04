@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractableNetworkData : MonoBehaviour
 {
-	public byte playerID;
+	public byte ID;
 	public byte interactableID;
 	public byte interactableUseID;
 
@@ -13,7 +13,7 @@ public class InteractableNetworkData : MonoBehaviour
 		InteractableNetworkData data = (InteractableNetworkData)customObject;
 		byte[] result = new byte[3];
 
-		result[0] = data.playerID;
+		result[0] = data.ID;
 		result[1] = data.interactableID;
 		result[2] = data.interactableUseID;
 
@@ -24,7 +24,7 @@ public class InteractableNetworkData : MonoBehaviour
 	{
 		InteractableNetworkData data = new InteractableNetworkData();
 
-		data.playerID = input[0];
+		data.ID = input[0];
 		data.interactableID = input[1];
 		data.interactableUseID = input[2];
 

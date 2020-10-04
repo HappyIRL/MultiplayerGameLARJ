@@ -8,8 +8,12 @@ public enum InteractableUseType
 {
     PickUp,
     Drop,
-    PressInteraction,
-    HoldInteraction
+    Press,
+    HoldStart,
+    HoldFailed,
+    HoldFinish,
+    MousePress,
+    MouseRelease
 }
 
 [RequireComponent(typeof(PlayerInput))]
@@ -68,6 +72,7 @@ public class PlayerInteraction : MonoBehaviour
                 _holdingButton = false;
                 _holdingWasFinished = true;
                 _objectToInteract.HoldingFinishedEvent();
+                LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.HoldFinish);
                 _holdingTimeBar.fillAmount = 0;
             }
         }
@@ -193,6 +198,7 @@ public class PlayerInteraction : MonoBehaviour
                 if (_objectToInteract == null) return;
 
                 _objectToInteract.HoldingFailedEvent();
+                LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.HoldFailed);
                 _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
             }
         }
@@ -214,6 +220,7 @@ public class PlayerInteraction : MonoBehaviour
                     if (_objectToInteract.CanInteractWhenPickedUp)
                     {
                         _objectToInteract.MousePressEvent();
+                        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.MousePress);
                         _objectToInteract.DisablePickedUpButtonHints();
                     }
                 }
@@ -231,6 +238,7 @@ public class PlayerInteraction : MonoBehaviour
                 if (_objectToInteract.CanInteractWhenPickedUp)
                 {
                     _objectToInteract.MouseReleaseEvent();
+                    LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.MouseRelease);
 
                     if (_isPickedUp)
                     {
@@ -283,7 +291,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (_objectToInteract == null) return;
 
-        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.PressInteraction);
+        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.Press);
         _objectToInteract.PressEvent();
     }
     private void HoldingInteraction()
@@ -296,7 +304,7 @@ public class PlayerInteraction : MonoBehaviour
         _holdingTimeBarBG.SetActive(true);
         _objectToInteract.HoldingStartedEvent();
         _objectToInteract.DisableButtonHints();
-        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.HoldInteraction);
+        LARJInteractableUse?.Invoke(_objectToInteract.interactableID, InteractableUseType.HoldStart);
     }
     #endregion
 }

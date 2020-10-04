@@ -18,35 +18,40 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private GameObject _playerFromID;
 
-	private LARJNetworkID myID = 0;
-	private LARJNetworkID oldID = (LARJNetworkID)1;
+	private LARJNetworkID _myID = 0;
+	private LARJNetworkID _simulatedIDMovement = (LARJNetworkID)4;
+	private InteractableObjectID _simulatedIDInteractables = (InteractableObjectID)100;
+	private GameObject _simulatedPlayerGO = null;
+	private GameObject _simulatedPlayerObjectHolder;
+	private GameObject _simulatedInteractableGO;
+	private Interactable _simulatedInteractable;
 
 	public enum LARJNetworkID
 	{
 		Player1 = 0,
 		Player2 = 1,
 		Player3 = 2,
-		Player4 = 3
+		Player4 = 3,
+		none = 4
 	}
 
 	private void Start()
 	{
 		PhotonNetwork.AddCallbackTarget(this);
+		_myID = (LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1;
+		SubscribeToEvents();
 	}
 
 	private void Update()
 	{
-		myID = (LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1;
-		
-		if(myID != oldID)
-		{
-			_playerFromID = GetPlayerFromID((LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1);
-			_playerInteraction = _playerFromID.GetComponent<PlayerInteraction>();
-			_playerInteraction.LARJInteractableUse += UpdateLocalInteractables;
-		}
-
 		UpdateLocalPlayerController();
-		oldID = myID;
+	}
+
+	private void SubscribeToEvents()
+	{
+		_playerFromID = GetPlayerFromID((LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1);
+		_playerInteraction = _playerFromID.GetComponent<PlayerInteraction>();
+		_playerInteraction.LARJInteractableUse += UpdateLocalInteractables;
 	}
 
 
@@ -88,7 +93,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		{
 			InteractableNetworkData interactableNetworkData = new InteractableNetworkData()
 			{
-				playerID = (byte)myID,
+				ID = (byte)_myID,
 				interactableID = (byte)id,
 				interactableUseID = (byte)type
 			};
@@ -113,21 +118,19 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			Reliability = true
 		};
 
-		GameObject player = GetPlayerFromID(myID);
-
-		if(player != null)
+		if(_playerFromID != null)
 		{
 			ClientNetworkData clientNetworkData = new ClientNetworkData()
 			{
-				ID = (byte)myID,
-				Position = player.transform.position,
-				Rotation = player.transform.eulerAngles
+				ID = (byte)_myID,
+				Position = _playerFromID.transform.position,
+				Rotation = _playerFromID.transform.Find("BaseCharacter").eulerAngles
 			};
 			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.PCUpdate, clientNetworkData, raiseEventOptions, sendOptions);
 		}
 		else
 		{
-			Debug.Log("Player is null ID: " + myID);
+			Debug.Log("Player is null ID: " + _myID);
 			return;
 		}
 	}
@@ -176,35 +179,102 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	}
 	private void ReceiveUpdatePC(ClientNetworkData data)
 	{
-		GameObject player = GetPlayerFromID((LARJNetworkID)data.ID);
-
-
-		if(player != null)
+		if(_simulatedIDMovement != (LARJNetworkID)data.ID)
 		{
-			player.transform.position = data.Position;
-			player.transform.eulerAngles = data.Rotation;
+			_simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
+			_simulatedIDMovement = (LARJNetworkID)data.ID;
 		}
+
+		if(_simulatedPlayerGO != null)
+		{
+			_simulatedPlayerGO.transform.position = data.Position;
+			_simulatedPlayerGO.transform.Find("BaseCharacter").eulerAngles = data.Rotation;
+		}
+	}
+
+	private void ReceiveSimulatedPlayerPickUp()
+	{
+		_simulatedInteractable.DisableColliders();
+
+		_simulatedInteractableGO.transform.rotation = _simulatedPlayerObjectHolder.transform.rotation;
+		_simulatedInteractableGO.transform.position = _simulatedPlayerObjectHolder.transform.position;
+		_simulatedInteractableGO.transform.parent = _simulatedPlayerObjectHolder.transform;
+	}
+
+	private void ReceiveSimulatedPlayerDrop()
+	{
+		_simulatedInteractableGO.transform.parent = null;
+		_simulatedInteractable.EnableColliders();
+	}
+
+	private void ReceiveSimulatedPlayerPress()
+	{
+		_simulatedInteractable.PressEvent();
+	}
+
+	private void ReceiveSimulatedPlayerStartHold()
+	{
+		_simulatedInteractable.HoldingStartedEvent();
+	}
+
+	private void ReceiveSimulatedPlayerFailedHold()
+	{
+		_simulatedInteractable.HoldingFailedEvent();
+	}
+
+	private void ReceiveSimulatedPlayerFinishHold()
+	{
+		_simulatedInteractable.HoldingFinishedEvent();
+	}
+
+	private void ReceiveSimulatedPlayerMousePress()
+	{
+		_simulatedInteractable.MousePressEvent();
+	}
+
+	private void ReceiveSimulatedPlayerMouseRelease()
+	{
+		_simulatedInteractable.MouseReleaseEvent();
 	}
 
 	private void ReceiveInteractableUpdate(InteractableNetworkData data)
 	{
-		GameObject player = GetPlayerFromID((LARJNetworkID)data.playerID);
+		if (_simulatedIDInteractables != (InteractableObjectID)data.interactableID)
+		{
+			_simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
+			_simulatedPlayerObjectHolder = _simulatedPlayerGO.transform.Find("BaseCharacter").Find("ObjectHolder").gameObject;
+			_simulatedInteractableGO = GetInteractableGoFromID((InteractableObjectID)data.interactableID);
+			_simulatedInteractable = _simulatedInteractableGO.GetComponent<Interactable>();
+			_simulatedIDInteractables = (InteractableObjectID)data.interactableID;
+		}
+
 		InteractableUseType type = (InteractableUseType)data.interactableUseID;
-		GameObject go = GetInteractableGoFromID((InteractableObjectID)data.interactableID);
 
 		switch(type)
 		{
 			case InteractableUseType.Drop:
-				Debug.Log("Dropped smthing");
+				ReceiveSimulatedPlayerDrop();
 				break;
 			case InteractableUseType.PickUp:
-				Debug.Log("PickedUp smthing");
+				ReceiveSimulatedPlayerPickUp();
 				break;
-			case InteractableUseType.PressInteraction:
-				Debug.Log("Pressed smthing");
+			case InteractableUseType.Press:
+				ReceiveSimulatedPlayerPress();
 				break;
-			case InteractableUseType.HoldInteraction:
-				Debug.Log("Holds smthing");
+			case InteractableUseType.HoldStart:
+				ReceiveSimulatedPlayerStartHold();
+				break;
+			case InteractableUseType.HoldFailed:
+				ReceiveSimulatedPlayerFailedHold();
+				break;
+			case InteractableUseType.HoldFinish:
+				ReceiveSimulatedPlayerFinishHold();
+				break;
+			case InteractableUseType.MousePress:
+				ReceiveSimulatedPlayerMousePress();
+				break;
+			case InteractableUseType.MouseRelease:
+				ReceiveSimulatedPlayerMouseRelease();
 				break;
 		}
 

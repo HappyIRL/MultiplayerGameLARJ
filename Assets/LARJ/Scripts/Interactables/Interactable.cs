@@ -19,7 +19,8 @@ public enum InteractableObjectID
     PC = 69,
     Printer = 70,
     Shotgun = 71,
-    WaterCooler = 72
+    WaterCooler = 72,
+    None = 100
 }
 
 [Serializable]
