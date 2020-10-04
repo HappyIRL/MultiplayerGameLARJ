@@ -73,7 +73,6 @@ public class Telephone : Interactable
 
             yield return null;
         }
-
         if (!_callAnswered)
         {
             _failedToAnswerEvent.Invoke();
@@ -136,5 +135,20 @@ public class Telephone : Interactable
     public override void MouseReleaseEvent()
     {
         
+    }
+
+    public override void EnableInteractible()
+    {
+        enabled = true;
+        StartTelephoneRinging();
+        //Whast else do I need here?
+        
+    }
+
+    public override void DisableInteractible()
+    {
+        EndCall();
+        enabled = false;
+        //What else needs to be disabled?
     }
 }

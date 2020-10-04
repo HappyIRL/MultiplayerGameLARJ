@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource)), Serializable]
 public class Printer : Interactable
@@ -17,9 +18,11 @@ public class Printer : Interactable
     [SerializeField] private AudioClip _printerOutSound = null;
     [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
     [SerializeField] private int _interactableID;
+    [SerializeField] private UnityEvent _onPrintCompleted;
 
     private AudioSource _audioSource;
     private Coroutine _lastCoroutine;
+    private GameObject _papergameObject;
 
     public override void Start()
     {
@@ -49,15 +52,21 @@ public class Printer : Interactable
 
     private void FinishPrinting()
     {
-        StopCoroutine(_lastCoroutine);
+        if (_lastCoroutine != null)
+        {
+            StopCoroutine(_lastCoroutine);
+        }
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
-
-        Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+        _papergameObject = Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+        _onPrintCompleted.Invoke();
     }
     private void CancelPrinting()
     {
-        StopCoroutine(_lastCoroutine);
+        if (_lastCoroutine != null)
+        {
+            StopCoroutine(_lastCoroutine);
+        }
         _audioSource.Stop();
         _audioSource.loop = false;
     }
@@ -79,16 +88,27 @@ public class Printer : Interactable
 
     public override void PressEvent()
     {
-        
+
     }
 
     public override void MousePressEvent()
     {
-        
+
     }
 
     public override void MouseReleaseEvent()
     {
-        
+
+    }
+
+    public override void EnableInteractible()
+    {
+        enabled = true;
+    }
+
+    public override void DisableInteractible()
+    {
+        enabled = false;
+        CancelPrinting();
     }
 }

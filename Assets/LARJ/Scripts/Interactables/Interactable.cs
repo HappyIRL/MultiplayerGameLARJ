@@ -153,5 +153,7 @@ public abstract class Interactable : MonoBehaviour
     public abstract void PressEvent();
     public abstract void MousePressEvent();
     public abstract void MouseReleaseEvent();
+    public abstract void EnableInteractible();
+    public abstract void DisableInteractible();
     #endregion
 }

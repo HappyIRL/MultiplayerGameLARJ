@@ -65,4 +65,14 @@ public class WaterCooler : Interactable
     {
         
     }
+
+    public override void EnableInteractible()
+    {
+        enabled = true;
+    }
+
+    public override void DisableInteractible()
+    {
+        enabled = false;
+    }
 }

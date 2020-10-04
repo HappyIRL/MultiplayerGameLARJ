@@ -89,4 +89,14 @@ public class FireExtinguisher : Interactable
     {
         StopExtinguishing();
     }
+
+    public override void EnableInteractible()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void DisableInteractible()
+    {
+        throw new NotImplementedException();
+    }
 }

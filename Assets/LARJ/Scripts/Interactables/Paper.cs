@@ -42,4 +42,12 @@ public class Paper : Interactable
     {
         
     }
+
+    public override void EnableInteractible()
+    {
+    }
+
+    public override void DisableInteractible()
+    {
+    }
 }

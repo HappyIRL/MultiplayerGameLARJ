@@ -883,6 +883,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1398557538}
+  - component: {fileID: 1398557539}
+  - component: {fileID: 1398557540}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -904,6 +906,47 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1398557539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398557537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcd6c87044ae26d4abe5637047656138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewardMoney: 20
+  _lostMoneyOnFail: 10
+  _timeToFinishTask: 10
+  _taskType: 0
+--- !u!114 &1398557540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398557537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e5a5ae09f57c0419cea978aca3f917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _completedTasks: 0
+  _failedTasks: 0
+  _openTasks: 0
+  _possibleTasks:
+  - {fileID: 1398557539}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _delayBetweenTasks: 15
+  _variationOfTaskDelay: 5
+  _scoreText: {fileID: 0}
+  _taskManagerUI: {fileID: 0}
 --- !u!1001 &1632416449
 PrefabInstance:
   m_ObjectHideFlags: 0

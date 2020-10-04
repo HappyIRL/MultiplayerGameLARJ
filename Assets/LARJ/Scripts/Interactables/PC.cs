@@ -59,5 +59,15 @@ public class PC : Interactable
     {
         
     }
+
+    public override void EnableInteractible()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void DisableInteractible()
+    {
+        throw new NotImplementedException();
+    }
 }
 

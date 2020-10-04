@@ -62,9 +62,6 @@ namespace Tasks
             _taskIDCounter++;
             TaskUI taskUI = _taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
-            //UpdateTasksText((int)task.GetTaskType,true);
-
-            //StartTask here
             task.StartTask();
 
         }
@@ -147,6 +144,7 @@ namespace Tasks
             _completedTasks++;
             task.IsTaskActive = false;
             //UpdateTasksText((int)taskType, false);
+            task.StopTask();
             _taskManagerUI.RemoveUITask(task.TaskUI);
             UpdateScore(task.GetRewardMoney, true);
         }
@@ -163,8 +161,14 @@ namespace Tasks
             _failedTasks++;
             task.IsTaskActive = false;
             //UpdateTasksText((int)taskType, false);
+            task.StopTask();
             _taskManagerUI.RemoveUITask(task.TaskUI);
             UpdateScore(task.GetLostMoneyOnFail, false);
+        }
+
+        public void StartPaperTask()
+        {
+
         }
     }
 }

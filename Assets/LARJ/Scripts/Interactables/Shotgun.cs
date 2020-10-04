@@ -111,4 +111,14 @@ public class Shotgun : Interactable
     {
 
     }
+
+    public override void EnableInteractible()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void DisableInteractible()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -62,6 +62,7 @@ namespace Tasks
                     icon = _mailIcon;
                     break;
                 case TaskType.NotAssigned:
+                    Debug.Log("Error No Task Type was assigned");
                     break;
             }
 
