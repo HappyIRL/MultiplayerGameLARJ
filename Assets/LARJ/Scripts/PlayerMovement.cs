@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int _playerIndex = 0;
     [SerializeField] private float _dashCooldown = 2f;
     [SerializeField] private float _dashDistance = 25f;
+    [SerializeField] private float _dashSpeed = 10;
     [SerializeField] private Transform _bodyTransform = null;
     private CharacterController _controller;
 
@@ -19,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     private float _initialYPosition;
     private float _dashTimer = 0f;
     private bool _isDashOnCooldown = false;
-    private float _dashSpeed = 10;
     private bool _inDash = false;
 
     private void Awake()
