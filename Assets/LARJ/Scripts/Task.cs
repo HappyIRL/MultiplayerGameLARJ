@@ -22,7 +22,6 @@ namespace Tasks
         [SerializeField] private int _lostMoneyOnFail;
         [SerializeField] private float _timeToFinishTask;
         [SerializeField] private TaskType _taskType;
-        [SerializeField] private UnityEvent _taskFailedOnCooldown;
         private bool _isTaskActive = false;
         private Interactable _interactable;
         private Coroutine _cooldownCoroutine;
@@ -54,7 +53,7 @@ namespace Tasks
                 timer++;
                 yield return new WaitForSeconds(1);
             }
-            _taskFailedOnCooldown.Invoke();
+            TaskManager.TaskManagerSingelton.OnTaskFailed(this);
             yield return null;
         }
 

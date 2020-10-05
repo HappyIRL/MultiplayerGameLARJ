@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4403143820716018119}
   - component: {fileID: 5726189216276506122}
   - component: {fileID: 6371534892996970530}
+  - component: {fileID: 6705345793431324033}
   m_Layer: 0
   m_Name: Paper
   m_TagString: Untagged
@@ -153,6 +154,22 @@ MonoBehaviour:
   HoldingTime: 1
   CanInteractWhenPickedUp: 0
   _interactableID: 68
+--- !u!114 &6705345793431324033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502630160131806137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcd6c87044ae26d4abe5637047656138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewardMoney: 0
+  _lostMoneyOnFail: 0
+  _timeToFinishTask: 0
+  _taskType: 0
 --- !u!114 &5690055473500903219
 MonoBehaviour:
   m_ObjectHideFlags: 0

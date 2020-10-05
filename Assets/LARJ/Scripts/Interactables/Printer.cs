@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,7 +19,6 @@ public class Printer : Interactable
     [SerializeField] private AudioClip _printerOutSound = null;
     [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
     [SerializeField] private int _interactableID;
-    [SerializeField] private UnityEvent _onPrintCompleted;
 
     private AudioSource _audioSource;
     private Coroutine _lastCoroutine;
@@ -59,7 +59,8 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
         _papergameObject = Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
-        _onPrintCompleted.Invoke();
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+        //TaskManager.TaskManagerSingelton.StartTask(_papergameObject.GetComponent<Task>());
     }
     private void CancelPrinting()
     {

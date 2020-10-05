@@ -29,13 +29,18 @@ public class Telephone : Interactable
     private bool _callAnswered = false;
     private Coroutine _lastCoroutine;
 
+    private void Awake()
+    {
+        base.Awake();
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.clip = _ringingSound;
+        
+    }
     public override void Start()
     {
         base.Start();
         interactableID = (InteractableObjectID)_interactableID;
         _meshRenderer = GetComponent<MeshRenderer>();
-        _audioSource = GetComponent<AudioSource>();
-        _audioSource.clip = _ringingSound;
     }
 
     public void StartTelephoneRinging()

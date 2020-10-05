@@ -19,6 +19,7 @@ namespace Tasks
         public delegate void LARJTaskEvent(Interactable interactable, bool active);
         public event LARJTaskEvent OnTask;
         //[SerializeField] private TextMeshProUGUI[] _tasksListText;
+        public static TaskManager TaskManagerSingelton;
 
         private int _taskIDCounter = 0;
         private float _timer = 0f;
@@ -27,6 +28,7 @@ namespace Tasks
         private void Awake()
         {
             _currentDelay = _delayBetweenTasks;
+            TaskManagerSingelton = this;
         }
         private void Start()
         {
@@ -67,7 +69,7 @@ namespace Tasks
             TaskUI taskUI = _taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask.Invoke(task.GetInteractable, true);
+            OnTask?.Invoke(task.GetInteractable, true);
 
         }
 
@@ -166,7 +168,16 @@ namespace Tasks
             _score.UpdateScore(task.GetLostMoneyOnFail, false);
             OnTask.Invoke(task.GetInteractable, false);
         }
-
+        public void StartTask(Task task)
+        {
+            task.IsTaskActive = true;
+            task.TaskID = _taskIDCounter;
+            _taskIDCounter++;
+            TaskUI taskUI = _taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
+            task.TaskUI = taskUI;
+            task.StartTask();
+            OnTask.Invoke(task.GetInteractable, true);
+        }
         public void StartPaperTask()
         {
 

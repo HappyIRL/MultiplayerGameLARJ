@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Tasks;
 
 public class Customer : Interactable, IObjectPoolNotifier
 {
@@ -109,7 +110,7 @@ public class Customer : Interactable, IObjectPoolNotifier
         var rot = transform.rotation.eulerAngles;
         _agent.updateRotation = false;
         transform.Rotate(-rot);
-
+        TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
     }
     private void AtDeskUpdate()
     {
@@ -169,6 +170,7 @@ public class Customer : Interactable, IObjectPoolNotifier
         var color = Color.green;
         GetComponent<Renderer>().material.color = color;
         _stateMachine.TransitionTo("Leaving");
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
     private void OnFailedTalk()
     {
@@ -194,7 +196,7 @@ public class Customer : Interactable, IObjectPoolNotifier
                             _deskWaypoint.position.x,
                             0,
                             _deskWaypoint.position.z);
-        customerSpawner.deskIsFree = false;         
+        customerSpawner.deskIsFree = false;
     }
     private void QueueUp()
     {
@@ -268,12 +270,10 @@ public class Customer : Interactable, IObjectPoolNotifier
 
     public override void StartInteractible()
     {
-        throw new NotImplementedException();
     }
 
     public override void StopInteractible()
     {
-        throw new NotImplementedException();
     }
     #endregion
 }

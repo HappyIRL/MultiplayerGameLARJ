@@ -152,6 +152,7 @@ public class PlayerInteraction : MonoBehaviour
             {
                 interactable.DisableButtonHints();
                 _canInteract = true;
+                _holdingButton = false;
 
                 if (interactable == ObjectToInteract)
                 {

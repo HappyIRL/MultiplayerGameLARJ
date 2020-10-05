@@ -539,7 +539,7 @@ MonoBehaviour:
   spawnsPerWave: 20
   spawnCooldown: 5
   randomizeSpawnTime: 0
-  patienceTimer: 20
+  patienceTimer: 25
   customerSpawnPoint: {fileID: 389938664}
   customerDespawnPoint: {fileID: 0}
   queueWaypoints: []
@@ -748,41 +748,6 @@ Transform:
   m_Father: {fileID: 1773094296}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &406490557
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 3
-  m_Width: 914
-  m_Height: 516
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthFormat: 1
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &469866612
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,41 +1220,6 @@ Transform:
   m_Father: {fileID: 1773094296}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1099566989
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 3
-  m_Width: 914
-  m_Height: 516
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthFormat: 1
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &1104635326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,6 +1562,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 480eb1b844f920b439469ac546938d56, type: 3}
+--- !u!65 &1284733625 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 4748318635019737820, guid: a1181f0ca05aa15429308b6233432870, type: 3}
+  m_PrefabInstance: {fileID: 7433297015070062027}
+  m_PrefabAsset: {fileID: 0}
+--- !u!84 &1285538056
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 3
+  m_Width: 914
+  m_Height: 516
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 1
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &1294934779
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,6 +1988,41 @@ Transform:
   m_Father: {fileID: 1768922318}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &1588783025
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 3
+  m_Width: 914
+  m_Height: 516
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 1
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &1645413736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2694,8 +2699,8 @@ MonoBehaviour:
   sourceCamera: {fileID: 2015392393}
   outlineCamera: {fileID: 2071236651}
   outlineShaderMaterial: {fileID: 0}
-  renderTexture: {fileID: 1099566989}
-  extraRenderTexture: {fileID: 406490557}
+  renderTexture: {fileID: 1285538056}
+  extraRenderTexture: {fileID: 1588783025}
 --- !u!1 &2045527688
 GameObject:
   m_ObjectHideFlags: 0
@@ -2795,7 +2800,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 0
   m_RenderingPath: 1
-  m_TargetTexture: {fileID: 1099566989}
+  m_TargetTexture: {fileID: 1285538056}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
@@ -3271,21 +3276,6 @@ MonoBehaviour:
   _lostMoneyOnFail: 10
   _timeToFinishTask: 10
   _taskType: 0
-  _taskFailedOnCooldown:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 203291830}
-        m_TargetAssemblyTypeName: Tasks.TaskManager, Assembly-CSharp
-        m_MethodName: OnTaskFailed
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 6819291593348545427}
-          m_ObjectArgumentAssemblyTypeName: Tasks.Task, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &6819291593348545428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3302,21 +3292,6 @@ MonoBehaviour:
   _lostMoneyOnFail: 10
   _timeToFinishTask: 20
   _taskType: 0
-  _taskFailedOnCooldown:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 203291830}
-        m_TargetAssemblyTypeName: Tasks.TaskManager, Assembly-CSharp
-        m_MethodName: OnTaskFailed
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 6819291593348545428}
-          m_ObjectArgumentAssemblyTypeName: Tasks.Task, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &6819291593348545496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3333,21 +3308,6 @@ MonoBehaviour:
   _lostMoneyOnFail: 5
   _timeToFinishTask: 20
   _taskType: 1
-  _taskFailedOnCooldown:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 203291830}
-        m_TargetAssemblyTypeName: Tasks.TaskManager, Assembly-CSharp
-        m_MethodName: OnTaskFailed
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 6819291593348545496}
-          m_ObjectArgumentAssemblyTypeName: Tasks.Task, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &6819291593348545497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3364,21 +3324,6 @@ MonoBehaviour:
   _lostMoneyOnFail: 15
   _timeToFinishTask: 20
   _taskType: 5
-  _taskFailedOnCooldown:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 203291830}
-        m_TargetAssemblyTypeName: Tasks.TaskManager, Assembly-CSharp
-        m_MethodName: OnTaskFailed
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 6819291593348545497}
-          m_ObjectArgumentAssemblyTypeName: Tasks.Task, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &7433297015070062027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3390,6 +3335,10 @@ PrefabInstance:
       propertyPath: _dashSpeed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1796752644, guid: a1181f0ca05aa15429308b6233432870, type: 3}
+      propertyPath: _boxCollider
+      value: 
+      objectReference: {fileID: 1284733625}
     - target: {fileID: 741314481945438931, guid: a1181f0ca05aa15429308b6233432870, type: 3}
       propertyPath: m_Name
       value: Player1
@@ -3454,5 +3403,17 @@ PrefabInstance:
       propertyPath: _taskManager
       value: 
       objectReference: {fileID: 203291830}
+    - target: {fileID: 7729858978817422152, guid: a1181f0ca05aa15429308b6233432870, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7729858978817422152, guid: a1181f0ca05aa15429308b6233432870, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7729858978817422152, guid: a1181f0ca05aa15429308b6233432870, type: 3}
+      propertyPath: m_Color.b
+      value: 0.101481676
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1181f0ca05aa15429308b6233432870, type: 3}
