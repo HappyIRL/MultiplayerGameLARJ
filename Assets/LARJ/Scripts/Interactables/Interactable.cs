@@ -45,8 +45,6 @@ public abstract class Interactable : MonoBehaviour
 
     [HideInInspector] public float HoldingTime = 1f;
     [HideInInspector] public bool CanInteractWhenPickedUp = false;
-    private TaskManager _taskManager;
-
     public InteractableObjectID interactableID { get; protected set; }
 
     public virtual void Awake()
