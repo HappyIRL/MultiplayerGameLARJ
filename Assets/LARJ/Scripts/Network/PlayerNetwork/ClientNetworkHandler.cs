@@ -89,7 +89,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		{
 			Reliability = true
 		};
-
 		if (_playerFromID != null)
 		{
 			TaskNetworkData taskNetworkData = new TaskNetworkData()
@@ -185,6 +184,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				return _interactables[7];
 			case InteractableObjectID.Printer:
 				return _interactables[3];
+			case InteractableObjectID.Costumer:
+				return null;
 		}
 
 		return null;
@@ -267,11 +268,11 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveTaskUpdate(TaskNetworkData data)
 	{
-
 		_simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
 		_myPlayer = GetPlayerFromID(_myID);
 		_playerInteraction = _myPlayer.GetComponent<PlayerInteraction>();
 
+		Debug.Log(data.InteractableID);
 		Debug.Log(_simulatedPlayerGO);
 		Debug.Log(_playerInteraction);
 

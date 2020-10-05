@@ -11,7 +11,7 @@ public class CleaningBroom : Interactable
     [SerializeField] private Animator _animator = null;
     [SerializeField] private Transform _broomBottom = null;
     [SerializeField] private LayerMask _garbageLayerMask;
-    [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
+    [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72, Costumer = 73")]
     [SerializeField] private int _interactableID;
     private AudioSource _audioSource;
     private bool _isCleaning = false;

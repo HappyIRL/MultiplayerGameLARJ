@@ -89,7 +89,7 @@ public class PlayerInteraction : MonoBehaviour
     private void ActivateInteractible(Interactable interactable, bool active)
     {
         if (_isLocal || PhotonNetwork.IsMasterClient)
-		{
+		{ 
             if (active)
             {
                 if (!AllowedInteractibles.Contains(interactable))

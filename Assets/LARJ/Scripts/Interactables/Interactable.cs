@@ -21,6 +21,7 @@ public enum InteractableObjectID
     Printer = 70,
     Shotgun = 71,
     WaterCooler = 72,
+    Costumer = 73,
     None = 100
 }
 

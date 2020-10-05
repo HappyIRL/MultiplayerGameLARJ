@@ -35,6 +35,8 @@ public class Customer : Interactable, IObjectPoolNotifier
     {
         base.Start();
 
+        interactableID = (InteractableObjectID)73;
+
         _deskWaypoint = customerSpawner.deskWaypoint;
         _despawn = customerSpawner.customerDespawnPoint;
 
