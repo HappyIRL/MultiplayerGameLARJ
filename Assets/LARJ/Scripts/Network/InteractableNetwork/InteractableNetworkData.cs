@@ -5,8 +5,8 @@ using UnityEngine;
 public class InteractableNetworkData : MonoBehaviour
 {
 	public byte ID;
-	public byte interactableID;
-	public byte interactableUseID;
+	public byte InteractableID;
+	public byte InteractableUseID;
 
 	public static byte[] SerializeMethod(object customObject)
 	{
@@ -14,8 +14,8 @@ public class InteractableNetworkData : MonoBehaviour
 		byte[] result = new byte[3];
 
 		result[0] = data.ID;
-		result[1] = data.interactableID;
-		result[2] = data.interactableUseID;
+		result[1] = data.InteractableID;
+		result[2] = data.InteractableUseID;
 
 		return result;
 	}
@@ -25,8 +25,8 @@ public class InteractableNetworkData : MonoBehaviour
 		InteractableNetworkData data = new InteractableNetworkData();
 
 		data.ID = input[0];
-		data.interactableID = input[1];
-		data.interactableUseID = input[2];
+		data.InteractableID = input[1];
+		data.InteractableUseID = input[2];
 
 		return data;
 	}

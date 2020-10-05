@@ -7,24 +7,26 @@ using UnityEngine;
 public enum LARJNetworkEvents
 {
 	PCUpdate = 128,
-	InteractableUpdate = 129
+	InteractableUpdate = 129,
+	TaskUpdate = 130
 }
 
 public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 {
 	[SerializeField] private GameObject[] _players = new GameObject[4];
-	[SerializeField] private PlayerInteraction _playerInteraction;
+	private PlayerInteraction _playerInteraction;
 	[SerializeField] private List<GameObject> _interactables = new List<GameObject>();
 
 	private GameObject _playerFromID;
 
 	private LARJNetworkID _myID = 0;
-	private LARJNetworkID _simulatedIDMovement = (LARJNetworkID)4;
+	private LARJNetworkID _simulatedID = (LARJNetworkID)4;
 	private InteractableObjectID _simulatedIDInteractables = (InteractableObjectID)100;
 	private GameObject _simulatedPlayerGO = null;
 	private GameObject _simulatedPlayerObjectHolder;
 	private GameObject _simulatedInteractableGO;
 	private Interactable _simulatedInteractable;
+	private GameObject _myPlayer;
 
 	public enum LARJNetworkID
 	{
@@ -51,9 +53,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		_playerFromID = GetPlayerFromID((LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1);
 		_playerInteraction = _playerFromID.GetComponent<PlayerInteraction>();
+		_playerInteraction.OnNetworkTaskEvent += OnNetworkTask;
 		_playerInteraction.LARJInteractableUse += UpdateLocalInteractables;
 	}
-
 
 	public void SetPlayers(GameObject[] go)
 	{
@@ -74,6 +76,32 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		_interactables.Add(go);
 	}
+
+	private void OnNetworkTask(InteractableObjectID id, bool active)
+	{
+		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
+		{
+			Receivers = ReceiverGroup.Others,
+			CachingOption = EventCaching.DoNotCache
+		};
+
+		SendOptions sendOptions = new SendOptions
+		{
+			Reliability = true
+		};
+
+		if (_playerFromID != null)
+		{
+			TaskNetworkData taskNetworkData = new TaskNetworkData()
+			{
+				ID = (byte)_myID,
+				Active = active,
+				InteractableID = (byte)id
+			};
+			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.TaskUpdate, taskNetworkData, raiseEventOptions, sendOptions);
+		}
+	}
+
 	private void UpdateLocalInteractables(InteractableObjectID id, InteractableUseType type)
 	{
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
@@ -94,8 +122,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			InteractableNetworkData interactableNetworkData = new InteractableNetworkData()
 			{
 				ID = (byte)_myID,
-				interactableID = (byte)id,
-				interactableUseID = (byte)type
+				InteractableID = (byte)id,
+				InteractableUseID = (byte)type
 			};
 			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.InteractableUpdate, interactableNetworkData, raiseEventOptions, sendOptions);
 		}
@@ -179,16 +207,16 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	}
 	private void ReceiveUpdatePC(ClientNetworkData data)
 	{
-		if(_simulatedIDMovement != (LARJNetworkID)data.ID)
+		if(_simulatedID != (LARJNetworkID)data.ID)
 		{
 			_simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
-			_simulatedIDMovement = (LARJNetworkID)data.ID;
+			_simulatedID = (LARJNetworkID)data.ID;
 		}
 
-		if(_simulatedPlayerGO != null)
+		if (_simulatedPlayerGO != null)
 		{
 			_simulatedPlayerGO.transform.position = data.Position;
-			_simulatedPlayerGO.transform.Find("BaseCharacter").eulerAngles = data.Rotation;
+			_simulatedPlayerGO.GetComponent<SimulatedPlayer>()._baseCharacter.transform.eulerAngles = data.Rotation;
 		}
 	}
 
@@ -237,18 +265,40 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_simulatedInteractable.MouseReleaseEvent();
 	}
 
+	private void ReceiveTaskUpdate(TaskNetworkData data)
+	{
+
+		_simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
+		_myPlayer = GetPlayerFromID(_myID);
+		_playerInteraction = _myPlayer.GetComponent<PlayerInteraction>();
+
+		Debug.Log(_simulatedPlayerGO);
+		Debug.Log(_playerInteraction);
+
+		if (data.Active)
+		{
+			_playerInteraction.AllowedInteractibles.Add(GetInteractableGoFromID((InteractableObjectID)data.InteractableID).GetComponent<Interactable>());
+		}
+		else
+		{
+			Interactable interactable = GetInteractableGoFromID((InteractableObjectID)data.InteractableID).GetComponent<Interactable>();
+			if (_playerInteraction.AllowedInteractibles.Contains(interactable))
+				_playerInteraction.AllowedInteractibles.Remove(interactable);
+		}
+	}
+
 	private void ReceiveInteractableUpdate(InteractableNetworkData data)
 	{
-		if (_simulatedIDInteractables != (InteractableObjectID)data.interactableID)
+		if (_simulatedIDInteractables != (InteractableObjectID)data.InteractableID)
 		{
 			_simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
-			_simulatedPlayerObjectHolder = _simulatedPlayerGO.transform.Find("BaseCharacter").Find("ObjectHolder").gameObject;
-			_simulatedInteractableGO = GetInteractableGoFromID((InteractableObjectID)data.interactableID);
+			_simulatedPlayerObjectHolder = _simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
+			_simulatedInteractableGO = GetInteractableGoFromID((InteractableObjectID)data.InteractableID);
 			_simulatedInteractable = _simulatedInteractableGO.GetComponent<Interactable>();
-			_simulatedIDInteractables = (InteractableObjectID)data.interactableID;
+			_simulatedIDInteractables = (InteractableObjectID)data.InteractableID;
 		}
 
-		InteractableUseType type = (InteractableUseType)data.interactableUseID;
+		InteractableUseType type = (InteractableUseType)data.InteractableUseID;
 
 		switch(type)
 		{
@@ -292,6 +342,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				break;
 			case LARJNetworkEvents.InteractableUpdate:
 				ReceiveInteractableUpdate((InteractableNetworkData)photonEvent.CustomData);
+				break;
+			case LARJNetworkEvents.TaskUpdate:
+				ReceiveTaskUpdate((TaskNetworkData)photonEvent.CustomData);
 				break;
 
 		}

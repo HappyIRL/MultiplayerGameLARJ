@@ -21,6 +21,7 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 
 		PhotonPeer.RegisterType(typeof(ClientNetworkData), (byte)LARJNetworkEvents.PCUpdate, ClientNetworkData.SerializeMethod, ClientNetworkData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(InteractableNetworkData), (byte)LARJNetworkEvents.InteractableUpdate, InteractableNetworkData.SerializeMethod, InteractableNetworkData.DeserializeMethod);
+		PhotonPeer.RegisterType(typeof(TaskNetworkData), (byte)LARJNetworkEvents.TaskUpdate, TaskNetworkData.SerializeMethod, TaskNetworkData.DeserializeMethod);
 
 		if (PhotonNetwork.IsConnected)
 		{
@@ -48,10 +49,5 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 			_clientNetworkHandler.SetPlayers(_players);
 			_clientNetworkHandler.SetInteractables(_interactables);
 		}
-	}
-
-	public override void OnPlayerLeftRoom(Player otherPlayer)
-	{
-		base.OnPlayerLeftRoom(otherPlayer);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tasks;
@@ -33,14 +34,19 @@ public class PlayerInteraction : MonoBehaviour
     private InteractionType InteractableInteractionType = InteractionType.PickUp;
     private bool _canInteract = false;
     private bool _isPickedUp = false;
+    private bool _isLocal = true;
 
     public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type);
     public event LARJInteractableUseEvent LARJInteractableUse;
-    private List<Interactable> _allowedInteractibles = new List<Interactable>();
+    public delegate void LARJTaskEvent(InteractableObjectID id, bool active);
+    public event LARJTaskEvent OnNetworkTaskEvent;
+
+    public List<Interactable> AllowedInteractibles = new List<Interactable>();
 
     //Object to interact
     private Interactable _objectToInteract;
     private TaskManager _taskManager;
+    private LARJConnectToPhoton _larjConnectToPhoton;
 
     public Interactable ObjectToInteract
     {
@@ -63,23 +69,44 @@ public class PlayerInteraction : MonoBehaviour
     {
         _holdingTimeBarBG.SetActive(false);
         _taskManager = FindObjectOfType<TaskManager>();
+        _larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
         _taskManager.OnTask += ActivateInteractible;
+        _larjConnectToPhoton.LARJNetworkStatusEvent += OnLARJNetworkStatusChange;
+
     }
+
+    private void OnLARJNetworkStatusChange(LARJNetworkState state)
+	{
+        switch(state)
+		{
+            case LARJNetworkState.Local:
+                _isLocal = true;
+                break;
+            case LARJNetworkState.Photon:
+                _isLocal = false;
+                break;
+		}
+	}
 
     private void ActivateInteractible(Interactable interactable, bool active)
     {
-        if (active)
-        {
-            if (!_allowedInteractibles.Contains(interactable))
+        if (_isLocal || PhotonNetwork.IsMasterClient)
+		{
+            if (active)
             {
-                _allowedInteractibles.Add(interactable);
+                if (!AllowedInteractibles.Contains(interactable))
+                {
+                    AllowedInteractibles.Add(interactable);
+                    OnNetworkTaskEvent?.Invoke(interactable.interactableID, active);
+                }
             }
-        }
-        else
-        {
-            if (_allowedInteractibles.Contains(interactable))
+            else
             {
-                _allowedInteractibles.Remove(interactable);
+                if (AllowedInteractibles.Contains(interactable))
+                {
+                    AllowedInteractibles.Remove(interactable);
+                    OnNetworkTaskEvent?.Invoke(interactable.interactableID, active);
+                }
             }
         }
     }
@@ -113,7 +140,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                if (_allowedInteractibles.Contains(interactable))
+                if (AllowedInteractibles.Contains(interactable))
                 {
 
                     ObjectToInteract = interactable;
@@ -132,7 +159,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (ObjectToInteract == null)
             {
-                if (_allowedInteractibles.Contains(interactable))
+                if (AllowedInteractibles.Contains(interactable))
                 {
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;
