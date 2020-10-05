@@ -516,7 +516,7 @@ Transform:
   - {fileID: 7438093468882941819}
   m_Father: {fileID: 753989017727936327}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 216.551, z: 0}
 --- !u!1 &660713178872778616
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,6 +696,7 @@ MonoBehaviour:
   _objectHolder: {fileID: 7433297014392487680}
   _holdingTimeBar: {fileID: 7729858978817422152}
   _holdingTimeBarBG: {fileID: 7802290399183484454}
+  AllowedInteractibles: []
 --- !u!143 &1796752649
 CharacterController:
   m_ObjectHideFlags: 0
@@ -742,8 +743,9 @@ MonoBehaviour:
   _playerIndex: 0
   _dashCooldown: 2
   _dashDistance: 25
+  _dashSpeed: 10
   _bodyTransform: {fileID: 3388098147426324397}
-  _initialYPosition: 0
+  _boxCollider: {fileID: 4748318635019737820}
 --- !u!65 &4748318635019737820
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1392,7 +1394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.101481676, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

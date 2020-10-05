@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _dashDistance = 25f;
     [SerializeField] private float _dashSpeed = 10;
     [SerializeField] private Transform _bodyTransform = null;
-    [SerializeField] private BoxCollider _boxCollider;
+    private BoxCollider _boxCollider;
     private CharacterController _controller;
 
     private Vector3 _moveDirection = Vector3.zero;
@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        _boxCollider = GetComponent<BoxCollider>();
         _controller = GetComponent<CharacterController>();
         _initialYPosition = transform.position.y;
     }
