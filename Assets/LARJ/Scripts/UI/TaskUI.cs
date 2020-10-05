@@ -89,7 +89,6 @@ namespace Tasks
             {
                 timer += Time.deltaTime;
                 _timerImage.fillAmount = (_timeToComplete - timer) / _timeToComplete;
-                //_timerImage.color = Color.white;
                 if (0.5f > timer / _timeToComplete)
                 {
 
