@@ -1,6 +1,7 @@
 ﻿using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,8 @@ public enum LARJNetworkEvents
 {
 	PCUpdate = 128,
 	InteractableUpdate = 129,
-	TaskUpdate = 130
+	TaskUpdate = 130,
+	CustomerSpawn = 131
 }
 
 public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
@@ -27,6 +29,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private GameObject _simulatedInteractableGO;
 	private Interactable _simulatedInteractable;
 	private GameObject _myPlayer;
+	private CustomerSpawner _customerSpawner;
+	private Dictionary<int, GameObject> _customerIDs = new Dictionary<int, GameObject>();
+	private int _uniqueCustomerID = 0;
 
 	public enum LARJNetworkID
 	{
@@ -52,9 +57,20 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void SubscribeToEvents()
 	{
 		_playerFromID = GetPlayerFromID((LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1);
+		_customerSpawner = FindObjectOfType<CustomerSpawner>();
+		_customerSpawner.OnCustomerSpawn += OnCustomerSpawn;
 		_playerInteraction = _playerFromID.GetComponent<PlayerInteraction>();
 		_playerInteraction.OnNetworkTaskEvent += OnNetworkTask;
 		_playerInteraction.LARJInteractableUse += UpdateLocalInteractables;
+	}
+
+	private void OnCustomerSpawn(GameObject go)
+	{
+		_uniqueCustomerID++;
+		_customerIDs.Add(_uniqueCustomerID, go);
+		go.GetComponent<Customer>().SetID(73 + _uniqueCustomerID);
+		RaiseNetworkedCustomer(_uniqueCustomerID);
+
 	}
 
 	public void SetPlayers(GameObject[] go)
@@ -93,12 +109,31 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		{
 			TaskNetworkData taskNetworkData = new TaskNetworkData()
 			{
-				ID = (byte)_myID,
-				Active = active,
-				InteractableID = (byte)id
+				ID = (byte)id,
 			};
 			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.TaskUpdate, taskNetworkData, raiseEventOptions, sendOptions);
 		}
+	}
+
+	private void RaiseNetworkedCustomer(int id)
+	{
+		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
+		{
+			Receivers = ReceiverGroup.Others,
+			CachingOption = EventCaching.DoNotCache
+		};
+
+		SendOptions sendOptions = new SendOptions
+		{
+			Reliability = true
+		};
+
+		CustomerNetworkData interactableNetworkData = new CustomerNetworkData()
+		{
+			ID = (byte)_myID,
+		};
+
+		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.CustomerSpawn, interactableNetworkData, raiseEventOptions, sendOptions);
 	}
 
 	private void UpdateLocalInteractables(InteractableObjectID id, InteractableUseType type)
@@ -184,9 +219,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				return _interactables[7];
 			case InteractableObjectID.Printer:
 				return _interactables[3];
-			case InteractableObjectID.Costumer:
-				return null;
 		}
+
+		if ((int)id >= 73)
+			return _customerIDs[(int)id - 73];
 
 		return null;
 	}
@@ -288,6 +324,12 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 	}
 
+	private void ReceiveCustomerSpawn(CustomerNetworkData data)
+	{
+		var go = _customerSpawner.SpawnNetworkedCustomer();
+		_customerIDs.Add(data.ID, go);
+		go.GetComponent<Customer>().SetID(73 + data.ID);
+	}
 	private void ReceiveInteractableUpdate(InteractableNetworkData data)
 	{
 		if (_simulatedIDInteractables != (InteractableObjectID)data.InteractableID)
@@ -346,6 +388,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				break;
 			case LARJNetworkEvents.TaskUpdate:
 				ReceiveTaskUpdate((TaskNetworkData)photonEvent.CustomData);
+				break;
+			case LARJNetworkEvents.CustomerSpawn:
+				ReceiveCustomerSpawn((CustomerNetworkData)photonEvent.CustomData);
 				break;
 
 		}

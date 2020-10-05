@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,11 +17,16 @@ public class CustomerSpawner : MonoBehaviour
 
     [HideInInspector] public Transform customerSpawnPoint;
     [HideInInspector] public Transform customerDespawnPoint;
+
+    public delegate void LARjCustomerSpawnEvent(GameObject go);
+    public event LARjCustomerSpawnEvent OnCustomerSpawn;
+
     private ObjectPool _customerPool;
+    private bool _isLocal = true;
 
     // CUSTOMER OPTIONS
 
-        
+
 
     // References
     [HideInInspector] public List <Transform> queueWaypoints;
@@ -48,6 +54,9 @@ public class CustomerSpawner : MonoBehaviour
 
     IEnumerator Start()
     {
+        LARJConnectToPhoton larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
+        larjConnectToPhoton.LARJNetworkStatusEvent += OnLARJNetworkStatusChange;
+
         for (int i = 0; i < noOfWaves; i++)
         {
             var count = 0;
@@ -63,7 +72,20 @@ public class CustomerSpawner : MonoBehaviour
         
     }
 
-    private IEnumerator DoRandomizeSpawnTime()
+	private void OnLARJNetworkStatusChange(LARJNetworkState state)
+	{
+		switch(state)
+		{
+            case LARJNetworkState.Local:
+                _isLocal = true;
+                break;
+            case LARJNetworkState.Photon:
+                _isLocal = false;
+                break;
+        }
+	}
+
+	private IEnumerator DoRandomizeSpawnTime()
     {
         if (randomizeSpawnTime)
         {
@@ -79,8 +101,8 @@ public class CustomerSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnCustomer()
-    {
+    public GameObject SpawnNetworkedCustomer()
+	{
         var go = _customerPool.GetObject();
         var customer = go.GetComponent<Customer>();
 
@@ -92,6 +114,28 @@ public class CustomerSpawner : MonoBehaviour
         if (_highlightInteractables != null)
         {
             _highlightInteractables.AddInteractables(go.GetComponent<Interactable>());
+        }
+
+        return go;
+	}
+
+    private void SpawnCustomer()
+    {
+        if(_isLocal || PhotonNetwork.IsMasterClient)
+		{
+            var go = _customerPool.GetObject();
+            var customer = go.GetComponent<Customer>();
+
+            customer.customerSpawner = this;
+            customer.customerPool = _customerPool;
+
+            go.transform.position = customerSpawnPoint.position;
+
+            if (_highlightInteractables != null)
+            {
+                _highlightInteractables.AddInteractables(go.GetComponent<Interactable>());
+            }
+            OnCustomerSpawn?.Invoke(go);
         }
     }
 }
