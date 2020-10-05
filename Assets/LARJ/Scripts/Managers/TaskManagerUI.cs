@@ -42,7 +42,7 @@ namespace Tasks
                     icon = _telephoneIcon;
                     break;
                 case TaskType.Printer:
-                    title = "Print something!";
+                    title = "Print Documents!";
                     icon = _printerIcon;
                     break;
                 case TaskType.Customer:

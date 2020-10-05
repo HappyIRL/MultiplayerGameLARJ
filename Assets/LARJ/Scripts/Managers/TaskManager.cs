@@ -31,6 +31,10 @@ namespace Tasks
         {
             _currentDelay = _delayBetweenTasks;
         }
+        private void Start()
+        {
+            StartRandomTask();
+        }
         void Update()
         {
             _timer += Time.deltaTime;
@@ -66,7 +70,7 @@ namespace Tasks
             TaskUI taskUI = _taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask.Invoke(task.GetComponent<Interactable>(), true);
+            OnTask.Invoke(task.GetInteractable, true);
 
         }
 
@@ -151,13 +155,16 @@ namespace Tasks
             task.StopTask();
             _taskManagerUI.RemoveUITask(task.TaskUI);
             UpdateScore(task.GetRewardMoney, true);
-            OnTask.Invoke(task.GetComponent<Interactable>(), false);
+            OnTask.Invoke(task.GetInteractable, false);
         }
 
         private void UpdateScore(int reward, bool positive)
         {
             _scoreAddText.text = positive ? "+" + reward.ToString() : "-" + reward.ToString();
             _scoreAddText.color = positive ? Color.green : Color.red;
+            _scoreAddText.CrossFadeAlpha(0, 3, false);
+            _scoreAddText.CrossFadeAlpha(1, 0, false);
+            _scoreAddText.CrossFadeAlpha(0, 1, false);
             _score += positive ? reward : -reward;
             _score = _score < 0 ? 0 : _score;
             _scoreText.text = _score.ToString();
@@ -171,7 +178,7 @@ namespace Tasks
             task.StopTask();
             _taskManagerUI.RemoveUITask(task.TaskUI);
             UpdateScore(task.GetLostMoneyOnFail, false);
-            OnTask.Invoke(task.GetComponent<Interactable>(), false);
+            OnTask.Invoke(task.GetInteractable, false);
         }
 
         public void StartPaperTask()

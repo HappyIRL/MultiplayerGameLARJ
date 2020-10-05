@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.UI;
+using WebSocketSharp.Net;
 
 namespace Tasks
 {
@@ -20,9 +21,9 @@ namespace Tasks
         [SerializeField] private TextMeshProUGUI _titleText = null;
         [SerializeField] private Image _timerImage = null;
         [SerializeField] private Image _taskIcon = null;
-
-        private float _timeToComplete = 0f;
+        private float _timeToComplete = 10f;
         private Coroutine _lastCoroutine;
+        private Color _orange = new Color(0.96f, 0.57f, 0.03f, 1);
 
         private void Start()
         {
@@ -91,6 +92,16 @@ namespace Tasks
             {
                 timer += Time.deltaTime;
                 _timerImage.fillAmount = (_timeToComplete - timer) / _timeToComplete;
+                //_timerImage.color = Color.white;
+                if (0.5f > timer / _timeToComplete)
+                {
+
+                    _timerImage.color = Color.Lerp(_orange, Color.green, 1 - timer * 2 / _timeToComplete);
+                }
+                else
+                {
+                    _timerImage.color = Color.Lerp(_orange, Color.red, timer * 2 / _timeToComplete - 1);
+                }
                 yield return null;
             }
         }

@@ -35,7 +35,7 @@ namespace Tasks
         public int GetLostMoneyOnFail { get => _lostMoneyOnFail; }
         public float GetTimeToFinishTask { get => _timeToFinishTask; }
         public bool IsTaskActive { get => _isTaskActive; set => _isTaskActive = value; }
-
+        public Interactable GetInteractable { get => _interactable; }
         
         private void Awake()
         {
