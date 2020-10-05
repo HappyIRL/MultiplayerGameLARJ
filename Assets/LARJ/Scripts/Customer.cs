@@ -162,7 +162,6 @@ public class Customer : Interactable, IObjectPoolNotifier
     }
     private void OnEnterTalk()
     {
-        StopCoroutine("LeaveAfterDelay");
     }
     private void OnFinishedTalk()
     {
@@ -174,7 +173,6 @@ public class Customer : Interactable, IObjectPoolNotifier
     }
     private void OnFailedTalk()
     {
-        StartCoroutine("LeaveAfterDelay");
     }
     IEnumerator LeaveAfterDelay()
     {

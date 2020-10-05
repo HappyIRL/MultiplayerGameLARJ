@@ -45,7 +45,6 @@ public class PlayerInteraction : MonoBehaviour
 
     //Object to interact
     private Interactable _objectToInteract;
-    private TaskManager _taskManager;
     private LARJConnectToPhoton _larjConnectToPhoton;
 
     public Interactable ObjectToInteract
@@ -64,13 +63,12 @@ public class PlayerInteraction : MonoBehaviour
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
+        TaskManager.TaskManagerSingelton.OnTask += ActivateInteractible;
     }
     private void Start()
     {
         _holdingTimeBarBG.SetActive(false);
-        _taskManager = FindObjectOfType<TaskManager>();
         _larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
-        _taskManager.OnTask += ActivateInteractible;
         _larjConnectToPhoton.LARJNetworkStatusEvent += OnLARJNetworkStatusChange;
 
     }

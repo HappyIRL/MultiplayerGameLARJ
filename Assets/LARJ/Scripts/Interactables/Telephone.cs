@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,16 +21,12 @@ public class Telephone : Interactable
     [SerializeField] private Material _standardScreenMaterial = null;
     [SerializeField] private AudioClip _ringingSound = null;
 
-    [Header("Events")]
-    [SerializeField] private UnityEvent _failedToAnswerEvent;
-    [SerializeField] private UnityEvent _completedEvent;
-
     private MeshRenderer _meshRenderer;
     private AudioSource _audioSource;
     private bool _callAnswered = false;
     private Coroutine _lastCoroutine;
 
-    private void Awake()
+    public override void Awake()
     {
         base.Awake();
         _audioSource = GetComponent<AudioSource>();
@@ -77,7 +74,7 @@ public class Telephone : Interactable
         }
         if (!_callAnswered)
         {
-            _failedToAnswerEvent.Invoke();
+            TaskManager.TaskManagerSingelton.OnTaskFailed(GetComponent<Task>());
         }
         EndCall();
     }
@@ -105,7 +102,7 @@ public class Telephone : Interactable
         EndCall();
         ChangeMaterial(_standardScreenMaterial);
 
-        _completedEvent.Invoke();
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
 
     public override void HoldingFailedEvent()
