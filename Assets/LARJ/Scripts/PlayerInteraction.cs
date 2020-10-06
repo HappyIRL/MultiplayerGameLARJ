@@ -95,6 +95,8 @@ public class PlayerInteraction : MonoBehaviour
                 if (!AllowedInteractibles.Contains(interactable))
                 {
                     AllowedInteractibles.Add(interactable);
+                    Debug.Log(interactable);
+                    Debug.Log(interactable.interactableID);
                     OnNetworkTaskEvent?.Invoke(interactable.interactableID, active);
                 }
             }
@@ -102,8 +104,9 @@ public class PlayerInteraction : MonoBehaviour
             {
                 if (AllowedInteractibles.Contains(interactable))
                 {
-                    AllowedInteractibles.Remove(interactable);
                     OnNetworkTaskEvent?.Invoke(interactable.interactableID, active);
+                    Debug.Log(interactable.interactableID);
+                    AllowedInteractibles.Remove(interactable);
                 }
             }
         }

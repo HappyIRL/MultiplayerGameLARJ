@@ -8,8 +8,6 @@ namespace Tasks
 {
     public class TaskManager : MonoBehaviour
     {
-        [SerializeField] private int _completedTasks = 0;
-        [SerializeField] private int _failedTasks;
         [SerializeField] private int _openTasks = 0;
         [SerializeField] private Task[] _possibleTasks;
         [SerializeField] private float _delayBetweenTasks;
@@ -148,7 +146,6 @@ namespace Tasks
 
         public void OnTaskCompleted(Task task)
         {
-            _completedTasks++;
             task.IsTaskActive = false;
             //UpdateTasksText((int)taskType, false);
             task.StopTask();
@@ -160,7 +157,6 @@ namespace Tasks
 
         public void OnTaskFailed(Task task)
         {
-            _failedTasks++;
             task.IsTaskActive = false;
             //UpdateTasksText((int)taskType, false);
             task.StopTask();

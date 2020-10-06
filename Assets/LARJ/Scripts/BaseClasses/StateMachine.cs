@@ -94,8 +94,6 @@ public class StateMachine
 			currentState.onExit();
 		}
 
-		Debug.LogFormat("Transitioning from {0} to {1}", currentState, newState);
-
 		currentState = newState;
 
 		if (newState.onEnter != null)

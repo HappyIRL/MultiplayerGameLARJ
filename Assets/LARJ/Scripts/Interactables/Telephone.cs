@@ -29,6 +29,7 @@ public class Telephone : Interactable
     public override void Awake()
     {
         base.Awake();
+        interactableID = (InteractableObjectID)_interactableID;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _ringingSound;
         
@@ -36,7 +37,6 @@ public class Telephone : Interactable
     public override void Start()
     {
         base.Start();
-        interactableID = (InteractableObjectID)_interactableID;
         _meshRenderer = GetComponent<MeshRenderer>();
     }
 

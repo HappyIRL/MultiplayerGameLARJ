@@ -24,10 +24,16 @@ public class Printer : Interactable
     private Coroutine _lastCoroutine;
     private GameObject _papergameObject;
 
-    public override void Start()
+	public override void Awake()
+	{
+		base.Awake();
+        interactableID = (InteractableObjectID)_interactableID;
+    }
+
+	public override void Start()
     {
         base.Start();
-        interactableID = (InteractableObjectID)_interactableID;
+        
         _audioSource = GetComponent<AudioSource>();
     }
 

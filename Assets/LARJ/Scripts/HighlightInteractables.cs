@@ -18,7 +18,6 @@ public class HighlightInteractables : MonoBehaviour
 	{		
 		OutlineInteractables(OutlineEnabled);
 		OutlineEnabled = !OutlineEnabled;
-		Debug.Log(OutlineEnabled);
 	}
 
 	public void OutlineInteractables(bool enabled)

@@ -65,7 +65,7 @@ public class WaitingLobbyMenu : MonoBehaviourPunCallbacks
 			_playerImages[i].color = Color.green;
 		}
 
-		if (PhotonNetwork.PlayerList.Length == 2)
+		if (PhotonNetwork.PlayerList.Length >= 1)
 		{
 			_waitingForX.text = "Waiting For Host";
 			if(PhotonNetwork.IsMasterClient)

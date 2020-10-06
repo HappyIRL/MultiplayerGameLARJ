@@ -67,9 +67,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void OnCustomerSpawn(GameObject go)
 	{
 		_uniqueCustomerID++;
-		_customerIDs.Add(_uniqueCustomerID, go);
+		_customerIDs.Add(_uniqueCustomerID + 73, go);
 		go.GetComponent<Customer>().SetID(73 + _uniqueCustomerID);
-		RaiseNetworkedCustomer(_uniqueCustomerID);
+		RaiseNetworkedCustomer(73 + _uniqueCustomerID);
 
 	}
 
@@ -109,7 +109,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		{
 			TaskNetworkData taskNetworkData = new TaskNetworkData()
 			{
-				ID = (byte)id,
+				ID = (byte)_myID,
+				Active = active,
+				InteractableID = (byte)id
 			};
 			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.TaskUpdate, taskNetworkData, raiseEventOptions, sendOptions);
 		}
@@ -130,7 +132,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 		CustomerNetworkData interactableNetworkData = new CustomerNetworkData()
 		{
-			ID = (byte)_myID,
+			ID = (byte)id,
 		};
 
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.CustomerSpawn, interactableNetworkData, raiseEventOptions, sendOptions);
@@ -222,7 +224,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 
 		if ((int)id >= 73)
-			return _customerIDs[(int)id - 73];
+			return _customerIDs[(int)id];
 
 		return null;
 	}
@@ -304,31 +306,30 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveTaskUpdate(TaskNetworkData data)
 	{
-		_simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
 		_myPlayer = GetPlayerFromID(_myID);
 		_playerInteraction = _myPlayer.GetComponent<PlayerInteraction>();
-
-		Debug.Log(data.InteractableID);
-		Debug.Log(_simulatedPlayerGO);
-		Debug.Log(_playerInteraction);
+		Interactable interactable = GetInteractableGoFromID((InteractableObjectID)data.InteractableID).GetComponent<Interactable>();
 
 		if (data.Active)
 		{
-			_playerInteraction.AllowedInteractibles.Add(GetInteractableGoFromID((InteractableObjectID)data.InteractableID).GetComponent<Interactable>());
+			if (!_playerInteraction.AllowedInteractibles.Contains(interactable))
+				_playerInteraction.AllowedInteractibles.Add(GetInteractableGoFromID((InteractableObjectID)data.InteractableID).GetComponent<Interactable>());
 		}
 		else
 		{
-			Interactable interactable = GetInteractableGoFromID((InteractableObjectID)data.InteractableID).GetComponent<Interactable>();
 			if (_playerInteraction.AllowedInteractibles.Contains(interactable))
+			{
 				_playerInteraction.AllowedInteractibles.Remove(interactable);
+			}
 		}
 	}
 
 	private void ReceiveCustomerSpawn(CustomerNetworkData data)
 	{
 		var go = _customerSpawner.SpawnNetworkedCustomer();
-		_customerIDs.Add(data.ID, go);
 		go.GetComponent<Customer>().SetID(73 + data.ID);
+		if(!_customerIDs.ContainsKey(data.ID))
+			_customerIDs.Add(data.ID, go);
 	}
 	private void ReceiveInteractableUpdate(InteractableNetworkData data)
 	{

@@ -245,40 +245,20 @@ public class Customer : Interactable, IObjectPoolNotifier
     #region Interactable Events
     public override void HoldingStartedEvent()
     {
+        base.HoldingStartedEvent();
         OnEnterTalk();
     }
 
     public override void HoldingFailedEvent()
     {
+        base.HoldingFinishedEvent();
         OnFailedTalk();
     }
 
     public override void HoldingFinishedEvent()
     {
+        base.HoldingFinishedEvent();
         OnFinishedTalk();
-    }
-
-    public override void PressEvent()
-    {
-        
-    }
-
-    public override void MousePressEvent()
-    {
-        
-    }
-
-    public override void MouseReleaseEvent()
-    {
-        
-    }
-
-    public override void StartInteractible()
-    {
-    }
-
-    public override void StopInteractible()
-    {
     }
     #endregion
 }

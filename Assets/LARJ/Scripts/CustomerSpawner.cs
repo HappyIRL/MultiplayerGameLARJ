@@ -43,6 +43,7 @@ public class CustomerSpawner : MonoBehaviour
         _customerPool = GameObject.Find("CustomerPool").GetComponent<ObjectPool>();
         deskWaypoint = GameObject.Find("DeskWaypoint").GetComponent<Transform>();
         var queueList =  GameObject.Find("QueueWaypoints").GetComponent<Transform>();
+
         foreach (Transform queueWaypoint in queueList)
         {
             queueWaypoints.Add(queueWaypoint);
