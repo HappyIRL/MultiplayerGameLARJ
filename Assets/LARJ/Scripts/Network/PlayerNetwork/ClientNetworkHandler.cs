@@ -66,11 +66,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void OnCustomerSpawn(GameObject go)
 	{
-		_uniqueCustomerID++;
 		_customerIDs.Add(_uniqueCustomerID + 73, go);
 		go.GetComponent<Customer>().SetID(73 + _uniqueCustomerID);
 		RaiseNetworkedCustomer(73 + _uniqueCustomerID);
-
+		_uniqueCustomerID+=1;
 	}
 
 	public void SetPlayers(GameObject[] go)
@@ -224,7 +223,16 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 
 		if ((int)id >= 73)
-			return _customerIDs[(int)id];
+		{
+			if (_customerIDs.ContainsKey((int)id))
+			{
+				return _customerIDs[(int)id];
+			}
+			else
+			{
+				Debug.LogError("No Customer with Key: " + (int) id);
+			}
+		}
 
 		return null;
 	}
@@ -327,9 +335,16 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void ReceiveCustomerSpawn(CustomerNetworkData data)
 	{
 		var go = _customerSpawner.SpawnNetworkedCustomer();
-		go.GetComponent<Customer>().SetID(73 + data.ID);
-		if(!_customerIDs.ContainsKey(data.ID))
+		go.GetComponent<Customer>().SetID(data.ID);
+		if (_customerIDs.ContainsKey(data.ID))
+		{
+			Debug.LogError("Error, trying to spawn second customer for ID: " + data.ID);
+		}
+		else
+		{
+			Debug.Log("Adding Customer with ID: " + data.ID);
 			_customerIDs.Add(data.ID, go);
+		}
 	}
 	private void ReceiveInteractableUpdate(InteractableNetworkData data)
 	{

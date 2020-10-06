@@ -137,6 +137,7 @@ public class CustomerSpawner : MonoBehaviour
                 _highlightInteractables.AddInteractables(go.GetComponent<Interactable>());
             }
             OnCustomerSpawn?.Invoke(go);
+            Debug.Log("Spawned Customer, should only happen on MasterClient");
         }
     }
 }
