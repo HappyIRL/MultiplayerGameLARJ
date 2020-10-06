@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
+using Tasks;
 using UnityEngine;
 
 public enum LARJNetworkEvents
@@ -92,7 +93,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_interactables.Add(go);
 	}
 
-	private void OnNetworkTask(InteractableObjectID id, bool active)
+	private void OnNetworkTask(InteractableObjectID id, LARJTaskState state)
 	{
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
@@ -109,7 +110,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			TaskNetworkData taskNetworkData = new TaskNetworkData()
 			{
 				ID = (byte)_myID,
-				Active = active,
+				TaskState = (byte)state,
 				InteractableID = (byte)id
 			};
 			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.TaskUpdate, taskNetworkData, raiseEventOptions, sendOptions);
@@ -317,18 +318,34 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_myPlayer = GetPlayerFromID(_myID);
 		_playerInteraction = _myPlayer.GetComponent<PlayerInteraction>();
 		Interactable interactable = GetInteractableGoFromID((InteractableObjectID)data.InteractableID).GetComponent<Interactable>();
+		Task task = interactable.GetComponent<Task>();
+		TaskManagerUI taskManagerUI = TaskManager.TaskManagerSingelton.TaskManagerUI;
+		Score score = TaskManager.TaskManagerSingelton.Score;
 
-		if (data.Active)
+		switch ((LARJTaskState)data.TaskState)
 		{
-			if (!_playerInteraction.AllowedInteractibles.Contains(interactable))
+			case LARJTaskState.TaskComplete:
+				if (_playerInteraction.AllowedInteractibles.Contains(interactable))
+					_playerInteraction.AllowedInteractibles.Remove(interactable);
+				task.IsTaskActive = false;
+				task.StopTask();
+				taskManagerUI.RemoveUITask(task.TaskUI);
+				score.UpdateScore(task.GetRewardMoney, true);
+				break;
+
+			case LARJTaskState.TaskFailed:
+				if (_playerInteraction.AllowedInteractibles.Contains(interactable))
+					_playerInteraction.AllowedInteractibles.Remove(interactable);
+				task.IsTaskActive = false;
+				task.StopTask();
+				taskManagerUI.RemoveUITask(task.TaskUI);
+				score.UpdateScore(task.GetLostMoneyOnFail, false);
+				break;
+
+			case LARJTaskState.TaskStart:
 				_playerInteraction.AllowedInteractibles.Add(GetInteractableGoFromID((InteractableObjectID)data.InteractableID).GetComponent<Interactable>());
-		}
-		else
-		{
-			if (_playerInteraction.AllowedInteractibles.Contains(interactable))
-			{
-				_playerInteraction.AllowedInteractibles.Remove(interactable);
-			}
+				task.TaskUI = taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
+				break;
 		}
 	}
 
@@ -336,13 +353,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		var go = _customerSpawner.SpawnNetworkedCustomer();
 		go.GetComponent<Customer>().SetID(data.ID);
-		if (_customerIDs.ContainsKey(data.ID))
+		if (!_customerIDs.ContainsKey(data.ID))
 		{
-			Debug.LogError("Error, trying to spawn second customer for ID: " + data.ID);
-		}
-		else
-		{
-			Debug.Log("Adding Customer with ID: " + data.ID);
 			_customerIDs.Add(data.ID, go);
 		}
 	}
@@ -406,7 +418,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveTaskUpdate((TaskNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.CustomerSpawn:
-				ReceiveCustomerSpawn((CustomerNetworkData)photonEvent.CustomData);
+				//ReceiveCustomerSpawn((CustomerNetworkData)photonEvent.CustomData);
 				break;
 
 		}

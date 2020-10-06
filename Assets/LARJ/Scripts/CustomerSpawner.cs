@@ -55,8 +55,10 @@ public class CustomerSpawner : MonoBehaviour
 
     IEnumerator Start()
     {
-        LARJConnectToPhoton larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
-        larjConnectToPhoton.LARJNetworkStatusEvent += OnLARJNetworkStatusChange;
+        if(PhotonNetwork.IsConnected)
+            _isLocal = false;
+        else
+            _isLocal = true;
 
         for (int i = 0; i < noOfWaves; i++)
         {
@@ -72,19 +74,6 @@ public class CustomerSpawner : MonoBehaviour
         }
         
     }
-
-	private void OnLARJNetworkStatusChange(LARJNetworkState state)
-	{
-		switch(state)
-		{
-            case LARJNetworkState.Local:
-                _isLocal = true;
-                break;
-            case LARJNetworkState.Photon:
-                _isLocal = false;
-                break;
-        }
-	}
 
 	private IEnumerator DoRandomizeSpawnTime()
     {

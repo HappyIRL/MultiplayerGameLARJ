@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class NetworkDebugger : MonoBehaviourPunCallbacks
 {
@@ -16,31 +17,34 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 	private List<String> _debugList = new List<String>();
 	private byte _maxPlayersInRoom = 4;
 	private LARJConnectToPhoton _larjConnectToPhoton;
+	GUIStyle _debugBoxSytle = new GUIStyle();
+	GUIContent _content = new GUIContent();
+	private int index = 0;
 
-	public bool _networkingEnabled = false;
 
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 	private static void OnSceneLoad()
 	{
 		GameObject go = new GameObject();
 		go.name = "NetworkDebuggerGameObject";
-		go.hideFlags = HideFlags.HideInHierarchy;
+		//go.hideFlags = HideFlags.HideInHierarchy;
 		go.AddComponent<NetworkDebugger>();
+		DontDestroyOnLoad(go);
 	}
 
 	private void Start()
 	{
-		var x = FindObjectsOfType<LARJConnectToPhoton>();
-		if (x.Length > 1) { Debug.LogError($"Found more than one of {x}"); }
-		if(x == null) { Debug.LogError($"Can't find the LARJConnectTophoton.cs"); }
-
-		else { _larjConnectToPhoton = x[0]; }
+		_larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
+		_debugBoxSytle.alignment = TextAnchor.MiddleLeft;
+		_debugBoxSytle.wordWrap = true;
+		_debugBoxSytle.fontSize = 15;
 	}
 
 	private void Update()
 	{
 		if(Keyboard.current[Key.F3].wasPressedThisFrame)
 		{
+			_larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
 			_toggleDebugUI = !_toggleDebugUI;
 		}
 	}
@@ -65,14 +69,22 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 
 	private void AddToDebugList(string bug)
 	{
-		_debugList.Add(bug);
-		_debugString = "";
-		foreach(string debug in _debugList)
+		if (_debugList.Count > 10)
 		{
-			_debugString += $"ERROR: {debug}{Environment.NewLine}";
+			_debugList.RemoveRange(0, _debugList.Count / 2);
 		}
+
+		_debugList.Add(index + ". " + bug);
+		_debugString = "";
+		foreach (string debug in _debugList)
+		{
+			_debugString = $"{debug}{Environment.NewLine}{_debugString}";
+			_content.text = _debugString;
+		}
+		index++;
 	}
 
+	#region Photon-Event-Callbacks
 	public override void OnJoinRoomFailed(short returnCode, string message)
 	{
 		AddToDebugList(message);
@@ -83,57 +95,122 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 		AddToDebugList(message);
 	}
 
+	public override void OnConnected()
+	{
+		base.OnConnected();
+		AddToDebugList("Connected");
+	}
+	public override void OnCreatedRoom()
+	{
+		base.OnCreatedRoom();
+		AddToDebugList("Created room");
+	}
+	public override void OnJoinedRoom()
+	{
+		base.OnJoinedRoom();
+		AddToDebugList("Joined room");
+	}
+	public override void OnConnectedToMaster()
+	{
+		base.OnConnectedToMaster();
+		AddToDebugList("Connected to master");
+	}
+	public override void OnDisconnected(DisconnectCause cause)
+	{
+		base.OnDisconnected(cause);
+		AddToDebugList("Disconnected - cause: " + cause.ToString());
+	}
+	public override void OnJoinedLobby()
+	{
+		base.OnJoinedLobby();
+		AddToDebugList("Joined lobby");
+	}
+
+	public override void OnLeftLobby()
+	{
+		base.OnLeftLobby();
+		AddToDebugList("Left lobby");
+	}
+	public override void OnLeftRoom()
+	{
+		base.OnLeftRoom();
+		AddToDebugList("Left room");
+	}
+	public override void OnJoinRandomFailed(short returnCode, string message)
+	{
+		base.OnJoinRandomFailed(returnCode, message);
+		AddToDebugList("Join random failed - message: " + message);
+	}
+	public override void OnPlayerLeftRoom(Player otherPlayer)
+	{
+		base.OnPlayerLeftRoom(otherPlayer);
+		AddToDebugList(otherPlayer + " left room");
+	}
+	public override void OnPlayerEnteredRoom(Player newPlayer)
+	{
+		base.OnPlayerEnteredRoom(newPlayer);
+		AddToDebugList(newPlayer + " entered room");
+	}
+	public override void OnMasterClientSwitched(Player newMasterClient)
+	{
+		base.OnMasterClientSwitched(newMasterClient);
+		AddToDebugList(newMasterClient + " is the new master");
+	}
+	public override void OnRegionListReceived(RegionHandler regionHandler)
+	{
+		base.OnRegionListReceived(regionHandler);
+	}
+	#endregion Photon-Event-Callbacks
+
 	private void OnGUI()
 	{
-		if(_toggleDebugUI)
-		{
-			GUI.color = Color.black;
+		GUI.color = Color.black;
 
-			//NetworkClientState
-			GUI.Box(new Rect(10, 10, 300, 60), $"NetworkClientState: {PhotonNetwork.NetworkClientState}" +
-				$"{Environment.NewLine}Ping: {PhotonNetwork.GetPing()}" +
-				$"{Environment.NewLine}MasterClient : {PhotonNetwork.MasterClient}");
-			
+		if (_toggleDebugUI)
+		{
+			GUI.Box(new Rect(1600, 10, 300, 60), $"NetworkClientState: {PhotonNetwork.NetworkClientState}" +
+			$"{Environment.NewLine}Ping: {PhotonNetwork.GetPing()}" +
+			$"{Environment.NewLine}MasterClient : {PhotonNetwork.MasterClient}");
 			//Network debug window
-			GUI.Box(new Rect(10, 800, 600, 15 * _debugList.Count + 5), _debugString);
+			GUI.Box(new Rect(1300, 80, 300, _debugBoxSytle.fontSize * _debugList.Count + 5), _content, _debugBoxSytle);
 
 			switch (PhotonNetwork.NetworkClientState)
 			{
 				//In room
 				case ClientState.Joined:
 					//Leave room button
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Leave Room", () => PhotonNetwork.LeaveRoom());
+					CreateGUIButton(new Rect(1600, 80, 300, 20), "Leave Room", () => PhotonNetwork.LeaveRoom());
 					break;
 				
 				//In Lobby
 				case ClientState.JoinedLobby:
 					//Leave lobby button
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Leave Lobby", () => PhotonNetwork.LeaveLobby());
+					CreateGUIButton(new Rect(1600, 80, 300, 20), "Leave Lobby", () => PhotonNetwork.LeaveLobby());
 					//Room name enter field
-					_roomName = GUI.TextField(new Rect(160, 110, 150, 20), _roomName);
+					_roomName = GUI.TextField(new Rect(1760, 110, 150, 20), _roomName);
 					//Room enter button
 					RoomOptions options = new RoomOptions{ MaxPlayers = _maxPlayersInRoom };
-					CreateGUIButton(new Rect(10, 110, 150, 20), "Join/Create Room:", () => PhotonNetwork.JoinOrCreateRoom(_roomName, options, TypedLobby.Default));
+					CreateGUIButton(new Rect(1600, 110, 150, 20), "Join/Create Room:", () => PhotonNetwork.JoinOrCreateRoom(_roomName, options, TypedLobby.Default));
 					//Room info list
-					GUI.Box(new Rect(10, 200, 300, 15 * _roomCount + 5), _roomInfos);
+					GUI.Box(new Rect(1600, 200, 300, 15 * _roomCount + 5), _roomInfos);
 					break;
 
 				//Connected to Photon
 				case ClientState.ConnectedToMasterServer:
 					//Disconnect button
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Disconnect from Master", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local));
+					CreateGUIButton(new Rect(1600, 80, 300, 20), "Disconnect from Master", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local));
 					//Join lobby button
-					CreateGUIButton(new Rect(10, 110, 300, 20), "Join Lobby", () => PhotonNetwork.JoinLobby());
+					CreateGUIButton(new Rect(1600, 110, 300, 20), "Join Lobby", () => PhotonNetwork.JoinLobby());
 					break;
 
 				//Disconnected from Photon
 				case ClientState.Disconnected:
 					//Connect button
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Connect to Master", () => PhotonNetwork.ConnectUsingSettings());
+					CreateGUIButton(new Rect(1600, 80, 300, 20), "Connect to Master", () => PhotonNetwork.ConnectUsingSettings());
 					break;
 				case ClientState.PeerCreated:
 					//Enable Networking
-					CreateGUIButton(new Rect(10, 80, 300, 20), "Switch Networking On", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon));
+					CreateGUIButton(new Rect(1600, 80, 300, 20), "Switch Networking On", () => _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon));
 					break;
 			}
 		}

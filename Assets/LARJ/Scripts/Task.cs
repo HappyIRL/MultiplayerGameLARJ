@@ -25,7 +25,7 @@ namespace Tasks
         private bool _isTaskActive = false;
         private Interactable _interactable;
         private Coroutine _cooldownCoroutine;
-        public TaskType GetTaskType { get => _taskType; } //remove setter later
+        public TaskType GetTaskType { get => _taskType; }
 
         public TaskUI TaskUI { get; set; }
         public int TaskID { get; set; }

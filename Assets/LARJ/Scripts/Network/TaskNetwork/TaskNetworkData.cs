@@ -5,7 +5,7 @@ using UnityEngine;
 public class TaskNetworkData
 {
     public byte ID;
-    public bool Active;
+    public byte TaskState;
     public byte InteractableID;
 
 	public static byte[] SerializeMethod(object customObject)
@@ -14,8 +14,7 @@ public class TaskNetworkData
 		byte[] result = new byte[3];
 
 		result[0] = data.ID;
-		if (data.Active) result[1] = 1;
-		else result[1] = 0;
+		result[1] = data.TaskState;
 		result[2] = data.InteractableID;
 
 		return result;
@@ -26,8 +25,7 @@ public class TaskNetworkData
 		TaskNetworkData data = new TaskNetworkData();
 
 		data.ID = input[0];
-		if (input[1] == 0) data.Active = false;
-		else data.Active = true;
+		data.TaskState = input[1];
 		data.InteractableID = input[2];
 
 		return data;

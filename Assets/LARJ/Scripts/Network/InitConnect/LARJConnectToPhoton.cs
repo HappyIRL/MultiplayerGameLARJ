@@ -10,8 +10,6 @@ public enum LARJNetworkState
 
 public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 {
-	public delegate void LARJNetworkStatusHandler(LARJNetworkState state);
-	public event LARJNetworkStatusHandler LARJNetworkStatusEvent;
 
 	//Called with a LARJNetworkStatus. Invokes LARJNetworkStatusEvent.
 	private void Start()
@@ -25,14 +23,12 @@ public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 		{
 			case LARJNetworkState.Local:
 				PhotonNetwork.Disconnect();
-				LARJNetworkStatusEvent?.Invoke(LARJNetworkState.Local);
 				break;
 
 			case LARJNetworkState.Photon:
 				PhotonNetwork.NickName = MasterManager.Instance.GameSettings.NickName;
 				PhotonNetwork.GameVersion = MasterManager.Instance.GameSettings.GameVersion;
 				PhotonNetwork.ConnectUsingSettings();
-				LARJNetworkStatusEvent?.Invoke(LARJNetworkState.Photon);
 				break;
 		}
 	}

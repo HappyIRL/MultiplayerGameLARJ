@@ -38,7 +38,7 @@ public class PlayerInteraction : MonoBehaviour
 
     public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type);
     public event LARJInteractableUseEvent LARJInteractableUse;
-    public delegate void LARJTaskEvent(InteractableObjectID id, bool active);
+    public delegate void LARJTaskEvent(InteractableObjectID id, LARJTaskState state);
     public event LARJTaskEvent OnNetworkTaskEvent;
 
     public List<Interactable> AllowedInteractibles = new List<Interactable>();
@@ -63,51 +63,47 @@ public class PlayerInteraction : MonoBehaviour
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
-        TaskManager.TaskManagerSingelton.OnTask += ActivateInteractible;
+        TaskManager.TaskManagerSingelton.OnTask += ActivateInteractable;
+
+        if (PhotonNetwork.IsConnected)
+            _isLocal = false;
+        else
+            _isLocal = true;
     }
     private void Start()
     {
         _holdingTimeBarBG.SetActive(false);
         _larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
-        _larjConnectToPhoton.LARJNetworkStatusEvent += OnLARJNetworkStatusChange;
 
     }
 
-    private void OnLARJNetworkStatusChange(LARJNetworkState state)
-	{
-        switch(state)
-		{
-            case LARJNetworkState.Local:
-                _isLocal = true;
-                break;
-            case LARJNetworkState.Photon:
-                _isLocal = false;
-                break;
-		}
-	}
-
-    private void ActivateInteractible(Interactable interactable, bool active)
+    private void ActivateInteractable(Interactable interactable, LARJTaskState state)
     {
         if (_isLocal || PhotonNetwork.IsMasterClient)
-		{ 
-            if (active)
-            {
-                if (!AllowedInteractibles.Contains(interactable))
-                {
-                    AllowedInteractibles.Add(interactable);
-                    Debug.Log(interactable);
-                    Debug.Log(interactable.interactableID);
-                    OnNetworkTaskEvent?.Invoke(interactable.interactableID, active);
-                }
-            }
-            else
-            {
-                if (AllowedInteractibles.Contains(interactable))
-                {
-                    OnNetworkTaskEvent?.Invoke(interactable.interactableID, active);
-                    Debug.Log(interactable.interactableID);
-                    AllowedInteractibles.Remove(interactable);
-                }
+		{
+            switch(state)
+			{
+                case LARJTaskState.TaskComplete:
+                    if (AllowedInteractibles.Contains(interactable))
+                    {
+                        OnNetworkTaskEvent?.Invoke(interactable.interactableID, state);
+                        AllowedInteractibles.Remove(interactable);
+                    }
+                    break;
+                case LARJTaskState.TaskFailed:
+                    if (AllowedInteractibles.Contains(interactable))
+                    {
+                        OnNetworkTaskEvent?.Invoke(interactable.interactableID, state);
+                        AllowedInteractibles.Remove(interactable);
+                    }
+                    break;
+                case LARJTaskState.TaskStart:
+                    if (!AllowedInteractibles.Contains(interactable))
+                    {
+                        AllowedInteractibles.Add(interactable);
+                        OnNetworkTaskEvent?.Invoke(interactable.interactableID, state);
+                    }
+                    break;
             }
         }
     }

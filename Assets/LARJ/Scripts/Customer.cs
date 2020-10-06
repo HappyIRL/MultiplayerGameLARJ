@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Tasks;
+using Photon.Pun;
 
 public class Customer : Interactable, IObjectPoolNotifier
 {
@@ -34,8 +35,6 @@ public class Customer : Interactable, IObjectPoolNotifier
     public override void Start()
     {
         base.Start();
-
-        interactableID = (InteractableObjectID)73;
 
         _deskWaypoint = customerSpawner.deskWaypoint;
         _despawn = customerSpawner.customerDespawnPoint;
@@ -112,7 +111,8 @@ public class Customer : Interactable, IObjectPoolNotifier
         var rot = transform.rotation.eulerAngles;
         _agent.updateRotation = false;
         transform.Rotate(-rot);
-        TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
+        if(!PhotonNetwork.IsConnected)
+            TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
     }
     private void AtDeskUpdate()
     {
