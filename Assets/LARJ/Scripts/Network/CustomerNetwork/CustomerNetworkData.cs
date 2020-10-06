@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomerNetworkData : MonoBehaviour
+public class CustomerNetworkData
 {
 	public byte ID;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractableNetworkData : MonoBehaviour
+public class InteractableNetworkData
 {
 	public byte ID;
 	public byte InteractableID;

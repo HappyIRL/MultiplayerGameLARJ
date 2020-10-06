@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TaskNetworkData : MonoBehaviour
+public class TaskNetworkData
 {
     public byte ID;
     public bool Active;
