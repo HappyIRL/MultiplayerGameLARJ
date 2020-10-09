@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CustomerNetworkData
 {
-	public byte ID;
+	public byte ObjectInteractableID;
 
 	public static byte[] SerializeMethod(object customObject)
 	{
 		CustomerNetworkData data = (CustomerNetworkData)customObject;
 		byte[] result = new byte[1];
 
-		result[0] = data.ID;
+		result[0] = data.ObjectInteractableID;
 
 		return result;
 	}
@@ -20,7 +20,7 @@ public class CustomerNetworkData
 	{
 		CustomerNetworkData data = new CustomerNetworkData();
 
-		data.ID = input[0];
+		data.ObjectInteractableID = input[0];
 
 		return data;
 	}

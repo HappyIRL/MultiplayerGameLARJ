@@ -20,7 +20,7 @@ public class Shotgun : Interactable
     public override void Awake()
     {
         base.Awake();
-        interactableID = (InteractableObjectID)_interactableID;
+        InteractableID = (InteractableObjectID)_interactableID;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _shotgunShootSound;
     }

@@ -27,7 +27,7 @@ public class Customer : Interactable, IObjectPoolNotifier
     public override void Awake()
     {
         base.Awake();
-
+        InteractableID = (InteractableObjectID)73;
         _agent = GetComponent<NavMeshAgent>();
         _agent.enabled = false;       
     }
@@ -111,7 +111,7 @@ public class Customer : Interactable, IObjectPoolNotifier
         var rot = transform.rotation.eulerAngles;
         _agent.updateRotation = false;
         transform.Rotate(-rot);
-        if(!PhotonNetwork.IsConnected)
+        if(!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
             TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
     }
     private void AtDeskUpdate()
@@ -148,8 +148,7 @@ public class Customer : Interactable, IObjectPoolNotifier
 
     public void SetID(int id)
 	{
-        interactableID = (InteractableObjectID)id;
-
+        ObjectInstanceID = id;
     }
     private void WaitInLine()
     {        

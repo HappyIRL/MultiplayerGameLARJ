@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 public class CustomerSpawner : MonoBehaviour
 {
 
@@ -65,9 +67,10 @@ public class CustomerSpawner : MonoBehaviour
             var count = 0;
             while (count < spawnsPerWave)
             {
-                SpawnCustomer();
 
                 yield return StartCoroutine(DoRandomizeSpawnTime());
+                //needs to be after the waitforseconds or else it's faster than the network handles
+                SpawnCustomer();
                 count++;
             }
             yield return new WaitForSeconds(waveCooldown);

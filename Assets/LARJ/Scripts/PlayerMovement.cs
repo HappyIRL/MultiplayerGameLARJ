@@ -73,7 +73,6 @@ public class PlayerMovement : MonoBehaviour
         _controller.Move(_moveDirection * _movementSpeed * Time.deltaTime);
         if (transform.position.y != _initialYPosition)
         {
-            Debug.Log("Changed Y.");
             transform.position = new Vector3(transform.position.x, _initialYPosition, transform.position.z);
             //transform.Translate(new Vector3(transform.position.x, _initialYPosition, transform.position.z) - transform.position);
         }

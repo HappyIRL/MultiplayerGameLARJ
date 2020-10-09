@@ -45,7 +45,8 @@ namespace Tasks
         }
         private void Start()
         {
-            StartRandomTask();
+            //if done in start, will be faster than network can handle
+            //StartRandomTask();
         }
         void Update()
         {

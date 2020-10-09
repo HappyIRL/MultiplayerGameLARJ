@@ -21,7 +21,7 @@ public enum InteractableObjectID
     Printer = 70,
     Shotgun = 71,
     WaterCooler = 72,
-    Costumer = 73,
+    Customer = 73,
     None = 100
 }
 
@@ -46,7 +46,9 @@ public abstract class Interactable : MonoBehaviour
 
     [HideInInspector] public float HoldingTime = 1f;
     [HideInInspector] public bool CanInteractWhenPickedUp = false;
-    public InteractableObjectID interactableID { get; protected set; }
+    public InteractableObjectID InteractableID { get; protected set; }
+
+    public int ObjectInstanceID { get; set; }
 
     public virtual void Awake()
     {
