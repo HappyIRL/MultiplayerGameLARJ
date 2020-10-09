@@ -10,7 +10,8 @@ public enum LARJNetworkEvents
 	PCUpdate = 128,
 	InteractableUpdate = 129,
 	TaskUpdate = 130,
-	CustomerSpawn = 131
+	CustomerSpawn = 131,
+	ClockUpdate = 132
 }
 
 public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
@@ -32,6 +33,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private CustomerSpawner _customerSpawner;
 	private Dictionary<int, GameObject> _customerIDs = new Dictionary<int, GameObject>();
 	private int _uniqueCustomerID = 0;
+	private DayTimeManager _dayTimeManager;
 
 	public enum LARJNetworkID
 	{
@@ -42,8 +44,13 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		none = 4
 	}
 
+	private void Awake()
+	{
+	}
+
 	private void Start()
 	{
+		_dayTimeManager = FindObjectOfType<DayTimeManager>();
 		PhotonNetwork.AddCallbackTarget(this);
 		_myID = (LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1;
 		SubscribeToEvents();
@@ -52,14 +59,16 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void Update()
 	{
 		UpdateLocalPlayerController();
+		if(PhotonNetwork.IsMasterClient)
+			UpdateLocalTime();
 	}
 
 	private void SubscribeToEvents()
 	{
 		_playerFromID = GetPlayerFromID((LARJNetworkID)PhotonNetwork.LocalPlayer.ActorNumber - 1);
 		_customerSpawner = FindObjectOfType<CustomerSpawner>();
-		_customerSpawner.OnCustomerSpawn += OnCustomerSpawn;
 		_playerInteraction = _playerFromID.GetComponent<PlayerInteraction>();
+		_customerSpawner.OnCustomerSpawn += OnCustomerSpawn;
 		_playerInteraction.OnNetworkTaskEvent += OnNetworkTask;
 		_playerInteraction.LARJInteractableUse += UpdateLocalInteractables;
 	}
@@ -165,9 +174,36 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			};
 			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.InteractableUpdate, interactableNetworkData, raiseEventOptions, sendOptions);
 		}
+	}
+
+	private void UpdateLocalTime()
+	{
+		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
+		{
+			Receivers = ReceiverGroup.Others,
+			CachingOption = EventCaching.DoNotCache
+		};
+
+		SendOptions sendOptions = new SendOptions
+		{
+			Reliability = true
+		};
+
+		int time = _dayTimeManager.CurrentMinutes;
+		time += _dayTimeManager.CurrentHour * 60;
+
+		if (_playerFromID != null)
+		{
+			ClockNetworkData clockNetworkData = new ClockNetworkData()
+			{
+				Time = time
+			};
+			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.ClockUpdate, clockNetworkData, raiseEventOptions, sendOptions);
+		}
 		else
 		{
-			Debug.LogError("Interactable is null");
+			Debug.Log("Player is null ID: " + _myID);
+			return;
 		}
 	}
 
@@ -260,6 +296,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 		return null;
 	}
+
 	private void ReceiveUpdatePC(ClientNetworkData data)
 	{
 		if(_simulatedID != (LARJNetworkID)data.ID)
@@ -409,6 +446,12 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	}
 
+	private void ReceiveClockUpdate(ClockNetworkData data)
+	{
+		_dayTimeManager.SetTimeForAllClocks(data.Time / 60, data.Time % 60);
+		_dayTimeManager.SetSunLight();
+	}
+
 	public void OnEvent(EventData photonEvent)
 	{
 		LARJNetworkEvents eventCode = (LARJNetworkEvents)photonEvent.Code;
@@ -426,6 +469,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				break;
 			case LARJNetworkEvents.CustomerSpawn:
 				ReceiveCustomerSpawn((CustomerNetworkData)photonEvent.CustomData);
+				break;
+			case LARJNetworkEvents.ClockUpdate:
+				ReceiveClockUpdate((ClockNetworkData)photonEvent.CustomData);
 				break;
 
 		}

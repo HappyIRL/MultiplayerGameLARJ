@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,60 +19,68 @@ public class DayTimeManager : MonoBehaviour
     [SerializeField] private List<Light> _indirectLights = new List<Light>();
     [SerializeField] private List<GameObject> _lights = new List<GameObject>();
 
-    private int _currentHour;
-    private int _currentMinutes;
     private float _timeForOneInGameMinuteInRealSecs;
-    private float _timer = 0f;
     private bool _startClock = true;
     private float _sunXRotation;
     private Coroutine _lastIndirectLightCoroutine;
     private Coroutine _lastSunLightCoroutine;
+    private float _timer = 0;
 
-    void Start()
-    {
+    public int CurrentHour { get; private set; }
+    public int CurrentMinutes { get; private set; }
+
+    private void Awake()
+	{
+        CurrentMinutes = 0;
         SetTimeForAllClocks(DayStartTime);
-        _currentHour = DayStartTime;
-        _currentMinutes = 0;
-
+        CurrentHour = DayStartTime;
         _timeForOneInGameMinuteInRealSecs = 1 / (float)((DayEndTime - DayStartTime) / (float)RealtimeLengthInMinutes);
         SetSunLight();
     }
 
-    void Update()
-    {        
-        if (_startClock)
-        {
-            _timer += Time.deltaTime;            
+	private void Start()
+	{
+		
+	}
 
-            if (_timer >= _timeForOneInGameMinuteInRealSecs)
+	void Update()
+    {
+        if(PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)
+		{
+            if (_startClock)
             {
-                _timer = 0;
+                _timer += Time.deltaTime;
 
-                _currentMinutes++;
-                if (_currentMinutes == 60)
+                if (_timer >= _timeForOneInGameMinuteInRealSecs)
                 {
-                    _currentMinutes = 0;
-                    _currentHour++;
+                    _timer = 0;
 
-                    if (_currentHour == DayEndTime)
+                    CurrentMinutes++;
+                    if (CurrentMinutes == 60)
                     {
-                        _startClock = false;
+                        CurrentMinutes = 0;
+                        CurrentHour++;
+
+                        if (CurrentHour == DayEndTime)
+                        {
+                            _startClock = false;
+                        }
+
+                        if (CurrentHour == 24)
+                        {
+                            CurrentHour = 0;
+                            _sunLight.transform.eulerAngles = new Vector3(-90f, transform.eulerAngles.y, transform.eulerAngles.z);
+                        }
                     }
 
-                    if (_currentHour == 24)
-                    {
-                        _currentHour = 0;
-                        _sunLight.transform.eulerAngles = new Vector3(-90f, transform.eulerAngles.y, transform.eulerAngles.z);
-                    }
+                    SetTimeForAllClocks(CurrentHour, CurrentMinutes);
+                    SetSunLight();
                 }
 
-                SetTimeForAllClocks(_currentHour, _currentMinutes);
-                SetSunLight();  
-            }
 
-            
-            float xRotation = Mathf.Lerp(_sunLight.transform.eulerAngles.x, _sunXRotation, (Mathf.Abs(_sunLight.transform.eulerAngles.x - _sunXRotation) * Time.deltaTime) / _timeForOneInGameMinuteInRealSecs);
-            _sunLight.transform.eulerAngles = new Vector3(xRotation, transform.eulerAngles.y, transform.eulerAngles.z);
+                float xRotation = Mathf.Lerp(_sunLight.transform.eulerAngles.x, _sunXRotation, (Mathf.Abs(_sunLight.transform.eulerAngles.x - _sunXRotation) * Time.deltaTime) / _timeForOneInGameMinuteInRealSecs);
+                _sunLight.transform.eulerAngles = new Vector3(xRotation, transform.eulerAngles.y, transform.eulerAngles.z);
+            }
         }
     }
 
@@ -83,7 +92,7 @@ public class DayTimeManager : MonoBehaviour
         }
     }
 
-    private void SetTimeForAllClocks(int hour, int minutes)
+    public void SetTimeForAllClocks(int hour, int minutes)
     {
         for (int i = 0; i < _clocks.Count; i++)
         {
@@ -91,11 +100,11 @@ public class DayTimeManager : MonoBehaviour
         }
     }
 
-    private void SetSunLight()
+    public void SetSunLight()
     {
-        if (_currentMinutes == 0)
+        if (CurrentMinutes == 0)
         {
-            if (_currentHour >= 7 && _currentHour < 17)
+            if (CurrentHour >= 7 && CurrentHour < 17)
             {
                 if (_lastSunLightCoroutine != null)
                 {
@@ -115,7 +124,7 @@ public class DayTimeManager : MonoBehaviour
                 _lastIndirectLightCoroutine = StartCoroutine(ChangeIndirectLightIntensityCoroutine(0.2f));
             }
         
-            if (_currentHour >= 11 && _currentHour < 17)
+            if (CurrentHour >= 11 && CurrentHour < 17)
             {
                 if (_lastIndirectLightCoroutine != null)
                 {
@@ -124,7 +133,7 @@ public class DayTimeManager : MonoBehaviour
                 _lastIndirectLightCoroutine = StartCoroutine(ChangeIndirectLightIntensityCoroutine(0.3f));
             }
 
-            if (_currentHour >= 17 || _currentHour < 7)
+            if (CurrentHour >= 17 || CurrentHour < 7)
             {
                 if (_lastSunLightCoroutine != null)
                 {
@@ -145,7 +154,7 @@ public class DayTimeManager : MonoBehaviour
             }
         }
         
-        _sunXRotation = ((15 * _currentHour - 90f) + 0.25f * _currentMinutes);
+        _sunXRotation = ((15 * CurrentHour - 90f) + 0.25f * CurrentMinutes);
     }
 
     private IEnumerator ChangeIndirectLightIntensityCoroutine(float intensity)
