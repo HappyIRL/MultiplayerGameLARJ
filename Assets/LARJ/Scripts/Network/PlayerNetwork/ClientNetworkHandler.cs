@@ -26,9 +26,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private LARJNetworkID _simulatedID = (LARJNetworkID)4;
 	private InteractableObjectID _simulatedIDInteractables = (InteractableObjectID)100;
 	private GameObject _simulatedPlayerGO = null;
-	private GameObject _simulatedPlayerObjectHolder;
-	private GameObject _simulatedInteractableGO;
-	private Interactable _simulatedInteractable;
 	private GameObject _myPlayer;
 	private CustomerSpawner _customerSpawner;
 	private Dictionary<int, GameObject> _customerIDs = new Dictionary<int, GameObject>();
@@ -78,7 +75,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_customerIDs.Add(_uniqueCustomerID , go);
 		go.GetComponent<Customer>().SetID(_uniqueCustomerID);
 		RaiseNetworkedCustomer(_uniqueCustomerID);
-		_uniqueCustomerID+=1;
+		_uniqueCustomerID += 1;
 	}
 
 	public void SetPlayers(GameObject[] go)
@@ -270,7 +267,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 			case InteractableObjectID.Customer:
 
-				if(_customerIDs.ContainsKey((int)objectInstanceID))
+				if(_customerIDs.ContainsKey(objectInstanceID))
 					return _customerIDs[objectInstanceID];
 
 				else
@@ -312,49 +309,49 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 	}
 
-	private void ReceiveSimulatedPlayerPickUp()
+	private void ReceiveSimulatedPlayerPickUp(GameObject simulatedInteractableGO, Interactable simulatedInteractable, GameObject simulatedPlayerObjectHolder)
 	{
-		_simulatedInteractable.DisableColliders();
+		simulatedInteractable.DisableColliders();
 
-		_simulatedInteractableGO.transform.rotation = _simulatedPlayerObjectHolder.transform.rotation;
-		_simulatedInteractableGO.transform.position = _simulatedPlayerObjectHolder.transform.position;
-		_simulatedInteractableGO.transform.parent = _simulatedPlayerObjectHolder.transform;
+		simulatedInteractableGO.transform.rotation = simulatedPlayerObjectHolder.transform.rotation;
+		simulatedInteractableGO.transform.position = simulatedPlayerObjectHolder.transform.position;
+		simulatedInteractableGO.transform.parent = simulatedPlayerObjectHolder.transform;
 	}
 
-	private void ReceiveSimulatedPlayerDrop()
+	private void ReceiveSimulatedPlayerDrop(GameObject simulatedInteractableGO, Interactable simulatedInteractable)
 	{
-		_simulatedInteractableGO.transform.parent = null;
-		_simulatedInteractable.EnableColliders();
+		simulatedInteractableGO.transform.parent = null;
+		simulatedInteractable.EnableColliders();
 	}
 
-	private void ReceiveSimulatedPlayerPress()
+	private void ReceiveSimulatedPlayerPress(Interactable simulatedInteractable)
 	{
-		_simulatedInteractable.PressEvent();
+		simulatedInteractable.PressEvent();
 	}
 
-	private void ReceiveSimulatedPlayerStartHold()
+	private void ReceiveSimulatedPlayerStartHold(Interactable simulatedInteractable)
 	{
-		_simulatedInteractable.HoldingStartedEvent();
+		simulatedInteractable.HoldingStartedEvent();
 	}
 
-	private void ReceiveSimulatedPlayerFailedHold()
+	private void ReceiveSimulatedPlayerFailedHold(Interactable simulatedInteractable)
 	{
-		_simulatedInteractable.HoldingFailedEvent();
+		simulatedInteractable.HoldingFailedEvent();
 	}
 
-	private void ReceiveSimulatedPlayerFinishHold()
+	private void ReceiveSimulatedPlayerFinishHold(Interactable simulatedInteractable)
 	{
-		_simulatedInteractable.OnNetworkFinishedEvent();
+		simulatedInteractable.OnNetworkFinishedEvent();
 	}
 
-	private void ReceiveSimulatedPlayerMousePress()
+	private void ReceiveSimulatedPlayerMousePress(Interactable simulatedInteractable)
 	{
-		_simulatedInteractable.MousePressEvent();
+		simulatedInteractable.MousePressEvent();
 	}
 
-	private void ReceiveSimulatedPlayerMouseRelease()
+	private void ReceiveSimulatedPlayerMouseRelease(Interactable simulatedInteractable)
 	{
-		_simulatedInteractable.MouseReleaseEvent();
+		simulatedInteractable.MouseReleaseEvent();
 	}
 
 	private void ReceiveTaskUpdate(TaskNetworkData data)
@@ -404,42 +401,39 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	}
 	private void ReceiveInteractableUpdate(InteractableNetworkData data)
 	{
-		if (_simulatedIDInteractables != (InteractableObjectID)data.InteractableID)
-		{
-			_simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
-			_simulatedPlayerObjectHolder = _simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
-			_simulatedInteractableGO = GetInteractableGoFromID((InteractableObjectID)data.InteractableID, data.ObjectInstanceID);
-			_simulatedInteractable = _simulatedInteractableGO.GetComponent<Interactable>();
-			_simulatedIDInteractables = (InteractableObjectID)data.InteractableID;
-		}
+		GameObject simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
+		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
+		GameObject simulatedInteractableGO = GetInteractableGoFromID((InteractableObjectID)data.InteractableID, data.ObjectInstanceID);
+		Interactable simulatedInteractable = simulatedInteractableGO.GetComponent<Interactable>();
+		_simulatedIDInteractables = (InteractableObjectID)data.InteractableID;
 
 		InteractableUseType type = (InteractableUseType)data.InteractableUseID;
 
 		switch(type)
 		{
 			case InteractableUseType.Drop:
-				ReceiveSimulatedPlayerDrop();
+				ReceiveSimulatedPlayerDrop(simulatedInteractableGO, simulatedInteractable);
 				break;
 			case InteractableUseType.PickUp:
-				ReceiveSimulatedPlayerPickUp();
+				ReceiveSimulatedPlayerPickUp(simulatedInteractableGO, simulatedInteractable, simulatedPlayerObjectHolder);
 				break;
 			case InteractableUseType.Press:
-				ReceiveSimulatedPlayerPress();
+				ReceiveSimulatedPlayerPress(simulatedInteractable);
 				break;
 			case InteractableUseType.HoldStart:
-				ReceiveSimulatedPlayerStartHold();
+				ReceiveSimulatedPlayerStartHold(simulatedInteractable);
 				break;
 			case InteractableUseType.HoldFailed:
-				ReceiveSimulatedPlayerFailedHold();
+				ReceiveSimulatedPlayerFailedHold(simulatedInteractable);
 				break;
 			case InteractableUseType.HoldFinish:
-				ReceiveSimulatedPlayerFinishHold();
+				ReceiveSimulatedPlayerFinishHold(simulatedInteractable);
 				break;
 			case InteractableUseType.MousePress:
-				ReceiveSimulatedPlayerMousePress();
+				ReceiveSimulatedPlayerMousePress(simulatedInteractable);
 				break;
 			case InteractableUseType.MouseRelease:
-				ReceiveSimulatedPlayerMouseRelease();
+				ReceiveSimulatedPlayerMouseRelease(simulatedInteractable);
 				break;
 		}
 	}

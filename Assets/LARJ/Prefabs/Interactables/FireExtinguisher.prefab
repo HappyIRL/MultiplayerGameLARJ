@@ -5549,6 +5549,7 @@ MonoBehaviour:
   GamepadPickedUpInteractionButtonHintImage: {fileID: 5000610078547127272}
   HoldingTime: 1
   CanInteractWhenPickedUp: 1
+  _interactableID: 67
   _foamParticles: {fileID: 462005735760976290}
   _extinguishSound: {fileID: 8300000, guid: 58ce60a7b03ae6c41838df96416cf7a5, type: 3}
 --- !u!1 &5000610078547127272

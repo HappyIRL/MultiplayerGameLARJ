@@ -250,7 +250,7 @@ public class Customer : Interactable, IObjectPoolNotifier
 
     public override void HoldingFailedEvent()
     {
-        base.HoldingFinishedEvent();
+        base.HoldingFailedEvent();
         OnFailedTalk();
     }
 
