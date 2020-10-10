@@ -159,5 +159,6 @@ public abstract class Interactable : MonoBehaviour
     public virtual void MouseReleaseEvent() { }
     public virtual void StartInteractible() { }
     public virtual void StopInteractible() { }
+    public virtual void OnNetworkFinishedEvent() { }
     #endregion
 }

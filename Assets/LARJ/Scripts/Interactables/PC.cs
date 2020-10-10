@@ -53,5 +53,10 @@ public class PC : Interactable
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
 
+    public override void OnNetworkFinishedEvent()
+    {
+        StopTyping();
+    }
+
 }
 

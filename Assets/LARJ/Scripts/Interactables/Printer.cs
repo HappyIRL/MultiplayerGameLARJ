@@ -65,7 +65,6 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
         _papergameObject = Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
         //TaskManager.TaskManagerSingelton.StartTask(_papergameObject.GetComponent<Task>());
     }
     private void CancelPrinting()
@@ -91,11 +90,13 @@ public class Printer : Interactable
     public override void HoldingFinishedEvent()
     {
         FinishPrinting();
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+
     }
 
-
-    public override void StartInteractible()
+    public override void OnNetworkFinishedEvent()
     {
+        FinishPrinting();
     }
 
     public override void StopInteractible()

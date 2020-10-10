@@ -344,7 +344,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveSimulatedPlayerFinishHold()
 	{
-		_simulatedInteractable.HoldingFinishedEvent();
+		_simulatedInteractable.OnNetworkFinishedEvent();
 	}
 
 	private void ReceiveSimulatedPlayerMousePress()
@@ -442,8 +442,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveSimulatedPlayerMouseRelease();
 				break;
 		}
-
-
 	}
 
 	private void ReceiveClockUpdate(ClockNetworkData data)

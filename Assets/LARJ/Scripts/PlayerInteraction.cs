@@ -75,13 +75,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         _holdingTimeBarBG.SetActive(false);
         _larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
-
     }
 
     private void ActivateInteractable(Interactable interactable, LARJTaskState state)
     {
-        if (_isLocal || PhotonNetwork.IsMasterClient)
-		{
             switch(state)
 			{
                 case LARJTaskState.TaskComplete:
@@ -106,7 +103,6 @@ public class PlayerInteraction : MonoBehaviour
                     }
                     break;
             }
-        }
     }
 
     private void Update()

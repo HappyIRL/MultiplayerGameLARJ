@@ -175,8 +175,8 @@ public class Customer : Interactable, IObjectPoolNotifier
         var color = Color.green;
         GetComponent<Renderer>().material.color = color;
         _stateMachine.TransitionTo("Leaving");
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
+
     private void OnFailedTalk()
     {
     }
@@ -257,6 +257,11 @@ public class Customer : Interactable, IObjectPoolNotifier
     public override void HoldingFinishedEvent()
     {
         base.HoldingFinishedEvent();
+        OnFinishedTalk();
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+    }
+    public override void OnNetworkFinishedEvent()
+    {
         OnFinishedTalk();
     }
     #endregion

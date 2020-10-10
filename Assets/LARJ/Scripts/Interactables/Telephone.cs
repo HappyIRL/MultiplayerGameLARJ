@@ -101,8 +101,6 @@ public class Telephone : Interactable
 
         EndCall();
         ChangeMaterial(_standardScreenMaterial);
-
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
 
     public override void HoldingFailedEvent()
@@ -113,6 +111,7 @@ public class Telephone : Interactable
     public override void HoldingFinishedEvent()
     {
         AnswerCall();
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
 
     public override void StartInteractible()
@@ -123,5 +122,10 @@ public class Telephone : Interactable
     public override void StopInteractible()
     {
         EndCall();
+    }
+
+    public override void OnNetworkFinishedEvent()
+    {
+        AnswerCall();
     }
 }

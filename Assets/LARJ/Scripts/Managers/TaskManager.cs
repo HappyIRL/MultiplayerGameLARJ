@@ -181,7 +181,8 @@ namespace Tasks
             task.StopTask();
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetLostMoneyOnFail, false);
-            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed);
+            if (_isLocal || PhotonNetwork.IsMasterClient)
+                OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed);
         }
         public void StartTask(Task task)
         {
@@ -191,7 +192,8 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            if(_isLocal || PhotonNetwork.IsMasterClient)
+                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
         public void StartPaperTask()
         {
