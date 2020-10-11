@@ -46,6 +46,7 @@ public class PlayerInteraction : MonoBehaviour
 
     //Object to interact
     private Interactable _objectToInteract;
+    private Interactable _duplicator;
     private LARJConnectToPhoton _larjConnectToPhoton;
 
     public Interactable ObjectToInteract
@@ -58,7 +59,6 @@ public class PlayerInteraction : MonoBehaviour
                 DeselectOldObject();
                 SelectNewObject(value);
             }
-
         }
     }
     private void Awake()
@@ -109,17 +109,25 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (_holdingButton)
         {
-            _holdingTimer += Time.deltaTime;
-            _holdingTimeBar.fillAmount = _holdingTimer / _objectToInteract.HoldingTime;
+            Interactable objectToHold;
 
-            if (_holdingTimer >= _objectToInteract.HoldingTime)
+            if (_isPickedUp) objectToHold = _duplicator;
+            else objectToHold = _objectToInteract;
+
+            _holdingTimer += Time.deltaTime;
+            _holdingTimeBar.fillAmount = _holdingTimer / objectToHold.HoldingTime;
+
+            if (_holdingTimer >= objectToHold.HoldingTime)
             {
                 _holdingTimer = 0f;
                 _holdingTimeBarBG.SetActive(false);
                 _holdingButton = false;
                 _holdingWasFinished = true;
-                _objectToInteract.HoldingFinishedEvent();
-                LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.HoldFinish, _objectToInteract.ObjectInstanceID);
+
+                if (_isPickedUp) objectToHold.HoldingFinishedEvent(_objectToInteract.gameObject);
+                else objectToHold.HoldingFinishedEvent();
+              
+                LARJInteractableUse?.Invoke(objectToHold.InteractableID, InteractableUseType.HoldFinish, objectToHold.ObjectInstanceID);
                 _holdingTimeBar.fillAmount = 0;
             }
         }
@@ -140,6 +148,10 @@ public class PlayerInteraction : MonoBehaviour
                     InteractableInteractionType = interactable.InteractionType;
                     _canInteract = true;
                 }
+            }
+            else if (other.tag == "Printer")
+            {
+                _duplicator = interactable;
             }
         }
     }
@@ -239,21 +251,33 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (InteractableInteractionType == InteractionType.Hold)
             {
-                HoldingInteraction();
+                HoldingInteraction(_objectToInteract);
+            }
+            else if (_isPickedUp)
+            {
+                if (_duplicator != null)
+                {
+                    HoldingInteraction(_duplicator);
+                }
             }
         }
     }
     public void OnRelease()
     {
+        Interactable objectToRelease;
+
+        if (_isPickedUp) objectToRelease = _duplicator;
+        else objectToRelease = _objectToInteract;
+
         if (_holdingButton)
         {
             if (!_holdingWasFinished)
             {
-                if (_objectToInteract == null) return;
+                if (objectToRelease == null) return;
 
-                _objectToInteract.HoldingFailedEvent();
-                LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.HoldFailed, _objectToInteract.ObjectInstanceID);
-                _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
+                objectToRelease.HoldingFailedEvent();
+                LARJInteractableUse?.Invoke(objectToRelease.InteractableID, InteractableUseType.HoldFailed, objectToRelease.ObjectInstanceID);
+                objectToRelease.EnableButtonHints(_playerInput.currentControlScheme);
             }
         }
 
@@ -342,7 +366,8 @@ public class PlayerInteraction : MonoBehaviour
         LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Press, _objectToInteract.ObjectInstanceID);
         _objectToInteract.PressEvent();
     }
-    private void HoldingInteraction()
+
+    private void HoldingInteraction(Interactable objectToInteract)
     {
         if (_objectToInteract == null) return;
 
@@ -350,9 +375,9 @@ public class PlayerInteraction : MonoBehaviour
         _holdingWasFinished = false;
         _holdingTimeBar.fillAmount = 0;
         _holdingTimeBarBG.SetActive(true);
-        _objectToInteract.HoldingStartedEvent();
-        _objectToInteract.DisableButtonHints();
-        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.HoldStart, _objectToInteract.ObjectInstanceID);
+        objectToInteract.HoldingStartedEvent();
+        objectToInteract.DisableButtonHints();
+        LARJInteractableUse?.Invoke(objectToInteract.InteractableID, InteractableUseType.HoldStart, objectToInteract.ObjectInstanceID);
     }
     #endregion
 }

@@ -65,8 +65,19 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
         _papergameObject = Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
-        //TaskManager.TaskManagerSingelton.StartTask(_papergameObject.GetComponent<Task>());
     }
+    private void FinishPrinting(GameObject objectToSpawn)
+    {
+        if (_lastCoroutine != null)
+        {
+            StopCoroutine(_lastCoroutine);
+        }
+        PlaySound(_printerOutSound);
+        _audioSource.loop = false;
+        GameObject obj = Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+        obj.layer = LayerMask.GetMask("Garbage");
+    }
+
     private void CancelPrinting()
     {
         if (_lastCoroutine != null)
@@ -91,7 +102,10 @@ public class Printer : Interactable
     {
         FinishPrinting();
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
-
+    }
+    public override void HoldingFinishedEvent(GameObject pickUpObject)
+    {
+        FinishPrinting(pickUpObject);
     }
 
     public override void OnNetworkFinishedEvent()

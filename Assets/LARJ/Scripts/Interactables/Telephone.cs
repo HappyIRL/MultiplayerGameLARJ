@@ -42,6 +42,7 @@ public class Telephone : Interactable
     public void StartTelephoneRinging()
     {
         _audioSource.Play();
+        _callAnswered = false;
         _lastCoroutine = StartCoroutine(TelephoneRingingCoroutine());
     }
 
@@ -81,6 +82,7 @@ public class Telephone : Interactable
     private void EndCall()
     {
         _audioSource.Stop();
+        _callAnswered = true;
         ChangeMaterial(_standardScreenMaterial);
     }
 
