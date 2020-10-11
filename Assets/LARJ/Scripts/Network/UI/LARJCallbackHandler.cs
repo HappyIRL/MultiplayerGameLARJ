@@ -22,20 +22,33 @@ public class LARJCallbackHandler : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedLobby()
 	{
-		//Show lobby screen
 		_uiHandler.EnterNetworkSection();
 	}
 
 	public override void OnCreatedRoom()
 	{
+		_uiHandler.EnableConnectingDialog(false);
 		LARJOnRoomCreated?.Invoke();
-		Debug.Log("Created room successfully. " + this);
+	}
+	public override void OnPlayerEnteredRoom(Player newPlayer)
+	{
+		_uiHandler.UpdatePlayerList();
+	}
+	public override void OnPlayerLeftRoom(Player otherPlayer)
+	{
+		_uiHandler.UpdatePlayerList();
+	}
+
+	public override void OnJoinedRoom()
+	{
+		_uiHandler.EnableConnectingDialog(false);
+		_uiHandler.WaitingRoomJoined();
+		_uiHandler.UpdatePlayerList();
 	}
 
 	public override void OnCreateRoomFailed(short returnCode, string message)
 	{
-		Debug.Log("Failed creation of room. " + message + this);
+		_uiHandler.EnableConnectingDialog(false);
 		PhotonNetwork.JoinLobby();
-		Debug.Log("Joined Lobby");
 	}
 }

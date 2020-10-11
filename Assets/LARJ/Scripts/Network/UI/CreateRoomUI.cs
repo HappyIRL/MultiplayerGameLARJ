@@ -32,17 +32,18 @@ public class CreateRoomUI : MonoBehaviourPunCallbacks
 	public void OnClick_CreateRoom()
 	{
 		_uiHandler.PlayButtonClickSound();
-		//Change to loading screen
+		_uiHandler.EnableConnectingDialog(true);
 
 		if (!PhotonNetwork.IsConnected)
 		{
 			_playerFeedbackHandler.SendLocalErrorPlayerFeedback(_notConnected);
+			_uiHandler.EnableConnectingDialog(false);
 			return;
 		}
 
 		if(!ValidateRoomName())
 		{
-			//Change back to networked section
+			_uiHandler.EnableConnectingDialog(false);
 			_playerFeedbackHandler.SendLocalErrorPlayerFeedback(_validationFailedReason);
 			return;	
 		}

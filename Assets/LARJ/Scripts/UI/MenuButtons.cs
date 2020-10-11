@@ -40,4 +40,9 @@ public class MenuButtons : MonoBehaviour
         _uiHandler.PlayButtonClickSound();
         _uiHandler.TryEnterNetworkSection();
     }
+    public void OnClick_LeaveRoom()
+	{
+        PhotonNetwork.LeaveRoom();
+        _uiHandler.WaitingRoomLeft();
+    }
 }

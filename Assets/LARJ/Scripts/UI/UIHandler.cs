@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIHandler : MonoBehaviour
 {
@@ -13,8 +16,14 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameObject _startPlayScreen = null;
     [SerializeField] private GameObject _networkSectionScreen = null;
     [SerializeField] private GameObject _gameTitle = null;
-
+    [SerializeField] private GameObject _loadingDialog;
+    [SerializeField] private GameObject _waitingForPlayersScreen;
     [SerializeField] private LARJConnectToPhoton _larjConnectToPhoton;
+    [SerializeField] private List<GameObject> _playerImageGOs = new List<GameObject>();
+    [SerializeField] private TMP_Text _waitingForX;
+    [SerializeField] private GameObject _startGamebutton;
+
+    private List<Image> _playerImages = new List<Image>();
 
     private Vector3 _gTSavedPos;
     private AudioSource _audioSource;
@@ -23,6 +32,12 @@ public class UIHandler : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _buttonClickSound;
+        _gTSavedPos = _gameTitle.transform.position;
+
+        foreach (GameObject go in _playerImageGOs)
+        {
+            _playerImages.Add(go.GetComponent<Image>());
+        }
 
         OpenMainMenuScreen();
     }
@@ -57,21 +72,62 @@ public class UIHandler : MonoBehaviour
         _networkSectionScreen.SetActive(false);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local);
         _gameTitle.transform.position = _gTSavedPos;
-
     }
 
     public void TryEnterNetworkSection()
     {
-        //switch to loading screen
+        EnableConnectingDialog(true);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
     }
 
+    public void EnableConnectingDialog(bool enable)
+    {
+        _loadingDialog.SetActive(enable);
+    }
+
     public void EnterNetworkSection()
-	{
-        //switch to networked section
+    {
+        EnableConnectingDialog(false);
         _startPlayScreen.SetActive(false);
         _networkSectionScreen.SetActive(true);
-        _gTSavedPos = _gameTitle.transform.position;
         _gameTitle.transform.position = new Vector3(1600, _gameTitle.transform.position.y, _gameTitle.transform.position.z);
+    }
+    public void WaitingRoomJoined()
+    {
+        _waitingForPlayersScreen.SetActive(true);
+        _networkSectionScreen.SetActive(false);
+    }
+    
+    public void WaitingRoomLeft()
+	{
+        _waitingForPlayersScreen.SetActive(false);
+    }
+
+    public void UpdatePlayerList()
+    {
+        //needs rework
+        foreach (Image img in _playerImages)
+        {
+            img.color = Color.red;
+        }
+
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            _playerImages[i].color = Color.green;
+        }
+
+        if (PhotonNetwork.PlayerList.Length >= 1)
+        {
+            _waitingForX.text = "Waiting For Host";
+            if (PhotonNetwork.IsMasterClient)
+            {
+                _startGamebutton.SetActive(true);
+            }
+        }
+        else
+        {
+            _waitingForX.text = "Waiting For Players";
+            _startGamebutton.SetActive(false);
+        }
     }
 }
