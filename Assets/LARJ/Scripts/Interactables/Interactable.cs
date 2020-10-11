@@ -170,6 +170,7 @@ public abstract class Interactable : MonoBehaviour
     public virtual void HoldingStartedEvent() { }
     public virtual void HoldingFailedEvent() { }
     public virtual void HoldingFinishedEvent() { }
+    public virtual void HoldingFinishedEvent(GameObject pickUpObject) { }
     public virtual void PressEvent() { }
     public virtual void MousePressEvent() { }
     public virtual void MouseReleaseEvent() { }
