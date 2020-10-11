@@ -10,7 +10,7 @@ public class WaitingLobbyMenu : MonoBehaviourPunCallbacks
 {
 	[SerializeField] private GameObject _waitingForPlayersScreen;
 	[SerializeField] private GameObject _networkSectionScreen;
-	[SerializeField] private CreateRoomUI _createRoomUI;
+	[SerializeField] private LARJCallbackHandler _lARJCallbackHandler;
 	[SerializeField] private List<GameObject> _playerImageGOs = new List<GameObject>();
 	[SerializeField] private TMP_Text _waitingForX;
 	[SerializeField] private GameObject _startGamebutton;
@@ -27,11 +27,11 @@ public class WaitingLobbyMenu : MonoBehaviourPunCallbacks
 	public override void OnEnable()
 	{
 		base.OnEnable();
-		_createRoomUI.LARJOnRoomCreated += OnWaitingRoomJoined;
+		_lARJCallbackHandler.LARJOnRoomCreated += OnWaitingRoomJoined;
 	}
 	public override void OnDisable()
 	{
-		_createRoomUI.LARJOnRoomCreated -= OnWaitingRoomJoined;
+		_lARJCallbackHandler.LARJOnRoomCreated -= OnWaitingRoomJoined;
 		base.OnDisable();
 	}
 

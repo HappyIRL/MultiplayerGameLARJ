@@ -1,11 +1,9 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(AudioSource))]
-public class MenuButtons : MonoBehaviour
+public class UIHandler : MonoBehaviour
 {
     [SerializeField] private AudioClip _buttonClickSound = null;
     [SerializeField] private SceneChanger _sceneChanger = null;
@@ -29,7 +27,7 @@ public class MenuButtons : MonoBehaviour
         OpenMainMenuScreen();
     }
 
-	public void PlayButtonClickSound()
+    public void PlayButtonClickSound()
     {
         _audioSource.Play();
     }
@@ -54,7 +52,7 @@ public class MenuButtons : MonoBehaviour
     }
 
     public void EnterLocalSection()
-	{
+    {
         _startPlayScreen.SetActive(true);
         _networkSectionScreen.SetActive(false);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local);
@@ -62,12 +60,18 @@ public class MenuButtons : MonoBehaviour
 
     }
 
-	public void EnterNetworkSection()
+    public void TryEnterNetworkSection()
+    {
+        //switch to loading screen
+        _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
+    }
+
+    public void EnterNetworkSection()
 	{
+        //switch to networked section
         _startPlayScreen.SetActive(false);
         _networkSectionScreen.SetActive(true);
         _gTSavedPos = _gameTitle.transform.position;
         _gameTitle.transform.position = new Vector3(1600, _gameTitle.transform.position.y, _gameTitle.transform.position.z);
-        _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
     }
 }

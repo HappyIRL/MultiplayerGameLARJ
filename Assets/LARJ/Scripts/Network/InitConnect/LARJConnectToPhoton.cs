@@ -32,15 +32,4 @@ public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 				break;
 		}
 	}
-
-    public override void OnConnectedToMaster()
-	{
-		PhotonNetwork.JoinLobby();
-		Debug.Log($"OnConnectedToMaster was called. Connected with Nick: {PhotonNetwork.LocalPlayer.NickName}");
-	}
-
-	public override void OnDisconnected(DisconnectCause cause)
-	{
-		Debug.Log("Disconnected from server: " + cause.ToString());
-	}
 }

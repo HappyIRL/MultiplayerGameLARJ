@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,16 +8,36 @@ public class PlayerFeedbackHandler : MonoBehaviour
 {
 	[SerializeField] private TMP_Text _playerErrorFeedbackText;
 
-	public void SendLocalErrorPlayerFeedback(string feedback)
+	private List<string> _playerErrorFeedbacks = new List<string>();
+
+	private string _playerErrorFeedback;
+
+	public void SendLocalErrorPlayerFeedback(string error)
 	{
-		_playerErrorFeedbackText.text = feedback;
-		_playerErrorFeedbackText.gameObject.SetActive(true);
-		StartCoroutine(WaitForSeconds(3));
+		_playerErrorFeedbacks.Add(error);
+
+		UpdatePlayerErrors();
+
+		float input = 2 + error.Length * 0.05f;
+
+		StartCoroutine(WaitAndSend(input, error));
 	}
 
-	private IEnumerator WaitForSeconds(int seconds)
+	private IEnumerator WaitAndSend(float seconds, string error)
 	{
 		yield return new WaitForSeconds(seconds);
-		_playerErrorFeedbackText.gameObject.SetActive(false);
+		_playerErrorFeedbacks.Remove(error);
+		UpdatePlayerErrors();
+	}
+
+	private void UpdatePlayerErrors()
+	{
+		_playerErrorFeedback = "";
+
+		foreach (string s in _playerErrorFeedbacks)
+		{
+			_playerErrorFeedback = $"{s}{Environment.NewLine}{_playerErrorFeedback}";
+		}
+		_playerErrorFeedbackText.text = _playerErrorFeedback;
 	}
 }
