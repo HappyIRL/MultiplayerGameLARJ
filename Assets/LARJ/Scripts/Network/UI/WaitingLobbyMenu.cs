@@ -27,15 +27,15 @@ public class WaitingLobbyMenu : MonoBehaviourPunCallbacks
 	public override void OnEnable()
 	{
 		base.OnEnable();
-		_createRoomUI.LARJOnRoomCreated += DoSmthing;
+		_createRoomUI.LARJOnRoomCreated += OnWaitingRoomJoined;
 	}
 	public override void OnDisable()
 	{
-		_createRoomUI.LARJOnRoomCreated -= DoSmthing;
+		_createRoomUI.LARJOnRoomCreated -= OnWaitingRoomJoined;
 		base.OnDisable();
 	}
 
-	private void DoSmthing()
+	private void OnWaitingRoomJoined()
 	{
 		_waitingForPlayersScreen.SetActive(true);
 		_networkSectionScreen.SetActive(false);
@@ -82,6 +82,6 @@ public class WaitingLobbyMenu : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedRoom()
 	{
-		DoSmthing();
+		OnWaitingRoomJoined();
 	}
 }

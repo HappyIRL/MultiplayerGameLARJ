@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class JoinRoomButton : MonoBehaviourPunCallbacks
@@ -7,6 +8,9 @@ public class JoinRoomButton : MonoBehaviourPunCallbacks
 
     public void OnClick_JoinRoom()
 	{
+		if (!PhotonNetwork.IsConnected || !(PhotonNetwork.NetworkClientState == ClientState.JoinedLobby))
+			return;
+
 		PhotonNetwork.JoinRoom(RoomName);
 	}
 
