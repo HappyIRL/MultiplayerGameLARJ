@@ -136,7 +136,6 @@ public class PlayerInteraction : MonoBehaviour
             {
                 if (AllowedInteractibles.Contains(interactable))
                 {
-
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;
                     _canInteract = true;
@@ -311,12 +310,7 @@ public class PlayerInteraction : MonoBehaviour
         if (_objectToInteract == null) return;
 
         _isPickedUp = true;
-        _objectToInteract.Rb.Sleep();
-        _objectToInteract.transform.rotation = _objectHolder.rotation;
-        _objectToInteract.transform.position = _objectHolder.position;
-        _objectToInteract.transform.parent = _objectHolder;
-        _objectToInteract.DisableButtonHints();
-        _objectToInteract.DisableColliders();
+        _objectToInteract.PickUpObject(_objectHolder);
 
         LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.PickUp, _objectToInteract.ObjectInstanceID);
 
@@ -330,9 +324,8 @@ public class PlayerInteraction : MonoBehaviour
         if (_objectToInteract == null) return;
 
         _isPickedUp = false;
-        _objectToInteract.transform.parent = null;
-        _objectToInteract.Rb.WakeUp();
-        _objectToInteract.EnableColliders();
+        _objectToInteract.DropObject();
+
         LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Drop, _objectToInteract.ObjectInstanceID);
 
         if (_objectToInteract.CanInteractWhenPickedUp)

@@ -150,6 +150,22 @@ public abstract class Interactable : MonoBehaviour
         }
     }
 
+    public void PickUpObject(Transform parent)
+    {
+        Rb.Sleep();
+        transform.rotation = parent.rotation;
+        transform.position = parent.position;
+        transform.parent = parent;
+        DisableButtonHints();
+        DisableColliders();
+    }
+    public void DropObject()
+    {
+        transform.parent = null;
+        Rb.WakeUp();
+        EnableColliders();
+    }
+
     #region Events
     public virtual void HoldingStartedEvent() { }
     public virtual void HoldingFailedEvent() { }
