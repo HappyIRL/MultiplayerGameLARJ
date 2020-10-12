@@ -8,23 +8,27 @@ using UnityEngine.UI;
 
 public class UIHandler : MonoBehaviour
 {
-    [SerializeField] private AudioClip _buttonClickSound = null;
-    [SerializeField] private SceneChanger _sceneChanger = null;
-
-    [Header("Screens")]
     [SerializeField] private GameObject _mainMenuScreen = null;
     [SerializeField] private GameObject _startPlayScreen = null;
     [SerializeField] private GameObject _networkSectionScreen = null;
     [SerializeField] private GameObject _gameTitle = null;
-    [SerializeField] private GameObject _loadingDialog;
+    [SerializeField] private GameObject _connectionDialog;
+    [SerializeField] private GameObject _failedToConnectDialog;
     [SerializeField] private GameObject _waitingForPlayersScreen;
-    [SerializeField] private LARJConnectToPhoton _larjConnectToPhoton;
-    [SerializeField] private List<GameObject> _playerImageGOs = new List<GameObject>();
-    [SerializeField] private TMP_Text _waitingForX;
     [SerializeField] private GameObject _startGamebutton;
 
-    private List<Image> _playerImages = new List<Image>();
+    [SerializeField] private AudioClip _buttonClickSound = null;
 
+    [SerializeField] private SceneChanger _sceneChanger = null;
+
+    [SerializeField] private LARJConnectToPhoton _larjConnectToPhoton;
+
+    [SerializeField] private List<GameObject> _playerImageGOs = new List<GameObject>();
+
+    [SerializeField] private TMP_Text _waitingForX;
+
+
+    private List<Image> _playerImages = new List<Image>();
     private Vector3 _gTSavedPos;
     private AudioSource _audioSource;
 
@@ -76,13 +80,25 @@ public class UIHandler : MonoBehaviour
 
     public void TryEnterNetworkSection()
     {
-        EnableConnectingDialog(true);
-        _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
+        if(PhotonNetwork.IsConnected)
+		{
+            EnableConnectingDialog(true);
+            _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
+		}
+        else
+		{
+            EnableFailedToConnectDialog(true);
+        }
+    }
+
+    public void EnableFailedToConnectDialog(bool enable)
+    {
+       _failedToConnectDialog.SetActive(enable);
     }
 
     public void EnableConnectingDialog(bool enable)
     {
-        _loadingDialog.SetActive(enable);
+        _connectionDialog.SetActive(enable);
     }
 
     public void EnterNetworkSection()

@@ -40,6 +40,12 @@ public class MenuButtons : MonoBehaviour
         _uiHandler.PlayButtonClickSound();
         _uiHandler.TryEnterNetworkSection();
     }
+
+    public void OnClick_CloseFailedToConnectDialog()
+	{
+        _uiHandler.EnableFailedToConnectDialog(false);
+	}
+
     public void OnClick_LeaveRoom()
 	{
         PhotonNetwork.LeaveRoom();
