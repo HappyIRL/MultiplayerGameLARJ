@@ -16,8 +16,8 @@ public class LARJCallbackHandler : MonoBehaviourPunCallbacks
 
 	public override void OnDisconnected(DisconnectCause cause)
 	{
-		//Show error code for disconnect on other screen
-		Debug.Log("Disconnected from server: " + cause.ToString());
+		_uiHandler.EnableFailedToConnectDialog(true);
+		_uiHandler.EnableConnectingDialog(false);
 	}
 
 	public override void OnJoinedLobby()

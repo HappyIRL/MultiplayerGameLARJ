@@ -80,15 +80,8 @@ public class UIHandler : MonoBehaviour
 
     public void TryEnterNetworkSection()
     {
-        if(PhotonNetwork.IsConnected)
-		{
-            EnableConnectingDialog(true);
-            _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
-		}
-        else
-		{
-            EnableFailedToConnectDialog(true);
-        }
+        EnableConnectingDialog(true);
+        _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Photon);
     }
 
     public void EnableFailedToConnectDialog(bool enable)

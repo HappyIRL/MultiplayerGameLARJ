@@ -22,7 +22,6 @@ public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 		switch(state)
 		{
 			case LARJNetworkState.Local:
-				PhotonNetwork.Disconnect();
 				break;
 
 			case LARJNetworkState.Photon:
