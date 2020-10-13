@@ -52,6 +52,11 @@ public class InteractablesEditor : Editor
                 EditorGUILayout.PropertyField(KeyboardButtonHintProperty);
                 EditorGUILayout.PropertyField(GamepadButtonHintProperty);
                 break;
+            case InteractionType.MultiPress:
+                interactables.PressCountToFinishTask = EditorGUILayout.IntField("PressCountToFinishTask", interactables.PressCountToFinishTask);
+                EditorGUILayout.PropertyField(KeyboardButtonHintProperty);
+                EditorGUILayout.PropertyField(GamepadButtonHintProperty);
+                break;
         }
 
         DrawPropertiesExcluding(serializedObject, "m_Script");

@@ -9,6 +9,7 @@ public enum InteractionType
     PickUp,
     Press,
     Hold,
+    MultiPress
 }
 public enum InteractableObjectID
 {
@@ -45,6 +46,7 @@ public abstract class Interactable : MonoBehaviour
     private Collider[] _colliders;
 
     [HideInInspector] public float HoldingTime = 1f;
+    [HideInInspector] public int PressCountToFinishTask = 10;
     [HideInInspector] public bool CanInteractWhenPickedUp = false;
     public InteractableObjectID InteractableID { get; protected set; }
 
@@ -172,6 +174,7 @@ public abstract class Interactable : MonoBehaviour
     public virtual void HoldingFinishedEvent() { }
     public virtual void HoldingFinishedEvent(GameObject pickUpObject) { }
     public virtual void PressEvent() { }
+    public virtual void MultiPressEvent() { }
     public virtual void MousePressEvent() { }
     public virtual void MouseReleaseEvent() { }
     public virtual void StartInteractible() { }

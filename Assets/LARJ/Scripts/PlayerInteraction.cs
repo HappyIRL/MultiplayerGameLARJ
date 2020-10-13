@@ -142,7 +142,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                if (/*AllowedInteractibles.Contains(interactable)*/ true)
+                if (AllowedInteractibles.Contains(interactable))
                 {
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;
@@ -165,7 +165,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (ObjectToInteract == null)
             {
-                if (/*AllowedInteractibles.Contains(interactable)*/ true)
+                if (AllowedInteractibles.Contains(interactable))
                 {
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;
@@ -251,6 +251,10 @@ public class PlayerInteraction : MonoBehaviour
             else if (InteractableInteractionType == InteractionType.Press)
             {
                 PressInteraction();
+            }
+            else if (InteractableInteractionType == InteractionType.MultiPress)
+            {
+                MultiPressInteraction();
             }
         }
     }
@@ -374,6 +378,13 @@ public class PlayerInteraction : MonoBehaviour
 
         LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Press, _objectToInteract.ObjectInstanceID);
         _objectToInteract.PressEvent();
+    }
+
+    private void MultiPressInteraction()
+    {
+        if (_objectToInteract == null) return;
+
+        _objectToInteract.MultiPressEvent();
     }
 
     private void HoldingInteraction(Interactable objectToInteract)
