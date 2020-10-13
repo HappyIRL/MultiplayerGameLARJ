@@ -244,11 +244,15 @@ MonoBehaviour:
   InteractionType: 1
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
-  KeyboardButtonHintImage: {fileID: 3145751835523090832}
-  GamepadButtonHintImage: {fileID: 3145751835459296577}
+  KeyboardReleaseButtonHintImage: {fileID: 0}
+  KeyboardPressedButtonHintImage: {fileID: 792022061386106641}
+  GamepadReleaseButtonHintImage: {fileID: 0}
+  GamepadPressedButtonHintImage: {fileID: 3145751835459296577}
+  HoldingHintImage: {fileID: 0}
   MousePickedUpInteractionButtonHintImage: {fileID: 0}
   GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
   HoldingTime: 1
+  PressCountToFinishTask: 10
   CanInteractWhenPickedUp: 0
   _waterDrippingSound: {fileID: 8300000, guid: 87e57324a369fe44082410887b9d370c, type: 3}
   _waterParticles: {fileID: 9123445676083017853}
@@ -5229,9 +5233,9 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 7124468396097187694}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3145751835523090832 stripped
+--- !u!1 &792022061386106641 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5294200040120493822, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7503807989517625471, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 7124468396097187694}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &3145751835459296577 stripped

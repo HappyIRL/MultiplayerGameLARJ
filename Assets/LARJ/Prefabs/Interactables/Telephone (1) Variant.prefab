@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4450039970984984745, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
       propertyPath: m_Name
-      value: Telephone (1)
+      value: Telephone (1) Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4450039970985286793, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -59,5 +59,32 @@ PrefabInstance:
       propertyPath: _interactableID
       value: 66
       objectReference: {fileID: 0}
+    - target: {fileID: 5894535082283320545, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
+      propertyPath: KeyboardPressedButtonHintImage
+      value: 
+      objectReference: {fileID: 674143932114192545}
+    - target: {fileID: 5894535082283320545, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
+      propertyPath: HoldingHintImage
+      value: 
+      objectReference: {fileID: 5972426127825006451}
+    - target: {fileID: 5894535082283320545, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
+      propertyPath: GamepadPressedButtonHintImage
+      value: 
+      objectReference: {fileID: 2882634900643664625}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
+--- !u!1 &674143932114192545 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6651676241982262358, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
+  m_PrefabInstance: {fileID: 6130676834572223735}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2882634900643664625 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9013294063438697990, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
+  m_PrefabInstance: {fileID: 6130676834572223735}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5972426127825006451 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 573887838876183428, guid: 9bd6e604422a5dc4cbf0bf5dc019c3c4, type: 3}
+  m_PrefabInstance: {fileID: 6130676834572223735}
+  m_PrefabAsset: {fileID: 0}

@@ -142,7 +142,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                if (AllowedInteractibles.Contains(interactable))
+                if (/*AllowedInteractibles.Contains(interactable)*/ true)
                 {
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;
@@ -165,7 +165,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (ObjectToInteract == null)
             {
-                if (AllowedInteractibles.Contains(interactable))
+                if (/*AllowedInteractibles.Contains(interactable)*/ true)
                 {
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;

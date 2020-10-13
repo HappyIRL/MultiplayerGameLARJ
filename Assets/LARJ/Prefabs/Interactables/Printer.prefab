@@ -230,11 +230,15 @@ MonoBehaviour:
   InteractionType: 2
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
-  KeyboardButtonHintImage: {fileID: 7678414295681067831}
-  GamepadButtonHintImage: {fileID: 7678414295737008102}
+  KeyboardReleaseButtonHintImage: {fileID: 0}
+  KeyboardPressedButtonHintImage: {fileID: 5464293927493035446}
+  GamepadReleaseButtonHintImage: {fileID: 0}
+  GamepadPressedButtonHintImage: {fileID: 7678414295737008102}
+  HoldingHintImage: {fileID: 1183402021632885348}
   MousePickedUpInteractionButtonHintImage: {fileID: 0}
   GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
   HoldingTime: 5
+  PressCountToFinishTask: 10
   CanInteractWhenPickedUp: 0
   _paperPrefab: {fileID: 502630160131806137, guid: 8d9cbf4cbcd4a704d8ba8867988e758f, type: 3}
   _paperSpawnPoint: {fileID: 1684106499315064625}
@@ -392,13 +396,18 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 2591808375530737097}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7678414295681067831 stripped
+--- !u!1 &5464293927493035446 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5294200040120493822, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7503807989517625471, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 2591808375530737097}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7678414295737008102 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5294200040146547247, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+  m_PrefabInstance: {fileID: 2591808375530737097}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1183402021632885348 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3718770573196398509, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 2591808375530737097}
   m_PrefabAsset: {fileID: 0}

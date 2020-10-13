@@ -1,5 +1,6 @@
 ﻿using cakeslice;
 using System;
+using System.Collections;
 using Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -38,8 +39,11 @@ public abstract class Interactable : MonoBehaviour
     [HideInInspector] public Outline OutlineRef = null;
 
     //Button press hints
-    [HideInInspector] public GameObject KeyboardButtonHintImage = null;
-    [HideInInspector] public GameObject GamepadButtonHintImage = null;
+    [HideInInspector] public GameObject KeyboardReleaseButtonHintImage = null;
+    [HideInInspector] public GameObject KeyboardPressedButtonHintImage = null;
+    [HideInInspector] public GameObject GamepadReleaseButtonHintImage = null;
+    [HideInInspector] public GameObject GamepadPressedButtonHintImage = null;
+    [HideInInspector] public GameObject HoldingHintImage = null;
     [HideInInspector] public GameObject MousePickedUpInteractionButtonHintImage = null;
     [HideInInspector] public GameObject GamepadPickedUpInteractionButtonHintImage = null;
 
@@ -48,6 +52,8 @@ public abstract class Interactable : MonoBehaviour
     [HideInInspector] public float HoldingTime = 1f;
     [HideInInspector] public int PressCountToFinishTask = 10;
     [HideInInspector] public bool CanInteractWhenPickedUp = false;
+
+    private Coroutine _lastCoroutine;
     public InteractableObjectID InteractableID { get; protected set; }
 
     public int ObjectInstanceID { get; set; }
@@ -100,11 +106,13 @@ public abstract class Interactable : MonoBehaviour
 
     private void DisableButtonHintImages()
     {
-        if(KeyboardButtonHintImage != null || GamepadButtonHintImage != null)
-		{
-            KeyboardButtonHintImage.SetActive(false);
-            GamepadButtonHintImage.SetActive(false);
-		}
+        if (KeyboardReleaseButtonHintImage != null) KeyboardReleaseButtonHintImage.SetActive(false);
+        if (KeyboardPressedButtonHintImage != null) KeyboardPressedButtonHintImage.SetActive(false);
+        if (GamepadReleaseButtonHintImage != null) GamepadReleaseButtonHintImage.SetActive(false);
+        if (GamepadPressedButtonHintImage != null) GamepadPressedButtonHintImage.SetActive(false);
+        if (HoldingHintImage != null) HoldingHintImage.SetActive(false);
+
+        if(_lastCoroutine != null) StopCoroutine(_lastCoroutine);		
     }
     private void DisablePickedUpInteractionButtonHints()
     {
@@ -115,11 +123,13 @@ public abstract class Interactable : MonoBehaviour
     {
         if (currentPlayerControlScheme == "Keyboard")
         {
-            KeyboardButtonHintImage.SetActive(true);
+            KeyboardPressedButtonHintImage.SetActive(true);
+            EnableAdditionalButtonHintsForKeyboard();
         }
         else if (currentPlayerControlScheme == "Gamepad")
         {
-            GamepadButtonHintImage.SetActive(true);
+            KeyboardPressedButtonHintImage.SetActive(true);
+            EnableAdditionalButtonHintsForGamepad();
         }
     }
     private void EnablePickedUpInteractionHintImage(string currentPlayerControlScheme)
@@ -132,6 +142,50 @@ public abstract class Interactable : MonoBehaviour
         {
             GamepadPickedUpInteractionButtonHintImage.SetActive(true);
         }        
+    }
+    private void EnableAdditionalButtonHintsForKeyboard()
+    {
+        switch (InteractionType)
+        {
+            case InteractionType.PickUp:
+                break;
+            case InteractionType.Press:
+                break;
+            case InteractionType.Hold:
+                HoldingHintImage.SetActive(true);
+                break;
+            case InteractionType.MultiPress:
+                _lastCoroutine = StartCoroutine(MultiPressButtonSwitchCoroutine(KeyboardPressedButtonHintImage, KeyboardReleaseButtonHintImage));
+                break;
+        }
+    }
+    private void EnableAdditionalButtonHintsForGamepad()
+    {
+        switch (InteractionType)
+        {
+            case InteractionType.PickUp:
+                break;
+            case InteractionType.Press:
+                break;
+            case InteractionType.Hold:
+                HoldingHintImage.SetActive(true);
+                break;
+            case InteractionType.MultiPress:
+                _lastCoroutine = StartCoroutine(MultiPressButtonSwitchCoroutine(KeyboardPressedButtonHintImage, KeyboardReleaseButtonHintImage));
+                break;
+        }
+    }
+    private IEnumerator MultiPressButtonSwitchCoroutine(GameObject pressImage, GameObject releaseImage)
+    {
+        while (true)
+        {
+            pressImage.SetActive(true);
+            releaseImage.SetActive(false);
+            yield return new WaitForSeconds(0.25f);
+            pressImage.SetActive(false);
+            releaseImage.SetActive(true);
+            yield return new WaitForSeconds(0.25f);
+        }
     }
     #endregion
 

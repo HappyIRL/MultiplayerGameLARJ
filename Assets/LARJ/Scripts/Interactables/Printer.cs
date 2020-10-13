@@ -73,6 +73,7 @@ public class Printer : Interactable
 
         _papergameObject = Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
         _highlightInteractables.AddInteractables(_papergameObject.GetComponent<Interactable>());
+        DisableButtonHints();
     }
     private void FinishPrinting(GameObject objectToSpawn)
     {
@@ -87,6 +88,7 @@ public class Printer : Interactable
         GameObject obj = Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
         GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
         SetValuesForSpawnedObject(obj, healthbarCanvas);
+        DisableButtonHints();
     }
 
     private void SetValuesForSpawnedObject(GameObject obj, GameObject healthbarCanvas)

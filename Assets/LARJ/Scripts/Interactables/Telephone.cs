@@ -84,6 +84,7 @@ public class Telephone : Interactable
         _audioSource.Stop();
         _callAnswered = true;
         ChangeMaterial(_standardScreenMaterial);
+        DisableButtonHints();
     }
 
     private void ChangeMaterial(Material material)

@@ -265,11 +265,15 @@ MonoBehaviour:
   InteractionType: 0
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
-  KeyboardButtonHintImage: {fileID: 4921847132119208788}
-  GamepadButtonHintImage: {fileID: 4921847132162033541}
+  KeyboardReleaseButtonHintImage: {fileID: 0}
+  KeyboardPressedButtonHintImage: {fileID: 7284518097215528405}
+  GamepadReleaseButtonHintImage: {fileID: 0}
+  GamepadPressedButtonHintImage: {fileID: 4921847132162033541}
+  HoldingHintImage: {fileID: 0}
   MousePickedUpInteractionButtonHintImage: {fileID: 8855216007362587745}
   GamepadPickedUpInteractionButtonHintImage: {fileID: 3842475420648324133}
   HoldingTime: 1
+  PressCountToFinishTask: 10
   CanInteractWhenPickedUp: 1
   _cleaningSound: {fileID: 8300000, guid: 654aee01d3c7bca43a5c5d826067b312, type: 3}
   _animator: {fileID: 2901196193876241837}
@@ -433,9 +437,9 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5294200038464744870, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 951718578766230954}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4921847132119208788 stripped
+--- !u!1 &7284518097215528405 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5294200040120493822, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7503807989517625471, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
   m_PrefabInstance: {fileID: 951718578766230954}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4921847132162033541 stripped
