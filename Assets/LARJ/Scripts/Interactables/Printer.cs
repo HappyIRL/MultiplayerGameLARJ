@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource)), Serializable]
 public class Printer : Interactable
@@ -12,6 +13,10 @@ public class Printer : Interactable
     [Header("Printer")]
     [SerializeField] private GameObject _paperPrefab = null;
     [SerializeField] private Transform _paperSpawnPoint = null;
+
+    [Header("References")]
+    [SerializeField] private HighlightInteractables _highlightInteractables = null;
+    [SerializeField] private GameObject _healtbarCanvasPrefab = null;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip _printerInSound = null;
@@ -62,9 +67,12 @@ public class Printer : Interactable
         {
             StopCoroutine(_lastCoroutine);
         }
+
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
+
         _papergameObject = Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+        _highlightInteractables.AddInteractables(_papergameObject.GetComponent<Interactable>());
     }
     private void FinishPrinting(GameObject objectToSpawn)
     {
@@ -72,10 +80,32 @@ public class Printer : Interactable
         {
             StopCoroutine(_lastCoroutine);
         }
+
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
+
         GameObject obj = Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
-        obj.layer = LayerMask.GetMask("Garbage");
+        GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
+        SetValuesForSpawnedObject(obj, healthbarCanvas);
+    }
+
+    private void SetValuesForSpawnedObject(GameObject obj, GameObject healthbarCanvas)
+    {
+        healthbarCanvas.transform.parent = obj.transform;
+        healthbarCanvas.transform.position = transform.position + Vector3.up;
+
+        obj.layer = LayerMask.NameToLayer("Garbage");
+        Interactable interactable = obj.GetComponent<Interactable>();
+        Garbage garbage = obj.AddComponent<Garbage>();
+
+        _highlightInteractables.AddInteractables(interactable);
+
+        Image background = healthbarCanvas.transform.GetChild(0).GetComponent<Image>();
+        Image healthbar = background.transform.GetChild(0).GetComponent<Image>();
+
+        garbage.SetImages(healthbar, background);
+        garbage.StrokesToClean = 3;
+        interactable.EnableColliders();
     }
 
     private void CancelPrinting()

@@ -99,10 +99,10 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!82 &4433836202865642167
 AudioSource:
@@ -252,6 +252,7 @@ MonoBehaviour:
   CanInteractWhenPickedUp: 0
   _waterDrippingSound: {fileID: 8300000, guid: 87e57324a369fe44082410887b9d370c, type: 3}
   _waterParticles: {fileID: 9123445676083017853}
+  _interactableID: 0
 --- !u!1 &5229166204130564829
 GameObject:
   m_ObjectHideFlags: 0
