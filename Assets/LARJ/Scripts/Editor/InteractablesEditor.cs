@@ -34,6 +34,9 @@ public class InteractablesEditor : Editor
     public SerializedProperty ProgressbarProperty = null;
     public SerializedProperty ProgressbarBackgroundProperty = null;
 
+    //Pick up
+    public SerializedProperty PickUpTransformProperty = null;
+
     private void OnEnable()
     {
         KeyboardPressedButtonHintProperty = serializedObject.FindProperty("KeyboardPressedButtonHintImage");
@@ -55,6 +58,8 @@ public class InteractablesEditor : Editor
 
         ProgressbarProperty = serializedObject.FindProperty("Progressbar");
         ProgressbarBackgroundProperty = serializedObject.FindProperty("ProgressbarBackground");
+
+        PickUpTransformProperty = serializedObject.FindProperty("TransformForPickUp");
     } 
 
     public override void OnInspectorGUI()
@@ -69,6 +74,7 @@ public class InteractablesEditor : Editor
         switch (interactables.InteractionType)
         {
             case InteractionType.PickUp:
+                EditorGUILayout.PropertyField(PickUpTransformProperty);
                 EditorGUILayout.PropertyField(KeyboardPressedButtonHintProperty);
                 EditorGUILayout.PropertyField(GamepadPressedButtonHintProperty);
                 interactables.CanInteractWhenPickedUp = EditorGUILayout.Toggle("CanInteractWhenPickedUp", interactables.CanInteractWhenPickedUp);
@@ -130,8 +136,8 @@ public class InteractablesEditor : Editor
                 break;
         }
 
-        serializedObject.ApplyModifiedProperties();
         DrawPropertiesExcluding(serializedObject, "m_Script");
+        serializedObject.ApplyModifiedProperties();
 
         if (EditorGUI.EndChangeCheck())
         {

@@ -47,6 +47,7 @@ public abstract class Interactable : MonoBehaviour
     [HideInInspector] public InteractionType InteractionType;
     [HideInInspector] public Rigidbody Rb = null;
     [HideInInspector] public Outline OutlineRef = null;
+    [HideInInspector] public Transform TransformForPickUp = null;
 
     #region Button hints
     //Button press hints
@@ -292,25 +293,25 @@ public abstract class Interactable : MonoBehaviour
     }
     public void DisableColliders()
     {
+        Rb.useGravity = false;
         for (int i = 0; i < _colliders.Length; i++)
         {
             _colliders[i].enabled = false;
-            Rb.useGravity = false;
         }
     }
 
     public void PickUpObject(Transform parent)
     {
         Rb.Sleep();
-        transform.rotation = parent.rotation;
-        transform.position = parent.position;
-        transform.parent = parent;
-        DisableButtonHints();
         DisableColliders();
+        TransformForPickUp.rotation = parent.rotation;
+        TransformForPickUp.position = parent.position;
+        TransformForPickUp.parent = parent;
+        DisableButtonHints();
     }
     public void DropObject()
     {
-        transform.parent = null;
+        TransformForPickUp.parent = null;
         Rb.WakeUp();
         EnableColliders();
     }

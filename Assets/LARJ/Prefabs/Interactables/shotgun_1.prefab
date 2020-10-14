@@ -245,6 +245,7 @@ MonoBehaviour:
   InteractionType: 0
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
+  TransformForPickUp: {fileID: 4062239528963416}
   KeyboardReleaseButtonHintImage: {fileID: 0}
   KeyboardPressedButtonHintImage: {fileID: 7841863278135267426}
   GamepadReleaseButtonHintImage: {fileID: 0}
@@ -252,8 +253,19 @@ MonoBehaviour:
   HoldingHintImage: {fileID: 0}
   MousePickedUpInteractionButtonHintImage: {fileID: 8295674002411774422}
   GamepadPickedUpInteractionButtonHintImage: {fileID: 4365989761579020690}
+  KeyboardUpArrowHintImage: {fileID: 0}
+  KeyboardLeftArrowHintImage: {fileID: 0}
+  KeyboardDownArrowHintImage: {fileID: 0}
+  KeyboardRightArrowHintImage: {fileID: 0}
+  GamepadUpArrowHintImage: {fileID: 0}
+  GamepadLeftArrowHintImage: {fileID: 0}
+  GamepadDownArrowHintImage: {fileID: 0}
+  GamepadRightArrowHintImage: {fileID: 0}
+  Progressbar: {fileID: 0}
+  ProgressbarBackground: {fileID: 0}
   HoldingTime: 1
   PressCountToFinishTask: 10
+  CorrectKeysPressedCountToFinishTask: 10
   CanInteractWhenPickedUp: 1
   _bulletCount: 6
   _bulletSpawnPoint: {fileID: 6951704535786342548}

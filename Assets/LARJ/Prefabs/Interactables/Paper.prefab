@@ -147,6 +147,7 @@ MonoBehaviour:
   InteractionType: 0
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
+  TransformForPickUp: {fileID: 986961061380720899}
   KeyboardReleaseButtonHintImage: {fileID: 0}
   KeyboardPressedButtonHintImage: {fileID: 2167804468004845737}
   GamepadReleaseButtonHintImage: {fileID: 0}
