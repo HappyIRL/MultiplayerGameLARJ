@@ -23,8 +23,6 @@ public enum InteractableUseType
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private Transform _objectHolder = null;
-    [SerializeField] private Image _holdingTimeBar = null;
-    [SerializeField] private GameObject _holdingTimeBarBG = null;
 
     private bool _holdingButton = false;
     private bool _holdingWasFinished = false;
@@ -74,7 +72,6 @@ public class PlayerInteraction : MonoBehaviour
     }
     private void Start()
     {
-        _holdingTimeBarBG.SetActive(false);
         _larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
     }
 
@@ -116,12 +113,13 @@ public class PlayerInteraction : MonoBehaviour
             else objectToHold = _objectToInteract;
 
             _holdingTimer += Time.deltaTime;
-            _holdingTimeBar.fillAmount = _holdingTimer / objectToHold.HoldingTime;
+            objectToHold.UpdateProgressbar(_holdingTimer);
 
             if (_holdingTimer >= objectToHold.HoldingTime)
             {
+                objectToHold.DisableProgressbar();
+
                 _holdingTimer = 0f;
-                _holdingTimeBarBG.SetActive(false);
                 _holdingButton = false;
                 _holdingWasFinished = true;
 
@@ -129,7 +127,6 @@ public class PlayerInteraction : MonoBehaviour
                 else objectToHold.HoldingFinishedEvent();
               
                 LARJInteractableUse?.Invoke(objectToHold.InteractableID, InteractableUseType.HoldFinish, objectToHold.ObjectInstanceID);
-                _holdingTimeBar.fillAmount = 0;
             }
         }
     }
@@ -299,12 +296,14 @@ public class PlayerInteraction : MonoBehaviour
                 objectToRelease.HoldingFailedEvent();
                 LARJInteractableUse?.Invoke(objectToRelease.InteractableID, InteractableUseType.HoldFailed, objectToRelease.ObjectInstanceID);
                 objectToRelease.EnableButtonHints(_playerInput.currentControlScheme);
+
             }
+
+            _holdingButton = false;
+            _holdingTimer = 0f;
+            objectToRelease.DisableProgressbar();
         }
 
-        _holdingButton = false;
-        _holdingTimer = 0f;
-        _holdingTimeBarBG.SetActive(false);
     }
     public void OnPickedUpInteractionPress()
     {
@@ -437,8 +436,7 @@ public class PlayerInteraction : MonoBehaviour
 
         _holdingButton = true;
         _holdingWasFinished = false;
-        _holdingTimeBar.fillAmount = 0;
-        _holdingTimeBarBG.SetActive(true);
+        _objectToInteract.UpdateProgressbar(0f);
         objectToInteract.HoldingStartedEvent();
         objectToInteract.DisableButtonHints();
         LARJInteractableUse?.Invoke(objectToInteract.InteractableID, InteractableUseType.HoldStart, objectToInteract.ObjectInstanceID);

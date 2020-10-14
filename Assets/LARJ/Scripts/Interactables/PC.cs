@@ -9,8 +9,6 @@ using UnityEngine.UI;
 public class PC : Interactable
 {
     [Header("PC")]
-    [SerializeField] private Image _progressbar = null;
-    [SerializeField] private Image _progressbarBackground = null;
     [SerializeField] private List<AudioClip> _singleKeyboardTypingSounds = null;
 
     [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
@@ -34,8 +32,8 @@ public class PC : Interactable
 
     private void DisableUI()
     {
-        _progressbar.gameObject.SetActive(false);
-        _progressbarBackground.gameObject.SetActive(false);
+        Progressbar.gameObject.SetActive(false);
+        ProgressbarBackground.gameObject.SetActive(false);
     }
 
     private void StartTyping()
@@ -70,9 +68,9 @@ public class PC : Interactable
 
     private void UpdateUI()
     {
-        _progressbar.gameObject.SetActive(true);
-        _progressbarBackground.gameObject.SetActive(true);
-        _progressbar.fillAmount = (float)((float)_pressCount / (float)PressCountToFinishTask);
+        Progressbar.gameObject.SetActive(true);
+        ProgressbarBackground.gameObject.SetActive(true);
+        Progressbar.fillAmount = (float)((float)_pressCount / (float)PressCountToFinishTask);
     }
 
     private IEnumerator WaitToDisableUI()

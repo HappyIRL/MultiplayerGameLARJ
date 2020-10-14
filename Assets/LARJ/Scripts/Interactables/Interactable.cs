@@ -4,6 +4,8 @@ using System.Collections;
 using Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+using Outline = cakeslice.Outline;
 
 public enum InteractionType
 {
@@ -66,6 +68,8 @@ public abstract class Interactable : MonoBehaviour
     [HideInInspector] public GameObject GamepadDownArrowHintImage = null;
     [HideInInspector] public GameObject GamepadRightArrowHintImage = null;
     #endregion
+    [HideInInspector] public Image Progressbar = null;
+    [HideInInspector] public Image ProgressbarBackground = null;
 
     private Collider[] _colliders;
 
@@ -211,6 +215,71 @@ public abstract class Interactable : MonoBehaviour
             yield return new WaitForSeconds(0.25f);
         }
     }
+    private void SetCurrentCorrectKeyUI(string currentPlayerControlScheme)
+    {
+        DeactivateArrowUI();
+
+        if (currentPlayerControlScheme == "Keyboard")
+        {
+            switch (_currentCorrectKey)
+            {
+                case CorrectKeysInteraction.Up:
+                    KeyboardUpArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Left:
+                    KeyboardLeftArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Down:
+                    KeyboardDownArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Right:
+                    KeyboardRightArrowHintImage.SetActive(true);
+                    break;
+            }
+        }
+        else if (currentPlayerControlScheme == "Gamepad")
+        {
+            switch (_currentCorrectKey)
+            {
+                case CorrectKeysInteraction.Up:
+                    GamepadUpArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Left:
+                    GamepadLeftArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Down:
+                    GamepadDownArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Right:
+                    GamepadRightArrowHintImage.SetActive(true);
+                    break;
+            }
+        }
+    }
+    private void DeactivateArrowUI()
+    {
+        KeyboardUpArrowHintImage.SetActive(false);
+        KeyboardLeftArrowHintImage.SetActive(false);
+        KeyboardDownArrowHintImage.SetActive(false);
+        KeyboardRightArrowHintImage.SetActive(false);
+        GamepadUpArrowHintImage.SetActive(false);
+        GamepadLeftArrowHintImage.SetActive(false);
+        GamepadDownArrowHintImage.SetActive(false);
+        GamepadRightArrowHintImage.SetActive(false);
+    }
+    public void UpdateProgressbar(float holdingTime)
+    {
+        Progressbar.gameObject.SetActive(true);
+        ProgressbarBackground.gameObject.SetActive(true);
+
+        Progressbar.fillAmount = holdingTime / HoldingTime;
+    }
+    public void DisableProgressbar()
+    {
+        Progressbar.gameObject.SetActive(false);
+        ProgressbarBackground.gameObject.SetActive(false);
+        Progressbar.fillAmount = 0;
+    }
     #endregion
 
     public void EnableColliders()
@@ -285,58 +354,6 @@ public abstract class Interactable : MonoBehaviour
                 break;
         }
         SetCurrentCorrectKeyUI(currentPlayerControlScheme);
-    }
-    private void SetCurrentCorrectKeyUI(string currentPlayerControlScheme)
-    {
-        DeactivateArrowUI();
-
-        if (currentPlayerControlScheme == "Keyboard")
-        {
-            switch (_currentCorrectKey)
-            {
-                case CorrectKeysInteraction.Up:
-                    KeyboardUpArrowHintImage.SetActive(true);
-                    break;
-                case CorrectKeysInteraction.Left:
-                    KeyboardLeftArrowHintImage.SetActive(true);
-                    break;
-                case CorrectKeysInteraction.Down:
-                    KeyboardDownArrowHintImage.SetActive(true);
-                    break;
-                case CorrectKeysInteraction.Right:
-                    KeyboardRightArrowHintImage.SetActive(true);
-                    break;
-            }
-        }
-        else if (currentPlayerControlScheme == "Gamepad")
-        {
-            switch (_currentCorrectKey)
-            {
-                case CorrectKeysInteraction.Up:
-                    GamepadUpArrowHintImage.SetActive(true);
-                    break;
-                case CorrectKeysInteraction.Left:
-                    GamepadLeftArrowHintImage.SetActive(true);
-                    break;
-                case CorrectKeysInteraction.Down:
-                    GamepadDownArrowHintImage.SetActive(true);
-                    break;
-                case CorrectKeysInteraction.Right:
-                    GamepadRightArrowHintImage.SetActive(true);
-                    break;
-            }
-        }
-    }
-    private void DeactivateArrowUI()
-    {
-        KeyboardUpArrowHintImage.SetActive(false);
-        KeyboardLeftArrowHintImage.SetActive(false);
-        KeyboardDownArrowHintImage.SetActive(false);
-        KeyboardRightArrowHintImage.SetActive(false);
-        GamepadUpArrowHintImage.SetActive(false);
-        GamepadLeftArrowHintImage.SetActive(false);
-        GamepadDownArrowHintImage.SetActive(false);
-        GamepadRightArrowHintImage.SetActive(false);
     }
 
     #region Events

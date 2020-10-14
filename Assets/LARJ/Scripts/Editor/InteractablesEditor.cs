@@ -30,6 +30,10 @@ public class InteractablesEditor : Editor
     public SerializedProperty GamepadDownArrowHintProperty = null;
     public SerializedProperty GamepadRightArrowHintProperty = null;
 
+    //Progressbar
+    public SerializedProperty ProgressbarProperty = null;
+    public SerializedProperty ProgressbarBackgroundProperty = null;
+
     private void OnEnable()
     {
         KeyboardPressedButtonHintProperty = serializedObject.FindProperty("KeyboardPressedButtonHintImage");
@@ -48,6 +52,9 @@ public class InteractablesEditor : Editor
         GamepadLeftArrowHintProperty = serializedObject.FindProperty("GamepadLeftArrowHintImage");
         GamepadDownArrowHintProperty = serializedObject.FindProperty("GamepadDownArrowHintImage");
         GamepadRightArrowHintProperty = serializedObject.FindProperty("GamepadRightArrowHintImage");
+
+        ProgressbarProperty = serializedObject.FindProperty("Progressbar");
+        ProgressbarBackgroundProperty = serializedObject.FindProperty("ProgressbarBackground");
     } 
 
     public override void OnInspectorGUI()
@@ -77,12 +84,24 @@ public class InteractablesEditor : Editor
                 break;
             case InteractionType.Hold:
                 interactables.HoldingTime = EditorGUILayout.FloatField("HoldingTime", interactables.HoldingTime);
+
+                EditorGUILayout.LabelField("Progressbar", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(ProgressbarProperty);
+                EditorGUILayout.PropertyField(ProgressbarBackgroundProperty);
+
+                EditorGUILayout.LabelField("Press Images", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(KeyboardPressedButtonHintProperty);
                 EditorGUILayout.PropertyField(GamepadPressedButtonHintProperty);
                 EditorGUILayout.PropertyField(HoldingHintProperty);
                 break;
             case InteractionType.MultiPress:
                 interactables.PressCountToFinishTask = EditorGUILayout.IntField("PressCountToFinishTask", interactables.PressCountToFinishTask);
+
+                EditorGUILayout.LabelField("Progressbar", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(ProgressbarProperty);
+                EditorGUILayout.PropertyField(ProgressbarBackgroundProperty);
+
+                EditorGUILayout.LabelField("Press Images", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(KeyboardPressedButtonHintProperty);
                 EditorGUILayout.PropertyField(KeyboardReleaseButtonHintProperty);
                 EditorGUILayout.PropertyField(GamepadPressedButtonHintProperty);
@@ -90,6 +109,10 @@ public class InteractablesEditor : Editor
                 break;
             case InteractionType.PressTheCorrectKeys:
                 interactables.CorrectKeysPressedCountToFinishTask = EditorGUILayout.IntField("CorrectKeysPressedCountToFinishTask", interactables.CorrectKeysPressedCountToFinishTask);
+
+                EditorGUILayout.LabelField("Progressbar", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(ProgressbarProperty);
+                EditorGUILayout.PropertyField(ProgressbarBackgroundProperty);
 
                 EditorGUILayout.LabelField("Press Images", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(KeyboardPressedButtonHintProperty);
