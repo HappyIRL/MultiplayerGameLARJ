@@ -20,6 +20,15 @@ public class InteractablesEditor : Editor
     public SerializedProperty KeyboardPickedUpButtonHintProperty = null;
     public SerializedProperty GamepadPickedUpButtonHintProperty = null;
 
+    //Arrow keys
+    public SerializedProperty KeyboardUpArrowHintProperty = null;
+    public SerializedProperty KeyboardLeftArrowHintProperty = null;
+    public SerializedProperty KeyboardDownArrowHintProperty = null;
+    public SerializedProperty KeyboardRightArrowHintProperty = null;
+    public SerializedProperty GamepadUpArrowHintProperty = null;
+    public SerializedProperty GamepadLeftArrowHintProperty = null;
+    public SerializedProperty GamepadDownArrowHintProperty = null;
+    public SerializedProperty GamepadRightArrowHintProperty = null;
 
     private void OnEnable()
     {
@@ -30,7 +39,16 @@ public class InteractablesEditor : Editor
         HoldingHintProperty = serializedObject.FindProperty("HoldingHintImage");
         KeyboardPickedUpButtonHintProperty = serializedObject.FindProperty("MousePickedUpInteractionButtonHintImage");
         GamepadPickedUpButtonHintProperty = serializedObject.FindProperty("GamepadPickedUpInteractionButtonHintImage");
-    }
+
+        KeyboardUpArrowHintProperty = serializedObject.FindProperty("KeyboardUpArrowHintImage");
+        KeyboardLeftArrowHintProperty = serializedObject.FindProperty("KeyboardLeftArrowHintImage");
+        KeyboardDownArrowHintProperty = serializedObject.FindProperty("KeyboardDownArrowHintImage");
+        KeyboardRightArrowHintProperty = serializedObject.FindProperty("KeyboardRightArrowHintImage");
+        GamepadUpArrowHintProperty = serializedObject.FindProperty("GamepadUpArrowHintImage");
+        GamepadLeftArrowHintProperty = serializedObject.FindProperty("GamepadLeftArrowHintImage");
+        GamepadDownArrowHintProperty = serializedObject.FindProperty("GamepadDownArrowHintImage");
+        GamepadRightArrowHintProperty = serializedObject.FindProperty("GamepadRightArrowHintImage");
+    } 
 
     public override void OnInspectorGUI()
     {     
@@ -69,6 +87,23 @@ public class InteractablesEditor : Editor
                 EditorGUILayout.PropertyField(KeyboardReleaseButtonHintProperty);
                 EditorGUILayout.PropertyField(GamepadPressedButtonHintProperty);
                 EditorGUILayout.PropertyField(GamepadReleaseButtonHintProperty);
+                break;
+            case InteractionType.PressTheCorrectKeys:
+                interactables.CorrectKeysPressedCountToFinishTask = EditorGUILayout.IntField("CorrectKeysPressedCountToFinishTask", interactables.CorrectKeysPressedCountToFinishTask);
+
+                EditorGUILayout.LabelField("Press Images", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(KeyboardPressedButtonHintProperty);
+                EditorGUILayout.PropertyField(GamepadPressedButtonHintProperty);
+
+                EditorGUILayout.LabelField("Arrow Images", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(KeyboardUpArrowHintProperty);
+                EditorGUILayout.PropertyField(KeyboardLeftArrowHintProperty);
+                EditorGUILayout.PropertyField(KeyboardDownArrowHintProperty);
+                EditorGUILayout.PropertyField(KeyboardRightArrowHintProperty);
+                EditorGUILayout.PropertyField(GamepadUpArrowHintProperty);
+                EditorGUILayout.PropertyField(GamepadLeftArrowHintProperty);
+                EditorGUILayout.PropertyField(GamepadDownArrowHintProperty);
+                EditorGUILayout.PropertyField(GamepadRightArrowHintProperty);
                 break;
         }
 

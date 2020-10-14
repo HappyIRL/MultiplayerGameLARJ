@@ -10,7 +10,15 @@ public enum InteractionType
     PickUp,
     Press,
     Hold,
-    MultiPress
+    MultiPress,
+    PressTheCorrectKeys
+}
+public enum CorrectKeysInteraction
+{
+    Up,
+    Left,
+    Down,
+    Right
 }
 public enum InteractableObjectID
 {
@@ -38,6 +46,7 @@ public abstract class Interactable : MonoBehaviour
     [HideInInspector] public Rigidbody Rb = null;
     [HideInInspector] public Outline OutlineRef = null;
 
+    #region Button hints
     //Button press hints
     [HideInInspector] public GameObject KeyboardReleaseButtonHintImage = null;
     [HideInInspector] public GameObject KeyboardPressedButtonHintImage = null;
@@ -47,13 +56,28 @@ public abstract class Interactable : MonoBehaviour
     [HideInInspector] public GameObject MousePickedUpInteractionButtonHintImage = null;
     [HideInInspector] public GameObject GamepadPickedUpInteractionButtonHintImage = null;
 
+    //arrows
+    [HideInInspector] public GameObject KeyboardUpArrowHintImage = null;
+    [HideInInspector] public GameObject KeyboardLeftArrowHintImage = null;
+    [HideInInspector] public GameObject KeyboardDownArrowHintImage = null;
+    [HideInInspector] public GameObject KeyboardRightArrowHintImage = null;
+    [HideInInspector] public GameObject GamepadUpArrowHintImage = null;
+    [HideInInspector] public GameObject GamepadLeftArrowHintImage = null;
+    [HideInInspector] public GameObject GamepadDownArrowHintImage = null;
+    [HideInInspector] public GameObject GamepadRightArrowHintImage = null;
+    #endregion
+
     private Collider[] _colliders;
 
     [HideInInspector] public float HoldingTime = 1f;
     [HideInInspector] public int PressCountToFinishTask = 10;
+    [HideInInspector] public int CorrectKeysPressedCountToFinishTask = 10;
     [HideInInspector] public bool CanInteractWhenPickedUp = false;
 
+    private int _currentCorrectKeysPressedCount = 0; 
     private Coroutine _lastCoroutine;
+    private CorrectKeysInteraction _currentCorrectKey;
+
     public InteractableObjectID InteractableID { get; protected set; }
 
     public int ObjectInstanceID { get; set; }
@@ -221,6 +245,99 @@ public abstract class Interactable : MonoBehaviour
         Rb.WakeUp();
         EnableColliders();
     }
+    public void PressCorrectKeyInteraction(CorrectKeysInteraction pressedKey, string currentPlayerControlScheme)
+    {
+        if (pressedKey == _currentCorrectKey)
+        {
+            _currentCorrectKeysPressedCount++;
+
+            if (_currentCorrectKeysPressedCount >= CorrectKeysPressedCountToFinishTask)
+            {
+                DeactivateArrowUI();
+                PressTheCorrectKeysFinishedEvent();
+            }
+            else
+            {
+                SetRandomCorrectKeyInteraction(currentPlayerControlScheme);
+            }
+        }
+        else
+        {
+            PressTheCorrectKeysFailedEvent();
+        }
+    }
+    private void SetRandomCorrectKeyInteraction(string currentPlayerControlScheme)
+    {
+        int rnd = UnityEngine.Random.Range(0, 4);
+        switch (rnd)
+        {
+            case 0:
+                _currentCorrectKey = CorrectKeysInteraction.Up;
+                break;
+            case 1:
+                _currentCorrectKey = CorrectKeysInteraction.Left;
+                break;
+            case 2:
+                _currentCorrectKey = CorrectKeysInteraction.Down;
+                break;
+            case 3:
+                _currentCorrectKey = CorrectKeysInteraction.Right;
+                break;
+        }
+        SetCurrentCorrectKeyUI(currentPlayerControlScheme);
+    }
+    private void SetCurrentCorrectKeyUI(string currentPlayerControlScheme)
+    {
+        DeactivateArrowUI();
+
+        if (currentPlayerControlScheme == "Keyboard")
+        {
+            switch (_currentCorrectKey)
+            {
+                case CorrectKeysInteraction.Up:
+                    KeyboardUpArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Left:
+                    KeyboardLeftArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Down:
+                    KeyboardDownArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Right:
+                    KeyboardRightArrowHintImage.SetActive(true);
+                    break;
+            }
+        }
+        else if (currentPlayerControlScheme == "Gamepad")
+        {
+            switch (_currentCorrectKey)
+            {
+                case CorrectKeysInteraction.Up:
+                    GamepadUpArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Left:
+                    GamepadLeftArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Down:
+                    GamepadDownArrowHintImage.SetActive(true);
+                    break;
+                case CorrectKeysInteraction.Right:
+                    GamepadRightArrowHintImage.SetActive(true);
+                    break;
+            }
+        }
+    }
+    private void DeactivateArrowUI()
+    {
+        KeyboardUpArrowHintImage.SetActive(false);
+        KeyboardLeftArrowHintImage.SetActive(false);
+        KeyboardDownArrowHintImage.SetActive(false);
+        KeyboardRightArrowHintImage.SetActive(false);
+        GamepadUpArrowHintImage.SetActive(false);
+        GamepadLeftArrowHintImage.SetActive(false);
+        GamepadDownArrowHintImage.SetActive(false);
+        GamepadRightArrowHintImage.SetActive(false);
+    }
 
     #region Events
     public virtual void HoldingStartedEvent() { }
@@ -229,6 +346,19 @@ public abstract class Interactable : MonoBehaviour
     public virtual void HoldingFinishedEvent(GameObject pickUpObject) { }
     public virtual void PressEvent() { }
     public virtual void MultiPressEvent() { }
+
+    /// <summary>
+    /// Call base to set first random correct key!
+    /// </summary>
+    /// <param name="currentPlayerControlScheme"></param>
+    public virtual void PressTheCorrectKeysStartedEvent(string currentPlayerControlScheme)
+    {
+        _currentCorrectKeysPressedCount = 0;
+        DisableButtonHintImages();
+        SetRandomCorrectKeyInteraction(currentPlayerControlScheme);
+    }
+    public virtual void PressTheCorrectKeysFailedEvent() { }
+    public virtual void PressTheCorrectKeysFinishedEvent() { }
     public virtual void MousePressEvent() { }
     public virtual void MouseReleaseEvent() { }
     public virtual void StartInteractible() { }

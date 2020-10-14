@@ -35,6 +35,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool _canInteract = false;
     private bool _isPickedUp = false;
     private bool _isLocal = true;
+    private bool _canUseArrowKeys = false;
 
     public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type, int objectInstanceID);
     public event LARJInteractableUseEvent LARJInteractableUse;
@@ -209,7 +210,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
+                if (!_canUseArrowKeys)
+                {
+                    _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
+                }
             }
         }
     }
@@ -255,6 +259,10 @@ public class PlayerInteraction : MonoBehaviour
             else if (InteractableInteractionType == InteractionType.MultiPress)
             {
                 MultiPressInteraction();
+            }
+            else if (InteractableInteractionType == InteractionType.PressTheCorrectKeys)
+            {
+                PressTheCorrectKeysInteraction();
             }
         }
     }
@@ -339,6 +347,42 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
+    public void OnPressUpArrow()
+    {
+        if (_canUseArrowKeys)
+        {
+            if (_objectToInteract == null) return;
+
+            _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Up, _playerInput.currentControlScheme);
+        }
+    }
+    public void OnPressLeftArrow()
+    {
+        if (_canUseArrowKeys)
+        {
+            if (_objectToInteract == null) return;
+
+            _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Left, _playerInput.currentControlScheme);
+        }
+    }
+    public void OnPressDownArrow()
+    {
+        if (_canUseArrowKeys)
+        {
+            if (_objectToInteract == null) return;
+
+            _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Down, _playerInput.currentControlScheme);
+        }
+    }
+    public void OnPressRightArrow()
+    {
+        if (_canUseArrowKeys)
+        {
+            if (_objectToInteract == null) return;
+
+            _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Right, _playerInput.currentControlScheme);
+        }
+    }
     #endregion
 
     #region Interaction Events
@@ -398,6 +442,13 @@ public class PlayerInteraction : MonoBehaviour
         objectToInteract.HoldingStartedEvent();
         objectToInteract.DisableButtonHints();
         LARJInteractableUse?.Invoke(objectToInteract.InteractableID, InteractableUseType.HoldStart, objectToInteract.ObjectInstanceID);
+    }
+    private void PressTheCorrectKeysInteraction()
+    {
+        if (_objectToInteract == null) return;
+
+        _objectToInteract.PressTheCorrectKeysStartedEvent(_playerInput.currentControlScheme);
+        _canUseArrowKeys = true;
     }
     #endregion
 }
