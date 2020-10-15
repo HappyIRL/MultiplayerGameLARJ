@@ -46,7 +46,7 @@ public class Stamp : Interactable
 
     private void SpawnStampPrint(Collision collision)
     {
-        GameObject obj = Instantiate(_stampPrintPrefab);
+        GameObject obj = InstantiateManager.Instance.Instantiate(_stampPrintPrefab);
         obj.transform.position = collision.GetContact(0).point;
         obj.transform.forward = collision.GetContact(0).normal;
         obj.transform.parent = collision.transform;
