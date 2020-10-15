@@ -1,17 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomerNetworkData
 {
-	public byte ObjectInteractableID;
+	public int UniqueInstanceID;
 
 	public static byte[] SerializeMethod(object customObject)
 	{
 		CustomerNetworkData data = (CustomerNetworkData)customObject;
-		byte[] result = new byte[1];
 
-		result[0] = data.ObjectInteractableID;
+		byte[] result = BitConverter.GetBytes(data.UniqueInstanceID);
 
 		return result;
 	}
@@ -20,7 +20,7 @@ public class CustomerNetworkData
 	{
 		CustomerNetworkData data = new CustomerNetworkData();
 
-		data.ObjectInteractableID = input[0];
+		data.UniqueInstanceID = BitConverter.ToInt32(input,0);
 
 		return data;
 	}

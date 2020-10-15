@@ -145,11 +145,6 @@ public class Customer : Interactable, IObjectPoolNotifier
     }
 
     #endregion   
-
-    public void SetID(int id)
-	{
-        ObjectInstanceID = id;
-    }
     private void WaitInLine()
     {        
         var posInFront = _queuePosition - 1;

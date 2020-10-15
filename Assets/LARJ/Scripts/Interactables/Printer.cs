@@ -87,6 +87,8 @@ public class Printer : Interactable
 
         GameObject obj = Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
         GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
+
+
         SetValuesForSpawnedObject(obj, healthbarCanvas);
         DisableButtonHints();
     }

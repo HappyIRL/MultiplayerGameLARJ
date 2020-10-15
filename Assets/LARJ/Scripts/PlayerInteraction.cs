@@ -32,21 +32,18 @@ public class PlayerInteraction : MonoBehaviour
     private InteractionType InteractableInteractionType = InteractionType.PickUp;
     private bool _canInteract = false;
     private bool _isPickedUp = false;
-    private bool _isLocal = true;
     private bool _canUseArrowKeys = false;
 
-    public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type, int objectInstanceID);
+    public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type, int objectInstanceID, InteractableObjectID itemInHandID);
     public event LARJInteractableUseEvent LARJInteractableUse;
     public delegate void LARJTaskEvent(InteractableObjectID id, LARJTaskState state, int objectInstanceID);
     public event LARJTaskEvent OnNetworkTaskEvent;
 
     public List<Interactable> AllowedInteractibles = new List<Interactable>();
-    private int _objectInstanceID;
 
     //Object to interact
     private Interactable _objectToInteract;
     private Interactable _duplicator;
-    private LARJConnectToPhoton _larjConnectToPhoton;
 
     public Interactable ObjectToInteract
     {
@@ -64,15 +61,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         _playerInput = GetComponent<PlayerInput>();
         TaskManager.TaskManagerSingelton.OnTask += ActivateInteractable;
-
-        if (PhotonNetwork.IsConnected)
-            _isLocal = false;
-        else
-            _isLocal = true;
-    }
-    private void Start()
-    {
-        _larjConnectToPhoton = FindObjectOfType<LARJConnectToPhoton>();
     }
 
     private void ActivateInteractable(Interactable interactable, LARJTaskState state)
@@ -123,10 +111,17 @@ public class PlayerInteraction : MonoBehaviour
                 _holdingButton = false;
                 _holdingWasFinished = true;
 
-                if (_isPickedUp) objectToHold.HoldingFinishedEvent(_objectToInteract.gameObject);
-                else objectToHold.HoldingFinishedEvent();
-              
-                LARJInteractableUse?.Invoke(objectToHold.InteractableID, InteractableUseType.HoldFinish, objectToHold.ObjectInstanceID);
+                if (_isPickedUp)
+                {
+                    objectToHold.HoldingFinishedEvent(_objectToInteract.gameObject);
+                }
+
+                else
+				{
+                    objectToHold.HoldingFinishedEvent();
+				}
+
+                LARJInteractableUse?.Invoke(objectToHold.InteractableID, InteractableUseType.HoldFinish, objectToHold.ObjectInstanceID, _objectToInteract.InteractableID);
             }
         }
     }
@@ -297,7 +292,7 @@ public class PlayerInteraction : MonoBehaviour
                 if (objectToRelease == null) return;
 
                 objectToRelease.HoldingFailedEvent();
-                LARJInteractableUse?.Invoke(objectToRelease.InteractableID, InteractableUseType.HoldFailed, objectToRelease.ObjectInstanceID);
+                LARJInteractableUse?.Invoke(objectToRelease.InteractableID, InteractableUseType.HoldFailed, objectToRelease.ObjectInstanceID, InteractableObjectID.None);
                 objectToRelease.EnableButtonHints(_playerInput.currentControlScheme);
 
             }
@@ -321,7 +316,7 @@ public class PlayerInteraction : MonoBehaviour
                     if (_objectToInteract.CanInteractWhenPickedUp)
                     {
                         _objectToInteract.MousePressEvent();
-                        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.MousePress, _objectToInteract.ObjectInstanceID);
+                        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.MousePress, _objectToInteract.ObjectInstanceID, InteractableObjectID.None);
                         _objectToInteract.DisablePickedUpButtonHints();
                     }
                 }
@@ -339,7 +334,7 @@ public class PlayerInteraction : MonoBehaviour
                 if (_objectToInteract.CanInteractWhenPickedUp)
                 {
                     _objectToInteract.MouseReleaseEvent();
-                    LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.MouseRelease, _objectToInteract.ObjectInstanceID);
+                    LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.MouseRelease, _objectToInteract.ObjectInstanceID, InteractableObjectID.None);
 
                     if (_isPickedUp)
                     {
@@ -395,7 +390,7 @@ public class PlayerInteraction : MonoBehaviour
         _isPickedUp = true;
         _objectToInteract.PickUpObject(_objectHolder);
 
-        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.PickUp, _objectToInteract.ObjectInstanceID);
+        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.PickUp, _objectToInteract.ObjectInstanceID, InteractableObjectID.None);
 
         if (_objectToInteract.CanInteractWhenPickedUp)
         {
@@ -409,7 +404,7 @@ public class PlayerInteraction : MonoBehaviour
         _isPickedUp = false;
         _objectToInteract.DropObject();
 
-        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Drop, _objectToInteract.ObjectInstanceID);
+        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Drop, _objectToInteract.ObjectInstanceID, InteractableObjectID.None);
 
         if (_objectToInteract.CanInteractWhenPickedUp)
         {
@@ -422,7 +417,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (_objectToInteract == null) return;
 
-        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Press, _objectToInteract.ObjectInstanceID);
+        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Press, _objectToInteract.ObjectInstanceID, InteractableObjectID.None);
         _objectToInteract.PressEvent();
     }
 
@@ -442,7 +437,7 @@ public class PlayerInteraction : MonoBehaviour
         _objectToInteract.UpdateProgressbar(0f);
         objectToInteract.HoldingStartedEvent();
         objectToInteract.DisableButtonHints();
-        LARJInteractableUse?.Invoke(objectToInteract.InteractableID, InteractableUseType.HoldStart, objectToInteract.ObjectInstanceID);
+        LARJInteractableUse?.Invoke(objectToInteract.InteractableID, InteractableUseType.HoldStart, objectToInteract.ObjectInstanceID, InteractableObjectID.None);
     }
     private void PressTheCorrectKeysInteraction()
     {

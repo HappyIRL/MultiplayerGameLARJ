@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,18 +8,20 @@ public class InteractableNetworkData
 	public byte ID;
 	public byte InteractableID;
 	public byte InteractableUseID;
-	public byte ObjectInstanceID;
+	public byte ItemInHandID;
+	public int ObjectInstanceID;
 
 	public static byte[] SerializeMethod(object customObject)
 	{
 		InteractableNetworkData data = (InteractableNetworkData)customObject;
-		byte[] result = new byte[4];
+		byte[] b = BitConverter.GetBytes(data.ObjectInstanceID);
+		byte[] result = new byte[5];
 
 		result[0] = data.ID;
 		result[1] = data.InteractableID;
 		result[2] = data.InteractableUseID;
-		result[3] = data.ObjectInstanceID;
-
+		result[3] = data.ItemInHandID;
+		b.CopyTo(result, 4);
 		return result;
 	}
 
@@ -29,7 +32,8 @@ public class InteractableNetworkData
 		data.ID = input[0];
 		data.InteractableID = input[1];
 		data.InteractableUseID = input[2];
-		data.ObjectInstanceID = input[3];
+		data.ItemInHandID = input[3];
+		data.ObjectInstanceID = BitConverter.ToInt32(input, 4);
 
 		return data;
 	}
