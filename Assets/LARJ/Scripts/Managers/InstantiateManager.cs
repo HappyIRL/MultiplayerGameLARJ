@@ -39,9 +39,51 @@ public class InstantiateManager
 		}
 		else
 		{
-			GameObject go = MonoBehaviour.Instantiate(prefabGO);
+			GameObject go = Object.Instantiate(prefabGO);
 			return go;
 		}
 		return null;
 	}
+
+	public GameObject Instantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
+	{
+		if (PhotonNetwork.IsConnected)
+		{
+			ClientNetworkHandler.OnNotMasterClientInstantiate();
+		}
+		else
+		{
+			GameObject go = Object.Instantiate(prefabGO, position, rotation);
+			return go;
+		}
+		return null;
+	}
+
+	public GameObject Instantiate(GameObject prefabGO, Transform parent, bool instantiateInWorldSpace)
+	{
+		if (PhotonNetwork.IsConnected)
+		{
+			ClientNetworkHandler.OnNotMasterClientInstantiate();
+		}
+		else
+		{
+			GameObject go = Object.Instantiate(prefabGO, parent, instantiateInWorldSpace);
+			return go;
+		}
+		return null;
+	}
+	public GameObject Instantiate(GameObject prefabGO, Transform parent)
+	{
+		if (PhotonNetwork.IsConnected)
+		{
+			ClientNetworkHandler.OnNotMasterClientInstantiate();
+		}
+		else
+		{
+			GameObject go = Object.Instantiate(prefabGO, parent);
+			return go;
+		}
+		return null;
+	}
+
 }
