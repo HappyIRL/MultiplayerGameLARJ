@@ -49,6 +49,8 @@ public class CleaningBroom : Interactable
 
     private void StartCleaning()
     {
+        _animator.enabled = true;
+        _animator.Play("CleaningBroom");
         _audioSource.Play();
         _animator.SetBool("IsCleaning", true);
         _isCleaning = true;
@@ -58,6 +60,7 @@ public class CleaningBroom : Interactable
         _audioSource.Stop();
         _animator.SetBool("IsCleaning", false);
         _isCleaning = false;
+        _animator.enabled = false;
     }
 
 

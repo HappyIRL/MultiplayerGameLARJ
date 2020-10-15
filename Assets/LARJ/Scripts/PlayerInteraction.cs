@@ -192,8 +192,11 @@ public class PlayerInteraction : MonoBehaviour
             }
             else if (other.tag == "Printer")
             {
-                _duplicator.DisableButtonHints();
-                _duplicator = null;
+                if (_duplicator != null)
+                {
+                    _duplicator.DisableButtonHints();
+                    _duplicator = null;
+                }
             }
         }
     }

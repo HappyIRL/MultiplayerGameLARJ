@@ -270,6 +270,8 @@ public abstract class Interactable : MonoBehaviour
     }
     public void UpdateProgressbar(float holdingTime)
     {
+        if (Progressbar == null) return;
+
         Progressbar.gameObject.SetActive(true);
         ProgressbarBackground.gameObject.SetActive(true);
 
@@ -304,9 +306,9 @@ public abstract class Interactable : MonoBehaviour
     {
         Rb.Sleep();
         DisableColliders();
-        TransformForPickUp.rotation = parent.rotation;
-        TransformForPickUp.position = parent.position;
         TransformForPickUp.parent = parent;
+        TransformForPickUp.localPosition = Vector3.zero;
+        TransformForPickUp.localRotation = Quaternion.identity;
         DisableButtonHints();
     }
     public void DropObject()
