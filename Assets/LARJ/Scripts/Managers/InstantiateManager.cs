@@ -35,7 +35,7 @@ public class InstantiateManager
 	{
 		if(PhotonNetwork.IsConnected)
 		{
-			ClientNetworkHandler.OnNotMasterClientInstantiate();
+			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO);
 		}
 		else
 		{
@@ -49,7 +49,7 @@ public class InstantiateManager
 	{
 		if (PhotonNetwork.IsConnected)
 		{
-			ClientNetworkHandler.OnNotMasterClientInstantiate();
+			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO, position, rotation);
 		}
 		else
 		{
@@ -59,24 +59,11 @@ public class InstantiateManager
 		return null;
 	}
 
-	public GameObject Instantiate(GameObject prefabGO, Transform parent, bool instantiateInWorldSpace)
-	{
-		if (PhotonNetwork.IsConnected)
-		{
-			ClientNetworkHandler.OnNotMasterClientInstantiate();
-		}
-		else
-		{
-			GameObject go = Object.Instantiate(prefabGO, parent, instantiateInWorldSpace);
-			return go;
-		}
-		return null;
-	}
 	public GameObject Instantiate(GameObject prefabGO, Transform parent)
 	{
 		if (PhotonNetwork.IsConnected)
 		{
-			ClientNetworkHandler.OnNotMasterClientInstantiate();
+			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO, parent);
 		}
 		else
 		{

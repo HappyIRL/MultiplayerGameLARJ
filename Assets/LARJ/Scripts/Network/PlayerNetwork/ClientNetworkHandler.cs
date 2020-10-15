@@ -69,7 +69,17 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_playerInteraction.LARJInteractableUse += RaiseNetworkedInteractable;
 	}
 
-	public void OnNotMasterClientInstantiate()
+	public void OnNotMasterClientInstantiate(GameObject prefabGO)
+	{
+
+	}
+
+	public void OnNotMasterClientInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
+	{
+
+	}
+
+	public void OnNotMasterClientInstantiate(GameObject prefabGO, Transform parent)
 	{
 
 	}
