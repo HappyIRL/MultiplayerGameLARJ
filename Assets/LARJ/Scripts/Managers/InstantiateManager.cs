@@ -33,7 +33,7 @@ public class InstantiateManager
 
 	public GameObject Instantiate(GameObject prefabGO)
 	{
-		if(PhotonNetwork.IsConnected)
+		if(PhotonNetwork.IsConnected || !PhotonNetwork.IsMasterClient)
 		{
 			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO);
 		}
@@ -47,7 +47,7 @@ public class InstantiateManager
 
 	public GameObject Instantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
-		if (PhotonNetwork.IsConnected)
+		if (PhotonNetwork.IsConnected || !PhotonNetwork.IsMasterClient)
 		{
 			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO, position, rotation);
 		}
@@ -61,7 +61,7 @@ public class InstantiateManager
 
 	public GameObject Instantiate(GameObject prefabGO, Transform parent)
 	{
-		if (PhotonNetwork.IsConnected)
+		if (PhotonNetwork.IsConnected || !PhotonNetwork.IsMasterClient)
 		{
 			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO, parent);
 		}
