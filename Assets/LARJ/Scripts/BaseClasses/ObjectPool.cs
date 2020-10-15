@@ -34,7 +34,7 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            var newObject = InstantiateManager.Instance.Instantiate(_prefab);
+            var newObject = Instantiate(_prefab);
             var poolTag = newObject.GetComponent<PooledObject>();
 
             poolTag._pool = this;

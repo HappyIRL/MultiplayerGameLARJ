@@ -71,7 +71,7 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
 
-        _papergameObject = InstantiateManager.Instance.Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+        _papergameObject = Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
         _highlightInteractables.AddInteractables(_papergameObject.GetComponent<Interactable>());
         DisableButtonHints();
     }
@@ -85,7 +85,7 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
 
-        GameObject obj = InstantiateManager.Instance.Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+        GameObject obj = Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
         GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
 
 
