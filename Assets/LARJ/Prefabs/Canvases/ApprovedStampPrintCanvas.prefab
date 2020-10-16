@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1089277923650249751}
   - component: {fileID: 3525868229295557485}
   - component: {fileID: 2056902920181638749}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ApprovedStampPrintCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,8 @@ GameObject:
   - component: {fileID: 5318053999847071750}
   - component: {fileID: 7306536829649062610}
   - component: {fileID: 8602016343358988922}
-  m_Layer: 0
+  - component: {fileID: 2614639708427350724}
+  m_Layer: 11
   m_Name: ApprovedImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,3 +175,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!65 &2614639708427350724
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7970859001112258392}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1000, y: 500, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
