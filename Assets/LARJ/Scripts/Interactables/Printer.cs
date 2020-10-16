@@ -86,7 +86,7 @@ public class Printer : Interactable
         _audioSource.loop = false;
 
         GameObject obj = InstantiateManager.Instance.Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
-        GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
+        GameObject healthbarCanvas = InstantiateManager.Instance.Instantiate(_healtbarCanvasPrefab);
 
 
         SetValuesForSpawnedObject(obj, healthbarCanvas);

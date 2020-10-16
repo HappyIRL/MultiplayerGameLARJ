@@ -9,6 +9,7 @@ TagManager:
   - Customer
   - Bullet
   - Printer
+  - Mug
   layers:
   - Default
   - TransparentFX
