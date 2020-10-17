@@ -28,7 +28,7 @@ namespace Tasks
             GameObject obj = _taskUIPool.GetObject();
             TaskUI task = obj.GetComponent<TaskUI>();
 
-            obj.transform.parent = _parentCanvas;
+            obj.transform.SetParent(_parentCanvas);
             obj.transform.position = _taskSpawnPoint.position;
             _activeUITasks.Add(task);
 

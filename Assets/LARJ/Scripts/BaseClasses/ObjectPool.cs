@@ -20,7 +20,7 @@ public class ObjectPool : MonoBehaviour
         {
             var dequeuedObject = InactiveObjects.Dequeue();
 
-            dequeuedObject.transform.parent = null;
+            dequeuedObject.transform.SetParent(null);
             dequeuedObject.SetActive(true);
 
             var notifiers = dequeuedObject.GetComponents<IObjectPoolNotifier>();
@@ -58,7 +58,7 @@ public class ObjectPool : MonoBehaviour
         }
 
         go.SetActive(false);
-        go.transform.parent = this.transform;
+        go.transform.SetParent(transform);
 
         InactiveObjects.Enqueue(go);
     }
