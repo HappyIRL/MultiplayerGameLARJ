@@ -85,22 +85,28 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
 
-        GameObject obj = InstantiateManager.Instance.Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
-        GameObject healthbarCanvas = InstantiateManager.Instance.Instantiate(_healtbarCanvasPrefab);
+        Debug.Log(objectToSpawn);
 
+        GameObject go = InstantiateManager.Instance.Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+        //needs to be instantiated without the instantateManager for now
+        GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
 
-        SetValuesForSpawnedObject(obj, healthbarCanvas);
+        if(go != null && healthbarCanvas != null)
+		{
+            SetValuesForSpawnedObject(go, healthbarCanvas);
+		}
+
         DisableButtonHints();
     }
 
-    private void SetValuesForSpawnedObject(GameObject obj, GameObject healthbarCanvas)
+    private void SetValuesForSpawnedObject(GameObject go, GameObject healthbarCanvas)
     {
-        healthbarCanvas.transform.parent = obj.transform;
+        healthbarCanvas.transform.SetParent(go.transform);
         healthbarCanvas.transform.position = transform.position + Vector3.up;
 
-        obj.layer = LayerMask.NameToLayer("Garbage");
-        Interactable interactable = obj.GetComponent<Interactable>();
-        Garbage garbage = obj.AddComponent<Garbage>();
+        go.layer = LayerMask.NameToLayer("Garbage");
+        Interactable interactable = go.GetComponent<Interactable>();
+        Garbage garbage = go.AddComponent<Garbage>();
 
         _highlightInteractables.AddInteractables(interactable);
 

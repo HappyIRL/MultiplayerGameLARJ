@@ -15,7 +15,7 @@ public class InteractableNetworkData
 	{
 		InteractableNetworkData data = (InteractableNetworkData)customObject;
 		byte[] b = BitConverter.GetBytes(data.ObjectInstanceID);
-		byte[] result = new byte[5];
+		byte[] result = new byte[5 + b.Length];
 
 		result[0] = data.ID;
 		result[1] = data.InteractableID;

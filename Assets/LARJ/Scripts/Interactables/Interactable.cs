@@ -85,7 +85,7 @@ public abstract class Interactable : MonoBehaviour
 
     public InteractableObjectID InteractableID { get; protected set; }
 
-    public int ObjectInstanceID { get; set; }
+    public int UniqueInstanceID { get; set; }
 
     public virtual void Awake()
     {

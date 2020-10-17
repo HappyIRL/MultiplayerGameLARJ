@@ -48,7 +48,7 @@ public class InstantiateManager
 
 	public GameObject Instantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
-		if (PhotonNetwork.IsConnected || !PhotonNetwork.IsMasterClient)
+		if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
 		{
 			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO, position, rotation, LARJNetworkEvents.InstantiateOnMaster);
 		}

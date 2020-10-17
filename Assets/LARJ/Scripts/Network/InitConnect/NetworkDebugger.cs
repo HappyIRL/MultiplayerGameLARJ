@@ -84,6 +84,19 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 		index++;
 	}
 
+	private string GetMasterClient()
+	{
+		if (PhotonNetwork.IsMasterClient)
+			return "Me, myself and I";
+		else
+		{
+			if (PhotonNetwork.MasterClient == null)
+				return "Not Connected";
+			else
+				return PhotonNetwork.MasterClient.ToString();
+		}
+	}
+
 	#region Photon-Event-Callbacks
 	public override void OnJoinRoomFailed(short returnCode, string message)
 	{
@@ -170,7 +183,7 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 		{
 			GUI.Box(new Rect(1600, 10, 300, 60), $"NetworkClientState: {PhotonNetwork.NetworkClientState}" +
 			$"{Environment.NewLine}Ping: {PhotonNetwork.GetPing()}" +
-			$"{Environment.NewLine}MasterClient : {PhotonNetwork.MasterClient}");
+			$"{Environment.NewLine}MasterClient : {GetMasterClient()}");
 			//Network debug window
 			GUI.Box(new Rect(1300, 80, 300, _debugBoxSytle.fontSize * _debugList.Count + 5), _content, _debugBoxSytle);
 

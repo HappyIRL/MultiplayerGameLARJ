@@ -34,7 +34,8 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            var newObject = InstantiateManager.Instance.Instantiate(_prefab);
+            //Don't go over the InstantiateManager at this place, since other code already prevents the non-masterclient from spawning this.
+            var newObject = Instantiate(_prefab);
             var poolTag = newObject.GetComponent<PooledObject>();
 
             poolTag._pool = this;

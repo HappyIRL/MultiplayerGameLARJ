@@ -72,6 +72,8 @@ public class UIHandler : MonoBehaviour
 
     public void EnterLocalSection()
     {
+        if (PhotonNetwork.IsConnected)
+            PhotonNetwork.Disconnect();
         _startPlayScreen.SetActive(true);
         _networkSectionScreen.SetActive(false);
         _larjConnectToPhoton.SwitchToNetworkState(LARJNetworkState.Local);
@@ -96,6 +98,7 @@ public class UIHandler : MonoBehaviour
 
     public void EnterNetworkSection()
     {
+        _startGamebutton.SetActive(false);
         EnableConnectingDialog(false);
         _startPlayScreen.SetActive(false);
         _networkSectionScreen.SetActive(true);
