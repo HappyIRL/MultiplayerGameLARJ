@@ -19,6 +19,7 @@ public class Mug : Interactable
 
     private Coroutine _fillMugCoroutine;
     private AudioSource _audioSource;
+    private bool _isSomethingIn = false;
 
     public override void Start()
     {
@@ -29,9 +30,10 @@ public class Mug : Interactable
         DisableUI();
     }
 
-    public void FillMug()
+    public void FillMug(AudioSource teaMachineAudioSource)
     {
-        _fillMugCoroutine = StartCoroutine(FillMugCoroutine());
+        _fillMugCoroutine = StartCoroutine(FillMugCoroutine(teaMachineAudioSource));
+        _isSomethingIn = true;
     }
     public void StopFillingMug()
     {
@@ -42,9 +44,17 @@ public class Mug : Interactable
     }
     private void StartDrinking()
     {
-        _audioSource.Play();
+        _animator.enabled = true;
+        _animator.Play("Drinking");
+
+        if (_isSomethingIn)
+        {
+            _audioSource.Play();
+        }
+
         _animator.SetBool("StopDrinking", false);
         _animator.SetBool("StartDrinking", true);
+        _isSomethingIn = false;
     }
     private void StopDrinking()
     {
@@ -54,16 +64,20 @@ public class Mug : Interactable
 
         _teaImageCanvas.position = _bottomFillPoint.position;
     }
-    private IEnumerator FillMugCoroutine()
+    private IEnumerator FillMugCoroutine(AudioSource teaMachineAudioSource)
     {
-        float maxDistance = Mathf.Abs(_teaImageCanvas.position.y - _topFillPoint.position.y);
+        float maxDistance = Mathf.Abs(_bottomFillPoint.position.y - _topFillPoint.position.y);
+        UpdateUI(Mathf.Abs(_teaImageCanvas.position.y - _bottomFillPoint.position.y) / maxDistance);
 
         while (_teaImageCanvas.position.y < _topFillPoint.position.y)
         {
-            _teaImageCanvas.position = new Vector3(_teaImageCanvas.position.x, Mathf.Lerp(_teaImageCanvas.position.y, _topFillPoint.position.y, Time.deltaTime), _teaImageCanvas.position.z);
-            UpdateUI(_teaImageCanvas.position.y/ maxDistance);
+            _teaImageCanvas.position = new Vector3(_teaImageCanvas.position.x, Mathf.MoveTowards(_teaImageCanvas.position.y, _topFillPoint.position.y, Time.deltaTime * 0.1f), _teaImageCanvas.position.z);
+            UpdateUI(Mathf.Abs(_teaImageCanvas.position.y - _bottomFillPoint.position.y) / maxDistance);
             yield return null;
         }
+
+        teaMachineAudioSource.Stop();
+        DisableUI();
     }
     private void UpdateUI(float progress)
     {
