@@ -15,6 +15,7 @@ public class InstantiateManager
 		{
 			if (_clientNetworkHandler == null)
 				_clientNetworkHandler = Object.FindObjectOfType<NetworkCharacterSetup>().ClientNetworkHandler;
+
 			return _clientNetworkHandler;
 		}
 	}
@@ -33,7 +34,7 @@ public class InstantiateManager
 
 	public GameObject Instantiate(GameObject prefabGO)
 	{
-		if(PhotonNetwork.IsConnected || !PhotonNetwork.IsMasterClient)
+		if(PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
 		{
 			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO);
 		}

@@ -12,7 +12,6 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 	[SerializeField] private List<GameObject> _interactables = new List<GameObject>();
 
 	private GameObject[] _players = new GameObject[4];
-
 	public ClientNetworkHandler ClientNetworkHandler { get => ClientNetworkHandler; private set => ClientNetworkHandler = value; }
 
 	private void Start()
