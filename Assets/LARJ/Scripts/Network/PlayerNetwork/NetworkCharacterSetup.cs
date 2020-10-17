@@ -12,7 +12,10 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 	[SerializeField] private List<GameObject> _interactables = new List<GameObject>();
 
 	private GameObject[] _players = new GameObject[4];
-	public ClientNetworkHandler ClientNetworkHandler { get => ClientNetworkHandler; private set => ClientNetworkHandler = value; }
+
+	private ClientNetworkHandler _clientNetworkHandler;
+
+	public ClientNetworkHandler ClientNetworkHandler { get => _clientNetworkHandler; }
 
 	private void Start()
 	{
@@ -28,7 +31,7 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 
 		if (PhotonNetwork.IsConnected)
 		{
-			ClientNetworkHandler = gameObject.AddComponent<ClientNetworkHandler>();
+			_clientNetworkHandler = gameObject.AddComponent<ClientNetworkHandler>();
 			Destroy(FindObjectOfType<PlayerInputManager>());
 			foreach (PlayerInput x in FindObjectsOfType<PlayerInput>())
 			{
