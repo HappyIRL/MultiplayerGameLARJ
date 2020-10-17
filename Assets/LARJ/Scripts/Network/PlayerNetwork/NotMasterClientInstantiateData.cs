@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class NotMasterClientInstantiateData
 {
 	public byte ID;
+	public Vector3 LocalScale;
 	public Vector3? Position = null;
 	public Quaternion? Rotation = null;
 	public int UniqueInstanceID = 0;
@@ -19,18 +20,20 @@ public class NotMasterClientInstantiateData
 
 		if (data.Position == null)
 		{
-			result = new byte[1 + b.Length];
+			result = new byte[17];
 			result[0] = data.ID;
-			b.CopyTo(result, 1);
+			LARJMath.Vector3ToByte(data.LocalScale).CopyTo(result, 1);
+			b.CopyTo(result, 13);
 
 		}
 		else
 		{
-			result = new byte[29 + b.Length];
+			result = new byte[45];
 			result[0] = data.ID;
-			LARJMath.Vector3ToByte((Vector3)data.Position).CopyTo(result, 1);
-			LARJMath.QuaternionToByte((Quaternion)data.Rotation).CopyTo(result, 13);
-			b.CopyTo(result, 29);
+			LARJMath.Vector3ToByte(data.Position.Value).CopyTo(result, 1);
+			LARJMath.QuaternionToByte(data.Rotation.Value).CopyTo(result, 13);
+			LARJMath.Vector3ToByte(data.LocalScale).CopyTo(result, 29);
+			b.CopyTo(result, 41);
 		}
 
 		return result;
@@ -40,17 +43,19 @@ public class NotMasterClientInstantiateData
 	{
 		NotMasterClientInstantiateData data = new NotMasterClientInstantiateData();
 
-		if(input.Length == 1)
+		if(input.Length == 17)
 		{
 			data.ID = input[0];
-			data.UniqueInstanceID = BitConverter.ToInt32(input, 1);
+			data.LocalScale = LARJMath.ByteToVector3(LARJMath.SubArray(input, 1, 12));
+			data.UniqueInstanceID = BitConverter.ToInt32(input, 13);
 		}
 		else
 		{
 			data.ID = input[0];
 			data.Position = LARJMath.ByteToVector3(LARJMath.SubArray(input, 1, 12));
 			data.Rotation = LARJMath.ByteToQuaternion(LARJMath.SubArray(input, 13, 16));
-			data.UniqueInstanceID = BitConverter.ToInt32(input, 29);
+			data.LocalScale = LARJMath.ByteToVector3(LARJMath.SubArray(input, 29, 12));
+			data.UniqueInstanceID = BitConverter.ToInt32(input, 41);
 		}
 
 		return data;

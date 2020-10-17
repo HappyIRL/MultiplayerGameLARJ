@@ -255,7 +255,7 @@ public class Customer : Interactable, IObjectPoolNotifier
         OnFinishedTalk();
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
-    public override void OnNetworkFinishedEvent()
+    public override void OnNetworkHoldingFinishedEvent()
     {
         OnFinishedTalk();
     }

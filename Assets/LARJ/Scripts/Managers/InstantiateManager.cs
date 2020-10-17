@@ -34,9 +34,14 @@ public class InstantiateManager
 
 	public GameObject Instantiate(GameObject prefabGO)
 	{
-		if(PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+		if(PhotonNetwork.IsConnected)
 		{
-			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO);
+			if (!PhotonNetwork.IsMasterClient)
+				ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO);
+			else
+			{
+				return ClientNetworkHandler.OnMasterClientInstantiate(prefabGO);
+			}
 		}
 		else
 		{
@@ -48,9 +53,15 @@ public class InstantiateManager
 
 	public GameObject Instantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
-		if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+		if (PhotonNetwork.IsConnected)
 		{
-			ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO, position, rotation, LARJNetworkEvents.InstantiateOnMaster);
+			if(!PhotonNetwork.IsMasterClient)
+				ClientNetworkHandler.OnNotMasterClientInstantiate(prefabGO, position, rotation);
+			else
+			{
+				return ClientNetworkHandler.OnMasterClientInstantiate(prefabGO, position, rotation);
+			}
+				
 		}
 		else
 		{
@@ -63,6 +74,12 @@ public class InstantiateManager
 	public GameObject ForceLocalInstantiate(GameObject prefabGO)
 	{
 		GameObject go = Object.Instantiate(prefabGO);
+		return go;
+	}
+
+	public GameObject ForceLocalInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
+	{
+		GameObject go = Object.Instantiate(prefabGO, position, rotation);
 		return go;
 	}
 

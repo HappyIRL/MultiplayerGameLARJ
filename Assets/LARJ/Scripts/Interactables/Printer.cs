@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tasks;
@@ -75,8 +76,10 @@ public class Printer : Interactable
         _highlightInteractables.AddInteractables(_papergameObject.GetComponent<Interactable>());
         DisableButtonHints();
     }
-    private void FinishPrinting(GameObject objectToSpawn)
+    private void FinishPrinting(GameObject objectToSpawn, bool alreadyNetworked)
     {
+        GameObject go = null;
+
         if (_lastCoroutine != null)
         {
             StopCoroutine(_lastCoroutine);
@@ -85,22 +88,24 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
 
-        Debug.Log(objectToSpawn);
-
-        GameObject go = InstantiateManager.Instance.Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
-        //needs to be instantiated without the instantateManager for now
-        GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
-
-        if(go != null && healthbarCanvas != null)
+        if(!alreadyNetworked)
 		{
-            SetValuesForSpawnedObject(go, healthbarCanvas);
+           go = InstantiateManager.Instance.Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
 		}
+        //needs to be instantiated without the instantateManager for now
+
+        if(go != null)
+		{
+            SetValuesForSpawnedObject(go);
+        }
 
         DisableButtonHints();
     }
 
-    private void SetValuesForSpawnedObject(GameObject go, GameObject healthbarCanvas)
+    private void SetValuesForSpawnedObject(GameObject go)
     {
+        GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
+
         healthbarCanvas.transform.SetParent(go.transform);
         healthbarCanvas.transform.position = transform.position + Vector3.up;
 
@@ -145,12 +150,18 @@ public class Printer : Interactable
     }
     public override void HoldingFinishedEvent(GameObject pickUpObject)
     {
-        FinishPrinting(pickUpObject);
+        FinishPrinting(pickUpObject, false);
     }
 
-    public override void OnNetworkFinishedEvent()
+    public override void OnNetworkHoldingFinishedEvent()
     {
         FinishPrinting();
+    }
+
+    public override void OnNetworkHoldingFinishedEvent(GameObject pickUpObject)
+    {
+        FinishPrinting(pickUpObject, true);
+        SetValuesForSpawnedObject(pickUpObject);
     }
 
     public override void StopInteractible()

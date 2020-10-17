@@ -126,7 +126,7 @@ public class Telephone : Interactable
         EndCall();
     }
 
-    public override void OnNetworkFinishedEvent()
+    public override void OnNetworkHoldingFinishedEvent()
     {
         AnswerCall();
     }
