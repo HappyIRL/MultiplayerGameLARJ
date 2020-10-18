@@ -105,7 +105,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		if (_instanceIDs.ContainsKey(objectInstanceID))
 		{
-			Debug.Log("Returned Object: " + _instanceIDs[objectInstanceID] + " with the ID of: " + objectInstanceID);
 			return _instanceIDs[objectInstanceID];
 		}
 
@@ -163,7 +162,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private InteractableObjectID GetInteractableIDOfGameObject(GameObject prefabGO)
 	{
-		Debug.Log(prefabGO.ToString());
 		Interactable interactable = prefabGO.GetComponent<Interactable>();
 		return interactable.InteractableID;
 	}

@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class HighlightInteractables : MonoBehaviour
 {
-	private List<Interactable> _interactables = new List<Interactable>();
+	[SerializeField] private List<Interactable> _interactables;
 	public bool OutlineEnabled { get; private set; }
 
 	private void Start()
 	{
 		_interactables = FindObjectsOfType<Interactable>().ToList();
+
 		OnHighlightTasks();
 	}
 
@@ -36,13 +37,14 @@ public class HighlightInteractables : MonoBehaviour
 		}
 	}
 
-	public void AddInteractables(Interactable interactables)
+	public void AddInteractable(Interactable interactable)
 	{
-		if (_interactables.Contains(interactables)) return;
+		if (_interactables.Contains(interactable))
+			return;
 
-		_interactables.Add(interactables);
+		_interactables.Add(interactable);
 
-		OutlineInteractables(false, _interactables.Count - 1, 1);
+		interactable.OutlineRef.enabled = false;
 	}
 	public void AddInteractables(List<Interactable> interactables)
 	{

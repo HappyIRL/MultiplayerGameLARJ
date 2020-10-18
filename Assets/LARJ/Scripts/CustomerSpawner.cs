@@ -37,7 +37,7 @@ public class CustomerSpawner : MonoBehaviour
     [HideInInspector] public Transform deskWaypoint;
     [HideInInspector] public bool deskIsFree = true;
 
-    [SerializeField] private HighlightInteractables _highlightInteractables = null;
+    private HighlightInteractables _highlightInteractables;
 
     void Awake()
     {
@@ -98,6 +98,7 @@ public class CustomerSpawner : MonoBehaviour
 	{
         var go = _customerPool.GetObject();
         var customer = go.GetComponent<Customer>();
+        _highlightInteractables = FindObjectOfType<HighlightInteractables>();
 
         customer.customerSpawner = this;
         customer.customerPool = _customerPool;
@@ -106,7 +107,7 @@ public class CustomerSpawner : MonoBehaviour
 
         if (_highlightInteractables != null)
         {
-            _highlightInteractables.AddInteractables(go.GetComponent<Interactable>());
+            _highlightInteractables.AddInteractable(go.GetComponent<Interactable>());
         }
 
         return go;
@@ -118,6 +119,7 @@ public class CustomerSpawner : MonoBehaviour
 		{
             var go = _customerPool.GetObject();
             var customer = go.GetComponent<Customer>();
+            _highlightInteractables = FindObjectOfType<HighlightInteractables>();
 
             customer.customerSpawner = this;
             customer.customerPool = _customerPool;
@@ -126,7 +128,7 @@ public class CustomerSpawner : MonoBehaviour
 
             if (_highlightInteractables != null)
             {
-                _highlightInteractables.AddInteractables(go.GetComponent<Interactable>());
+                _highlightInteractables.AddInteractable(go.GetComponent<Interactable>());
             }
             OnCustomerSpawn?.Invoke(go);
         }

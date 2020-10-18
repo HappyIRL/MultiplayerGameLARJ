@@ -35,7 +35,6 @@ public class Stamp : Interactable
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision");
         if (CanPrint)
         {
             Debug.Log("Print");

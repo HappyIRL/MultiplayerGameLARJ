@@ -16,14 +16,13 @@ public class Printer : Interactable
     [SerializeField] private Transform _paperSpawnPoint = null;
 
     [Header("References")]
-    [SerializeField] private HighlightInteractables _highlightInteractables = null;
+    [SerializeField] private HighlightInteractables _highlightInteractables;
     [SerializeField] private GameObject _healtbarCanvasPrefab = null;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip _printerInSound = null;
     [SerializeField] private AudioClip _printerInProgressSound = null;
     [SerializeField] private AudioClip _printerOutSound = null;
-    [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
     [SerializeField] private int _interactableID;
 
     private AudioSource _audioSource;
@@ -39,8 +38,8 @@ public class Printer : Interactable
 	public override void Start()
     {
         base.Start();
-        
         _audioSource = GetComponent<AudioSource>();
+        
     }
 
     private void PlaySound(AudioClip clip)
@@ -73,7 +72,7 @@ public class Printer : Interactable
         _audioSource.loop = false;
 
         _papergameObject = InstantiateManager.Instance.Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
-        _highlightInteractables.AddInteractables(_papergameObject.GetComponent<Interactable>());
+        _highlightInteractables.AddInteractable(_papergameObject.GetComponent<Interactable>());
         DisableButtonHints();
     }
     private void FinishPrinting(GameObject objectToSpawn, bool alreadyNetworked)
@@ -85,25 +84,26 @@ public class Printer : Interactable
             StopCoroutine(_lastCoroutine);
         }
 
-        PlaySound(_printerOutSound);
-        _audioSource.loop = false;
 
         if(!alreadyNetworked)
 		{
            go = InstantiateManager.Instance.Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
 		}
-        //needs to be instantiated without the instantateManager for now
 
         if(go != null)
 		{
+            PlaySound(_printerOutSound);
+            _audioSource.loop = false;
             SetValuesForSpawnedObject(go);
+            DisableButtonHints();
         }
 
-        DisableButtonHints();
     }
 
     private void SetValuesForSpawnedObject(GameObject go)
     {
+        //if out in start, is to fast for when networked
+        _highlightInteractables = FindObjectOfType<HighlightInteractables>();
         GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
 
         healthbarCanvas.transform.SetParent(go.transform);
@@ -113,7 +113,7 @@ public class Printer : Interactable
         Interactable interactable = go.GetComponent<Interactable>();
         Garbage garbage = go.AddComponent<Garbage>();
 
-        _highlightInteractables.AddInteractables(interactable);
+        _highlightInteractables.AddInteractable(interactable);
 
         Image background = healthbarCanvas.transform.GetChild(0).GetComponent<Image>();
         Image healthbar = background.transform.GetChild(0).GetComponent<Image>();
