@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public class RandomPositionSetter : MonoBehaviour
-{   
+{
     [Serializable]
     private struct ChangableObject
     {
@@ -13,7 +13,7 @@ public class RandomPositionSetter : MonoBehaviour
         public List<Transform> SpawnPositions;
     }
 
-    [SerializeField] private List<ChangableObject> _changableObjects = null; 
+    [SerializeField] private List<ChangableObject> _changableObjects = null;
 
     void Start()
     {

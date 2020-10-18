@@ -42,7 +42,7 @@ public class HighlightInteractables : MonoBehaviour
 
 		_interactables.Add(interactables);
 
-		OutlineInteractables(!OutlineEnabled, _interactables.Count - 1, 1);
+		OutlineInteractables(false, _interactables.Count - 1, 1);
 	}
 	public void AddInteractables(List<Interactable> interactables)
 	{

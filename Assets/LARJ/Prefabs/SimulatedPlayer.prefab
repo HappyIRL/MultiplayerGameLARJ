@@ -678,7 +678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 6882252178755444482}
-  _objectHolder: {fileID: 7802290399183484454}
+  _objectHolder: {fileID: 7433297014392487681}
   _baseCharacter: {fileID: 525062033074733614}
 --- !u!1 &1014104327723108996
 GameObject:

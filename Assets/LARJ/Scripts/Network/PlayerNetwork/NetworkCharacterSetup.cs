@@ -19,15 +19,15 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 
 	private void Start()
 	{
-
 		PhotonPeer.RegisterType(typeof(ClientNetworkData), (byte)LARJNetworkEvents.PCUpdate, ClientNetworkData.SerializeMethod, ClientNetworkData.DeserializeMethod);
+		PhotonPeer.RegisterType(typeof(ClientNetworkData), (byte)LARJNetworkEvents.NotifyMasterOnSceneLoad, ClientNetworkData.SerializeMethod, ClientNetworkData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(InteractableNetworkData), (byte)LARJNetworkEvents.InteractableUpdate, InteractableNetworkData.SerializeMethod, InteractableNetworkData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(TaskNetworkData), (byte)LARJNetworkEvents.TaskUpdate, TaskNetworkData.SerializeMethod, TaskNetworkData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(CustomerNetworkData), (byte)LARJNetworkEvents.CustomerSpawn, CustomerNetworkData.SerializeMethod, CustomerNetworkData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(ClockNetworkData), (byte)LARJNetworkEvents.ClockUpdate, ClockNetworkData.SerializeMethod, ClockNetworkData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(NotMasterClientInstantiateData), (byte)LARJNetworkEvents.InstantiateOnMaster, NotMasterClientInstantiateData.SerializeMethod, NotMasterClientInstantiateData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(NotMasterClientInstantiateData), (byte)LARJNetworkEvents.InstantiateOnOther, NotMasterClientInstantiateData.SerializeMethod, NotMasterClientInstantiateData.DeserializeMethod);
-
+		PhotonPeer.RegisterType(typeof(InteractableTransformNetworkData), (byte)LARJNetworkEvents.SyncInteractablesFromMaster, InteractableTransformNetworkData.SerializeMethod, InteractableTransformNetworkData.DeserializeMethod);
 
 		if (PhotonNetwork.IsConnected)
 		{

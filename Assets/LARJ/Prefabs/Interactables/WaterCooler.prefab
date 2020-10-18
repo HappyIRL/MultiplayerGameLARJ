@@ -244,6 +244,7 @@ MonoBehaviour:
   InteractionType: 1
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
+  TransformForPickUp: {fileID: 0}
   KeyboardReleaseButtonHintImage: {fileID: 0}
   KeyboardPressedButtonHintImage: {fileID: 792022061386106641}
   GamepadReleaseButtonHintImage: {fileID: 0}
@@ -251,12 +252,23 @@ MonoBehaviour:
   HoldingHintImage: {fileID: 0}
   MousePickedUpInteractionButtonHintImage: {fileID: 0}
   GamepadPickedUpInteractionButtonHintImage: {fileID: 0}
+  KeyboardUpArrowHintImage: {fileID: 0}
+  KeyboardLeftArrowHintImage: {fileID: 0}
+  KeyboardDownArrowHintImage: {fileID: 0}
+  KeyboardRightArrowHintImage: {fileID: 0}
+  GamepadUpArrowHintImage: {fileID: 0}
+  GamepadLeftArrowHintImage: {fileID: 0}
+  GamepadDownArrowHintImage: {fileID: 0}
+  GamepadRightArrowHintImage: {fileID: 0}
+  Progressbar: {fileID: 0}
+  ProgressbarBackground: {fileID: 0}
   HoldingTime: 1
   PressCountToFinishTask: 10
+  CorrectKeysPressedCountToFinishTask: 10
   CanInteractWhenPickedUp: 0
   _waterDrippingSound: {fileID: 8300000, guid: 87e57324a369fe44082410887b9d370c, type: 3}
   _waterParticles: {fileID: 9123445676083017853}
-  _interactableID: 0
+  _interactableID: 72
 --- !u!1 &5229166204130564829
 GameObject:
   m_ObjectHideFlags: 0
