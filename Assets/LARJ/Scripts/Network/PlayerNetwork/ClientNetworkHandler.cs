@@ -554,7 +554,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void ReceiveClockUpdate(ClockNetworkData data)
 	{
 		_dayTimeManager.SetTimeForAllClocks(data.Time / 60, data.Time % 60);
-		_dayTimeManager.SetSunLight();
+		_dayTimeManager.SetLights();
 	}
 
 	private void ReceiveInstantiateOnOther(NotMasterClientInstantiateData data)

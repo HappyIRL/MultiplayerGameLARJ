@@ -17,14 +17,17 @@ public class DayTimeManager : MonoBehaviour
     [SerializeField] private Light _sunLight = null;
 
     [SerializeField] private List<Light> _indirectLights = new List<Light>();
-    [SerializeField] private List<GameObject> _lights = new List<GameObject>();
+    [SerializeField] private List<Light> _lights = new List<Light>();
+    [SerializeField] private List<GameObject> _postLampsLights = new List<GameObject>();
 
     private float _timeForOneInGameMinuteInRealSecs;
     private bool _startClock = true;
     private float _sunXRotation;
     private Coroutine _lastIndirectLightCoroutine;
     private Coroutine _lastSunLightCoroutine;
+    private Coroutine _lastSunLightIntensityCoroutine;
     private float _timer = 0;
+    private float _currentSunAngle = 0;
 
     public int CurrentHour { get; private set; }
     public int CurrentMinutes { get; private set; }
@@ -32,20 +35,22 @@ public class DayTimeManager : MonoBehaviour
     private void Awake()
 	{
         CurrentMinutes = 0;
-        SetTimeForAllClocks(DayStartTime);
         CurrentHour = DayStartTime;
         _timeForOneInGameMinuteInRealSecs = 1 / (float)((DayEndTime - DayStartTime) / (float)RealtimeLengthInMinutes);
-        SetSunLight();
+
+        SetTimeForAllClocks(DayStartTime);
+        SetLights();
     }
 
 	private void Start()
 	{
-		
-	}
+        _sunXRotation = ((15 * CurrentHour - 90f) + 0.25f * CurrentMinutes);
+        RotateSun(_sunXRotation);
+    }
 
 	void Update()
     {
-        if(PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)
 		{
             if (_startClock)
             {
@@ -69,19 +74,25 @@ public class DayTimeManager : MonoBehaviour
                         if (CurrentHour == 24)
                         {
                             CurrentHour = 0;
-                            _sunLight.transform.eulerAngles = new Vector3(-90f, transform.eulerAngles.y, transform.eulerAngles.z);
+                            _sunLight.transform.eulerAngles = new Vector3(-90f, 90, transform.eulerAngles.z);
                         }
                     }
 
                     SetTimeForAllClocks(CurrentHour, CurrentMinutes);
-                    SetSunLight();
+                    SetLights();
+
+                    _sunXRotation = ((15 * CurrentHour - 90f) + 0.25f * CurrentMinutes);
                 }
 
-
-                float xRotation = Mathf.Lerp(_sunLight.transform.eulerAngles.x, _sunXRotation, (Mathf.Abs(_sunLight.transform.eulerAngles.x - _sunXRotation) * Time.deltaTime) / _timeForOneInGameMinuteInRealSecs);
-                _sunLight.transform.eulerAngles = new Vector3(xRotation, transform.eulerAngles.y, transform.eulerAngles.z);
+                float angle = Mathf.Lerp(_currentSunAngle, _sunXRotation, _timer/ _timeForOneInGameMinuteInRealSecs);
+                RotateSun(angle - _currentSunAngle);
             }
         }
+    }
+    private void RotateSun(float angle)
+    {
+        _sunLight.transform.Rotate(Vector3.right, angle);
+        _currentSunAngle += angle;
     }
 
     private void SetTimeForAllClocks(int hour)
@@ -100,10 +111,11 @@ public class DayTimeManager : MonoBehaviour
         }
     }
 
-    public void SetSunLight()
+    public void SetLights()
     {
         if (CurrentMinutes == 0)
         {
+            #region sunlight shadow strength
             if (CurrentHour >= 7 && CurrentHour < 17)
             {
                 if (_lastSunLightCoroutine != null)
@@ -114,7 +126,11 @@ public class DayTimeManager : MonoBehaviour
 
                 for (int i = 0; i < _lights.Count; i++)
                 {
-                    _lights[i].SetActive(false);
+                    _lights[i].intensity = 0.1f;
+                }
+                for (int i = 0; i < _postLampsLights.Count; i++)
+                {
+                    _postLampsLights[i].SetActive(false);
                 }
 
                 if (_lastIndirectLightCoroutine != null)
@@ -123,7 +139,9 @@ public class DayTimeManager : MonoBehaviour
                 }
                 _lastIndirectLightCoroutine = StartCoroutine(ChangeIndirectLightIntensityCoroutine(0.2f));
             }
-        
+            #endregion
+
+            #region midday - lateday
             if (CurrentHour >= 11 && CurrentHour < 17)
             {
                 if (_lastIndirectLightCoroutine != null)
@@ -132,7 +150,31 @@ public class DayTimeManager : MonoBehaviour
                 }
                 _lastIndirectLightCoroutine = StartCoroutine(ChangeIndirectLightIntensityCoroutine(0.3f));
             }
+            #endregion
 
+            #region midday
+            if (CurrentHour >= 11 && CurrentHour < 13)
+            {
+                if (_lastSunLightIntensityCoroutine != null)
+                {
+                    StopCoroutine(_lastSunLightIntensityCoroutine);
+                }
+                _lastSunLightIntensityCoroutine = StartCoroutine(ChangeSunLightIntensityCoroutine(0.75f));
+            }
+            else
+            {
+                if (_sunLight.intensity != 1)
+                {
+                    if (_lastSunLightIntensityCoroutine != null)
+                    {
+                        StopCoroutine(_lastSunLightIntensityCoroutine);
+                    }
+                    _lastSunLightIntensityCoroutine = StartCoroutine(ChangeSunLightIntensityCoroutine(1f));
+                }
+            }
+            #endregion
+
+            #region evening
             if (CurrentHour >= 17 || CurrentHour < 7)
             {
                 if (_lastSunLightCoroutine != null)
@@ -143,7 +185,12 @@ public class DayTimeManager : MonoBehaviour
 
                 for (int i = 0; i < _lights.Count; i++)
                 {
-                    _lights[i].SetActive(true);
+                    _lights[i].gameObject.SetActive(true);
+                    _lights[i].intensity = 0.5f;
+                }
+                for (int i = 0; i < _postLampsLights.Count; i++)
+                {
+                    _postLampsLights[i].SetActive(true);
                 }
 
                 if (_lastIndirectLightCoroutine != null)
@@ -152,9 +199,8 @@ public class DayTimeManager : MonoBehaviour
                 }
                 _lastIndirectLightCoroutine = StartCoroutine(ChangeIndirectLightIntensityCoroutine(0.1f));
             }
+            #endregion
         }
-        
-        _sunXRotation = ((15 * CurrentHour - 90f) + 0.25f * CurrentMinutes);
     }
 
     private IEnumerator ChangeIndirectLightIntensityCoroutine(float intensity)
@@ -209,6 +255,30 @@ public class DayTimeManager : MonoBehaviour
             {
                 currentStrength = Mathf.MoveTowards(currentStrength, strength, 0.1f * Time.deltaTime);
                 _sunLight.shadowStrength = currentStrength;                
+                yield return null;
+            }
+        }
+    }
+    private IEnumerator ChangeSunLightIntensityCoroutine(float intensity)
+    {
+        float currentIntensity = _sunLight.intensity;
+
+        if (currentIntensity > intensity)
+        {
+            while (currentIntensity > intensity)
+            {
+                currentIntensity = Mathf.MoveTowards(currentIntensity, intensity, 0.1f * Time.deltaTime);
+                _sunLight.intensity = currentIntensity;
+
+                yield return null;
+            }
+        }
+        else
+        {
+            while (currentIntensity < intensity)
+            {
+                currentIntensity = Mathf.MoveTowards(currentIntensity, intensity, 0.1f * Time.deltaTime);
+                _sunLight.intensity = currentIntensity;
                 yield return null;
             }
         }
