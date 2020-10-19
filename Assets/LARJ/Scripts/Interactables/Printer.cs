@@ -13,7 +13,8 @@ public class Printer : Interactable
     [Header("Paper")]
     [Header("Printer")]
     [SerializeField] private GameObject _paperPrefab = null;
-    [SerializeField] private Transform _paperSpawnPoint = null;
+    [SerializeField] private List<Transform> _possiblePrinterOutputPoints = null;
+    private Transform _printerOutputPoint = null;
 
     [Header("References")]
     [SerializeField] private HighlightInteractables _highlightInteractables;
@@ -39,7 +40,64 @@ public class Printer : Interactable
     {
         base.Start();
         _audioSource = GetComponent<AudioSource>();
-        
+        SetPrinterOutputPoint();
+    }
+    private void SetPrinterOutputPoint()
+    {
+        for (int i = 0; i < _possiblePrinterOutputPoints.Count; i++)
+        {
+            if (transform.position.x < _possiblePrinterOutputPoints[i].position.x)
+            {
+                if (CheckIfPointIsValid(_possiblePrinterOutputPoints[i].position, Vector3.right))
+                {
+                    _printerOutputPoint = _possiblePrinterOutputPoints[i];
+                    return;
+                }
+            }
+            else if (transform.position.x > _possiblePrinterOutputPoints[i].position.x)
+            {
+                if (CheckIfPointIsValid(_possiblePrinterOutputPoints[i].position, Vector3.left))
+                {
+                    _printerOutputPoint = _possiblePrinterOutputPoints[i];
+                    return;
+                }
+            }
+            else if (transform.position.z < _possiblePrinterOutputPoints[i].position.z)
+            {
+                if (CheckIfPointIsValid(_possiblePrinterOutputPoints[i].position, Vector3.forward))
+                {
+                    _printerOutputPoint = _possiblePrinterOutputPoints[i];
+                    return;
+                }
+            }
+            else if (transform.position.z > _possiblePrinterOutputPoints[i].position.z)
+            {
+                if (CheckIfPointIsValid(_possiblePrinterOutputPoints[i].position, Vector3.back))
+                {
+                    _printerOutputPoint = _possiblePrinterOutputPoints[i];
+                    return;
+                }
+            }
+        }
+    }
+    private bool CheckIfPointIsValid(Vector3 position, Vector3 direction)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(position, direction, out hit))
+        {
+            if (Vector3.Distance(position, hit.point) < 3f)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
     }
 
     private void PlaySound(AudioClip clip)
@@ -71,7 +129,7 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
 
-        _papergameObject = InstantiateManager.Instance.Instantiate(_paperPrefab, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+        _papergameObject = InstantiateManager.Instance.Instantiate(_paperPrefab, _printerOutputPoint.position, _printerOutputPoint.rotation);
         _highlightInteractables.AddInteractable(_papergameObject.GetComponent<Interactable>());
         DisableButtonHints();
     }
@@ -87,7 +145,7 @@ public class Printer : Interactable
 
         if(!alreadyNetworked)
 		{
-           go = InstantiateManager.Instance.Instantiate(objectToSpawn, _paperSpawnPoint.position, _paperSpawnPoint.rotation);
+           go = InstantiateManager.Instance.Instantiate(objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
 		}
 
         if(go != null)

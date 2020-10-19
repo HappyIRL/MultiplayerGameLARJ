@@ -15,7 +15,7 @@ public class RandomPositionSetter : MonoBehaviour
 
     [SerializeField] private List<ChangableObject> _changableObjects = null;
 
-    void Start()
+    void Awake()
     {
         for (int i = 0; i < _changableObjects.Count; i++)
         {
