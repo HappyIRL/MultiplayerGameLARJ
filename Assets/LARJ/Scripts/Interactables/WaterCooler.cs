@@ -16,7 +16,7 @@ public class WaterCooler : Interactable
 	public override void Awake()
 	{
 		base.Awake();
-        InteractableID = (InteractableObjectID)_interactableID;
+        InteractableID = InteractableObjectID.WaterCooler;
     }
 
 	public override void Start()

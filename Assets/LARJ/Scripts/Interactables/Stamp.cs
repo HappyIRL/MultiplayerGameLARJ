@@ -12,10 +12,13 @@ public class Stamp : Interactable
     [HideInInspector] public bool StampingFinished = true;
     [HideInInspector] public Collider Collider;
 
+    [SerializeField] private InteractableObjectID _interactableID;
+
     public override void Awake()
     {
         base.Awake();
         Collider = GetComponent<Collider>();
+        InteractableID = _interactableID;
     }
 
     public override void MousePressEvent()

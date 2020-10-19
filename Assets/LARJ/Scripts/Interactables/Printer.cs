@@ -32,7 +32,7 @@ public class Printer : Interactable
 	public override void Awake()
 	{
 		base.Awake();
-        InteractableID = (InteractableObjectID)_interactableID;
+        InteractableID = InteractableObjectID.Printer;
     }
 
 	public override void Start()
@@ -156,12 +156,6 @@ public class Printer : Interactable
     public override void OnNetworkHoldingFinishedEvent()
     {
         FinishPrinting();
-    }
-
-    public override void OnNetworkHoldingFinishedEvent(GameObject pickUpObject)
-    {
-        FinishPrinting(pickUpObject, true);
-        SetValuesForSpawnedObject(pickUpObject);
     }
 
     public override void StopInteractible()

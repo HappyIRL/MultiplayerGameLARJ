@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +10,8 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 {
 	[SerializeField] private GameObject _playerPrefab;
 	[SerializeField] private GameObject _simulatedPlayer;
-	[SerializeField] private List<GameObject> _interactables = new List<GameObject>();
+	[SerializeField] private List<Interactable> _interactables = new List<Interactable>();
+	[SerializeField] private GameObject _healtbarCanvasPrefab = null;
 
 	private GameObject[] _players = new GameObject[4];
 
@@ -51,9 +53,9 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 					simPlayer.SetHairColor(Color.HSVToRGB((float)i / 4, 1, 1));
 				}
 			}
-
 			ClientNetworkHandler.SetPlayers(_players);
 			ClientNetworkHandler.SetInteractables(_interactables);
+			ClientNetworkHandler.HealthbarCanvasPrefab = _healtbarCanvasPrefab;
 		}
 	}
 }

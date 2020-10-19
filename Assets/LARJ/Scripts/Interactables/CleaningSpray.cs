@@ -13,6 +13,12 @@ public class CleaningSpray : Interactable
 
     private AudioSource _audioSource;
 
+    public override void Awake()
+	{
+        base.Awake();
+        InteractableID = InteractableObjectID.CleaningSpray;
+    }
+
     public override void Start()
     {
         base.Start();

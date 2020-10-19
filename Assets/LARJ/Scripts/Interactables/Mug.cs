@@ -20,6 +20,13 @@ public class Mug : Interactable
     private Coroutine _fillMugCoroutine;
     private AudioSource _audioSource;
     private bool _isSomethingIn = false;
+    [SerializeField] private InteractableObjectID _interactableID;
+
+    public override void Awake()
+    {
+        base.Awake();
+        InteractableID = _interactableID;
+    }
 
     public override void Start()
     {

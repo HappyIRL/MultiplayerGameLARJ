@@ -20,7 +20,7 @@ public class PC : Interactable
     public override void Awake()
     {
         base.Awake();
-        InteractableID = (InteractableObjectID)_interactableID;
+        InteractableID = InteractableObjectID.PC;
     }
 
     public override void Start()

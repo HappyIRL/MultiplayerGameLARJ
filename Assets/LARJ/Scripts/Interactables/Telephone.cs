@@ -13,7 +13,7 @@ public class Telephone : Interactable
     [Header("Ringing")]
     [SerializeField] private float _ringingTimeInSecs = 20f;
     [SerializeField] private float _lightSwitchTimeInSecs = 1f;
-    [SerializeField] private int _interactableID;
+    [SerializeField] private InteractableObjectID _interactableID;
 
     [Header("References")]
     [SerializeField] private Material _redScreenMaterial = null;
@@ -28,7 +28,7 @@ public class Telephone : Interactable
     public override void Awake()
     {
         base.Awake();
-        InteractableID = (InteractableObjectID)_interactableID;
+        InteractableID = _interactableID;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _ringingSound;
         

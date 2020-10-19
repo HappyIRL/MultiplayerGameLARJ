@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource)), Serializable]
 public class FireExtinguisher : Interactable
 {
-    [Tooltip("Broom = 64,Telephone1 = 65,Telephone2 = 66,FireExtinguisher = 67,Paper = 68,PC = 69,Printer = 70,Shotgun = 71,WaterCooler = 72")]
     [SerializeField] private int _interactableID;
     [Header("FireExtinguisher")]
     [SerializeField] private ParticleSystem _foamParticles = null;
@@ -18,7 +17,7 @@ public class FireExtinguisher : Interactable
     public override void Awake()
     {
         base.Awake();
-        InteractableID = (InteractableObjectID)_interactableID;
+        InteractableID = InteractableObjectID.FireExtinguisher;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _extinguishSound;
     }

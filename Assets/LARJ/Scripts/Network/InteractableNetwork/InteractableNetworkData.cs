@@ -6,7 +6,6 @@ using UnityEngine;
 public class InteractableNetworkData
 {
 	public byte ID;
-	public byte InteractableID;
 	public byte InteractableUseID;
 	public byte ItemInHandID;
 	public int ObjectInstanceID;
@@ -15,13 +14,12 @@ public class InteractableNetworkData
 	{
 		InteractableNetworkData data = (InteractableNetworkData)customObject;
 		byte[] b = BitConverter.GetBytes(data.ObjectInstanceID);
-		byte[] result = new byte[5 + b.Length];
+		byte[] result = new byte[4 + b.Length];
 
 		result[0] = data.ID;
-		result[1] = data.InteractableID;
-		result[2] = data.InteractableUseID;
-		result[3] = data.ItemInHandID;
-		b.CopyTo(result, 4);
+		result[1] = data.InteractableUseID;
+		result[2] = data.ItemInHandID;
+		b.CopyTo(result, 3);
 		return result;
 	}
 
@@ -30,10 +28,9 @@ public class InteractableNetworkData
 		InteractableNetworkData data = new InteractableNetworkData();
 
 		data.ID = input[0];
-		data.InteractableID = input[1];
-		data.InteractableUseID = input[2];
-		data.ItemInHandID = input[3];
-		data.ObjectInstanceID = BitConverter.ToInt32(input, 4);
+		data.InteractableUseID = input[1];
+		data.ItemInHandID = input[2];
+		data.ObjectInstanceID = BitConverter.ToInt32(input, 3);
 
 		return data;
 	}

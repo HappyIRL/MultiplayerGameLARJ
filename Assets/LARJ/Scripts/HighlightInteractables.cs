@@ -25,7 +25,7 @@ public class HighlightInteractables : MonoBehaviour
 	{
 		foreach(Interactable interactable in _interactables)
 		{
-			interactable.OutlineRef.enabled = enabled;           
+			interactable.OutlineRef.enabled = enabled;
 		}
 	}
 

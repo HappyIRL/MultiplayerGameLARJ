@@ -24,17 +24,24 @@ public enum CorrectKeysInteraction
 }
 public enum InteractableObjectID
 {
-    Broom = 64,
-    Telephone1 = 65,
-    Telephone2 = 66,
-    FireExtinguisher = 67,
-    Paper = 68,
-    PC = 69,
-    Printer = 70,
-    Shotgun = 71,
-    WaterCooler = 72,
-    Customer = 73,
-    None = 100
+    Broom,
+    Telephone1,
+    Telephone2,
+    FireExtinguisher,
+    PC,
+    Printer,
+    Shotgun,
+    WaterCooler,
+    CleaningSpray,
+    Money,
+    Money2,
+    Mug,
+    Mug2,
+    Mug3,
+    Mug4,
+    Stamp,
+    Stamp2,
+    None
 }
 
 [Serializable]
@@ -302,7 +309,7 @@ public abstract class Interactable : MonoBehaviour
         }
     }
 
-    public void PickUpObject(Transform parent)
+	public void PickUpObject(Transform parent)
     {
         Rb.Sleep();
         DisableColliders();
@@ -384,6 +391,5 @@ public abstract class Interactable : MonoBehaviour
     public virtual void StartInteractible() { }
     public virtual void StopInteractible() { }
     public virtual void OnNetworkHoldingFinishedEvent() { }
-    public virtual void OnNetworkHoldingFinishedEvent(GameObject pickUpObject) { }
     #endregion
 }
