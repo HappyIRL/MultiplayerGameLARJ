@@ -103,6 +103,7 @@ public abstract class Interactable : MonoBehaviour
     public virtual void Start()
     {
         DisableButtonHintImages();
+        HighlightInteractables.Instance.AddInteractable(this);
 
         if (CanInteractWhenPickedUp)
         {
@@ -297,7 +298,6 @@ public abstract class Interactable : MonoBehaviour
         for (int i = 0; i < _colliders.Length; i++)
         {
             _colliders[i].enabled = true;
-            Rb.useGravity = true;
         }
     }
     public void DisableColliders()

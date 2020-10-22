@@ -5,13 +5,31 @@ using UnityEngine;
 
 public class HighlightInteractables : MonoBehaviour
 {
+	private static HighlightInteractables _instance;
+	public static HighlightInteractables Instance
+	{ 
+		get
+		{
+			if (_instance == null)
+				_instance = new HighlightInteractables();
+
+			return _instance;
+		}
+		private set => _instance = value;
+	}
+
+
+
 	[SerializeField] private List<Interactable> _interactables;
 	public bool OutlineEnabled { get; private set; }
 
+	private void Awake()
+	{
+		Instance = this;
+	}
+
 	private void Start()
 	{
-		_interactables = FindObjectsOfType<Interactable>().ToList();
-
 		OnHighlightTasks();
 	}
 
@@ -45,12 +63,5 @@ public class HighlightInteractables : MonoBehaviour
 		_interactables.Add(interactable);
 
 		interactable.OutlineRef.enabled = false;
-	}
-	public void AddInteractables(List<Interactable> interactables)
-	{
-        foreach (Interactable interactable in interactables)
-        {
-			_interactables.Add(interactable);
-        }
 	}
 }

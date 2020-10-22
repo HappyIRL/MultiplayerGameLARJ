@@ -17,7 +17,6 @@ public class Printer : Interactable
     private Transform _printerOutputPoint = null;
 
     [Header("References")]
-    [SerializeField] private HighlightInteractables _highlightInteractables;
     [SerializeField] private GameObject _healtbarCanvasPrefab = null;
 
     [Header("Sounds")]
@@ -129,8 +128,8 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
 
-        _papergameObject = InstantiateManager.Instance.Instantiate(_paperPrefab, _printerOutputPoint.position, _printerOutputPoint.rotation);
-        _highlightInteractables.AddInteractable(_papergameObject.GetComponent<Interactable>());
+        InstantiateManager.Instance.Instantiate(_paperPrefab, _printerOutputPoint.position, _printerOutputPoint.rotation);
+
         DisableButtonHints();
     }
     private void FinishPrinting(GameObject objectToSpawn, bool alreadyNetworked)
@@ -161,24 +160,15 @@ public class Printer : Interactable
     private void SetValuesForSpawnedObject(GameObject go)
     {
         //if out in start, is to fast for when networked
-        _highlightInteractables = FindObjectOfType<HighlightInteractables>();
         GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
-
         healthbarCanvas.transform.SetParent(go.transform);
         healthbarCanvas.transform.position = transform.position + Vector3.up;
-
         go.layer = LayerMask.NameToLayer("Garbage");
-        Interactable interactable = go.GetComponent<Interactable>();
         Garbage garbage = go.AddComponent<Garbage>();
-
-        _highlightInteractables.AddInteractable(interactable);
-
         Image background = healthbarCanvas.transform.GetChild(0).GetComponent<Image>();
         Image healthbar = background.transform.GetChild(0).GetComponent<Image>();
-
         garbage.SetImages(healthbar, background);
         garbage.StrokesToClean = 3;
-        interactable.EnableColliders();
     }
 
     private void CancelPrinting()
