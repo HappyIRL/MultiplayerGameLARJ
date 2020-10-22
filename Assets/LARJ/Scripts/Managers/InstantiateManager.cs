@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InstantiateManager
 {
@@ -83,4 +84,12 @@ public class InstantiateManager
 		return go;
 	}
 
+	public void SpawnGarbageHealthbar(GameObject duplicatedObject)
+    {
+		GameObject healthbarCanvas = Instantiate(HealthbarCanvasHolder.Instance.HealthbarCanvasPrefab);
+		healthbarCanvas.transform.SetParent(duplicatedObject.transform);
+		healthbarCanvas.transform.position = duplicatedObject.transform.position + Vector3.up;
+
+		duplicatedObject.AddComponent<Garbage>();
+	}
 }

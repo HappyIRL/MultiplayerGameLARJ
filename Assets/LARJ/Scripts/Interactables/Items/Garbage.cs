@@ -7,13 +7,28 @@ using UnityEngine.UI;
 [RequireComponent(typeof(PooledObject))]
 public class Garbage : MonoBehaviour, IObjectPoolNotifier
 {
-    public int StrokesToClean = 5;
+    public int StrokesToClean = 3;
     [SerializeField] private ObjectPool _garbagePool = null;
-    [SerializeField] private Image _healthbar = null;
-    [SerializeField] private Image _healthbarBackground = null;
+
+    private Image _healthbar = null;
+    private Image _healthbarBackground = null;
     private int _strokes = 0;
     private float _timeToDeactivateUI = 3f;
     private Coroutine _lastCoroutine;
+
+    void Awake()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Garbage");
+    }
+    void Start()
+    {
+        GarbageHealthbar garbageHealthbar = GetComponentInChildren<GarbageHealthbar>();
+        _healthbar = garbageHealthbar.Healthbar;
+        _healthbarBackground = garbageHealthbar.HealthbarBackground;
+
+        DeactivateUI();
+        _strokes = StrokesToClean;
+    }
 
     public void Clean()
     {
@@ -41,15 +56,6 @@ public class Garbage : MonoBehaviour, IObjectPoolNotifier
     {
         yield return new WaitForSeconds(_timeToDeactivateUI);
         DeactivateUI();
-    }
-
-    public void SetImages(Image healthbar, Image healthbarBackground)
-    {
-        _healthbar = healthbar;
-        _healthbarBackground = healthbarBackground;
-        DeactivateUI();
-
-        _strokes = StrokesToClean;
     }
 
     private void DeactivateUI()

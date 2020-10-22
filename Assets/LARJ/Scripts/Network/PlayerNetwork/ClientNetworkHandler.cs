@@ -579,7 +579,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		Image background = healthbarCanvas.transform.GetChild(0).GetComponent<Image>();
 		Image healthbar = background.transform.GetChild(0).GetComponent<Image>();
 
-		garbage.SetImages(healthbar, background);
+		//garbage.SetHealthbarImages(healthbar, background);
 		garbage.StrokesToClean = 3;
 		interactable.EnableColliders();
 

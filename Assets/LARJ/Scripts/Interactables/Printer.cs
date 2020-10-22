@@ -151,24 +151,10 @@ public class Printer : Interactable
 		{
             PlaySound(_printerOutSound);
             _audioSource.loop = false;
-            SetValuesForSpawnedObject(go);
+            InstantiateManager.Instance.SpawnGarbageHealthbar(go);
             DisableButtonHints();
         }
 
-    }
-
-    private void SetValuesForSpawnedObject(GameObject go)
-    {
-        //if out in start, is to fast for when networked
-        GameObject healthbarCanvas = Instantiate(_healtbarCanvasPrefab);
-        healthbarCanvas.transform.SetParent(go.transform);
-        healthbarCanvas.transform.position = transform.position + Vector3.up;
-        go.layer = LayerMask.NameToLayer("Garbage");
-        Garbage garbage = go.AddComponent<Garbage>();
-        Image background = healthbarCanvas.transform.GetChild(0).GetComponent<Image>();
-        Image healthbar = background.transform.GetChild(0).GetComponent<Image>();
-        garbage.SetImages(healthbar, background);
-        garbage.StrokesToClean = 3;
     }
 
     private void CancelPrinting()
