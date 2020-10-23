@@ -173,6 +173,7 @@ MonoBehaviour:
   InteractionType: 2
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
+  TransformForPickUp: {fileID: 0}
   KeyboardReleaseButtonHintImage: {fileID: 0}
   KeyboardPressedButtonHintImage: {fileID: 3559627216594574785}
   GamepadReleaseButtonHintImage: {fileID: 0}
@@ -402,6 +403,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7417764514217551166}
     m_Modifications:
+    - target: {fileID: 4448297287590300052, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5294200038464744869, guid: 7253a2b787512874fb25bf0e0ca5d74a, type: 3}
       propertyPath: m_Name
       value: InteractablesHintsCanvas
