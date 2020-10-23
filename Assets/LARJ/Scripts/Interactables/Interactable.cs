@@ -315,14 +315,15 @@ public abstract class Interactable : MonoBehaviour
 	public void PickUpObject(Transform parent)
     {
         Rb.Sleep();
-        DisableColliders();
         TransformForPickUp.parent = parent;
         TransformForPickUp.localPosition = Vector3.zero;
         TransformForPickUp.localRotation = Quaternion.identity;
         transform.position = TransformForPickUp.position;
 
+        DisableColliders();
         DisableButtonHints();
     }
+
     public void DropObject()
     {
         TransformForPickUp.parent = null;

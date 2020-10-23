@@ -113,7 +113,7 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (_isPickedUp)
                 {
-                    objectToHold.HoldingFinishedEvent(_objectToInteract.gameObject);
+                    objectToHold.HoldingFinishedEvent(_objectToInteract.TransformForPickUp.gameObject);
                 }
 
                 else

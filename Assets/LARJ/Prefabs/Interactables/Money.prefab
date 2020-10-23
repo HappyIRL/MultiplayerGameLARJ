@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8785258114149216605}
   - component: {fileID: 3123110657131800169}
   - component: {fileID: 8810930280077241070}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ArrowImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 4793251182247776219}
   - component: {fileID: 1895069328714828744}
   - component: {fileID: 2833912019554131099}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ArrowImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 2938123570127140566}
   - component: {fileID: 2776853642392041466}
   - component: {fileID: 2428033812243428815}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LeftMouseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 370065589054367128}
   - component: {fileID: 2008821617842698688}
   - component: {fileID: 820443886809350149}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Keyboard E Pressed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,7 +310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4571167452597573706}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ArrowImages
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 5722072486528726620}
   - component: {fileID: 8142035920002335683}
   - component: {fileID: 4600198134184260398}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: GamepadLeftArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 8258951280387855322}
   - component: {fileID: 4805228735256987318}
   - component: {fileID: 1578895640160681750}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: GamepadRightArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 8248935118817134458}
   - component: {fileID: 1636098490271183363}
   - component: {fileID: 8048725636186610691}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Gamepad  Release
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: 4333704185804902383}
   - component: {fileID: 317218354234666838}
   - component: {fileID: 6381117658259547760}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ArrowImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 3641643955680154265}
   - component: {fileID: 3641643955680154271}
   - component: {fileID: 3641643955680154264}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: E Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +789,7 @@ GameObject:
   - component: {fileID: 3641643955756681868}
   - component: {fileID: 3641643955756681874}
   - component: {fileID: 3641643955756681875}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Keyboard E Release
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 3641643955778870883}
   - component: {fileID: 3641643955778870881}
   - component: {fileID: 3641643955778870882}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Gamepad  Pressed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -943,7 +943,7 @@ GameObject:
   - component: {fileID: 3641643956118356436}
   - component: {fileID: 3641643956118356441}
   - component: {fileID: 1749937585907023383}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: InteractablesHintsCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1072,9 +1072,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1072006397488977791}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Money
-  m_TagString: Untagged
+  m_TagString: Money
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1105,7 +1105,7 @@ GameObject:
   - component: {fileID: 4083031168954981873}
   - component: {fileID: 583285878783302536}
   - component: {fileID: 4472560086975354847}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: KeyboardLeftArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1181,7 +1181,7 @@ GameObject:
   - component: {fileID: 4581747879819042595}
   - component: {fileID: 1887044423120875443}
   - component: {fileID: 7965321675328772707}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: KeyboardDownArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1257,7 +1257,7 @@ GameObject:
   - component: {fileID: 1866739215049407880}
   - component: {fileID: 6809120546545243827}
   - component: {fileID: 7536944372261991061}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: GamepadPickedUpInteraction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1332,7 +1332,7 @@ GameObject:
   - component: {fileID: 6284194914731992919}
   - component: {fileID: 4385769466185610849}
   - component: {fileID: 2155945912869343901}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: GamepadUpArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1407,7 +1407,7 @@ GameObject:
   - component: {fileID: 5757753597341949176}
   - component: {fileID: 6861325194730162558}
   - component: {fileID: 5000289821125696219}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: KeyboardUpArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1483,7 +1483,7 @@ GameObject:
   - component: {fileID: 2387654979879067395}
   - component: {fileID: 601548626665088133}
   - component: {fileID: 343231967110877553}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: HoldingHintImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1558,7 +1558,7 @@ GameObject:
   - component: {fileID: 2183953984954941430}
   - component: {fileID: 6652583823652713124}
   - component: {fileID: 3013262210355709386}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: KeyboardRightArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1634,7 +1634,7 @@ GameObject:
   - component: {fileID: 5362827623989401829}
   - component: {fileID: 3486783804676956214}
   - component: {fileID: 8625597057683787451}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: GamepadDownArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1709,7 +1709,7 @@ GameObject:
   - component: {fileID: 3947726055147209643}
   - component: {fileID: 887104085483685910}
   - component: {fileID: 1599486937510650201}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ArrowImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1784,7 +1784,7 @@ GameObject:
   - component: {fileID: 7647244051041435665}
   - component: {fileID: 15671763263532412}
   - component: {fileID: 879131756882978041}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: E Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1922,9 +1922,9 @@ GameObject:
   - component: {fileID: 431877152768252742}
   - component: {fileID: 2595507044606342582}
   - component: {fileID: 1555353834153596983}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MoneyModel
-  m_TagString: Untagged
+  m_TagString: Money
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
