@@ -88,15 +88,9 @@ public class Printer : Interactable
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
         }
-        else
-        {
-            return true;
-        }
+
+        return true;
     }
 
     private void PlaySound(AudioClip clip)
