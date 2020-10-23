@@ -99,6 +99,8 @@ public abstract class Interactable : MonoBehaviour
         Rb = GetComponent<Rigidbody>();
         OutlineRef = GetComponent<Outline>();
         _colliders = GetComponents<Collider>();
+
+        EnableColliders();
     }
     public virtual void Start()
     {
@@ -295,6 +297,7 @@ public abstract class Interactable : MonoBehaviour
 
     public void EnableColliders()
     {
+        Rb.useGravity = true;
         for (int i = 0; i < _colliders.Length; i++)
         {
             _colliders[i].enabled = true;
