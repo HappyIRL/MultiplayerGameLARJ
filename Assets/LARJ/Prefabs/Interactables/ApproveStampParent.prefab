@@ -323,6 +323,7 @@ MonoBehaviour:
   CanPrint: 0
   StampingFinished: 1
   Collider: {fileID: 0}
+  _interactableID: 0
 --- !u!1 &1687836480657040309
 GameObject:
   m_ObjectHideFlags: 0

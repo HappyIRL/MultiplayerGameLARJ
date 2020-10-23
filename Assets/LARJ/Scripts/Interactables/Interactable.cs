@@ -319,6 +319,8 @@ public abstract class Interactable : MonoBehaviour
         TransformForPickUp.parent = parent;
         TransformForPickUp.localPosition = Vector3.zero;
         TransformForPickUp.localRotation = Quaternion.identity;
+        transform.position = TransformForPickUp.position;
+
         DisableButtonHints();
     }
     public void DropObject()
@@ -326,6 +328,22 @@ public abstract class Interactable : MonoBehaviour
         TransformForPickUp.parent = null;
         Rb.WakeUp();
         EnableColliders();
+        CheckForDropZone();
+    }
+    private void CheckForDropZone()
+    {
+        Collider[] colliders = Physics.OverlapSphere(TransformForPickUp.position, 0.5f, LayerMask.GetMask("DropZone"));
+        DropZone dropZone = null;
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            dropZone = colliders[i].GetComponent<DropZone>();
+            if (dropZone != null) break;
+        }
+
+        if (dropZone != null)
+        {
+            transform.position = dropZone.GetRandomPositionInsideDropZone();        
+        }
     }
     public void PressCorrectKeyInteraction(CorrectKeysInteraction pressedKey, string currentPlayerControlScheme)
     {
