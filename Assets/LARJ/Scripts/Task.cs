@@ -28,7 +28,6 @@ namespace Tasks
         public TaskType GetTaskType { get => _taskType; }
 
         public TaskUI TaskUI { get; set; }
-        public int TaskID { get; set; }
 
         public int GetRewardMoney { get => _rewardMoney; }
         public int GetLostMoneyOnFail { get => _lostMoneyOnFail; }

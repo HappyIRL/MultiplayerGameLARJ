@@ -17,7 +17,8 @@ namespace Tasks
     public class TaskManager : MonoBehaviour
     {
         [SerializeField] private int _openTasks = 0;
-        [SerializeField] private Task[] _possibleTasks;
+        [SerializeField] private Task[] _startingTasks;
+        [SerializeField] private Task[] _followUpTasks;
         [SerializeField] private float _delayBetweenTasks;
         [SerializeField] private float _variationOfTaskDelay;
         [SerializeField] private TaskManagerUI _taskManagerUI;
@@ -30,7 +31,6 @@ namespace Tasks
         public static TaskManager TaskManagerSingelton;
 
         private bool _isLocal;
-        private int _taskIDCounter = 0;
         private float _timer = 0f;
         private float _currentDelay;
 
@@ -55,7 +55,7 @@ namespace Tasks
             {
                 UpdateDalayBetweenTasks();
                 _timer = 0f;
-                StartRandomTask();
+                StartRandomStartingTask();
             }
         }
 
@@ -64,37 +64,34 @@ namespace Tasks
             _currentDelay = UnityEngine.Random.Range(_delayBetweenTasks - _variationOfTaskDelay, _delayBetweenTasks + _variationOfTaskDelay);
         }
 
-        private void StartRandomTask()
+        private void StartRandomStartingTask()
         {
             if (PhotonNetwork.IsMasterClient || _isLocal)
 			{
                 Task task;
-                if (!CheckIfTasksAreAvailable())
+                if (!CheckIfTasksAreAvailable(_startingTasks))
                 {
                     return;
                 }
                 do
                 {
-                    int i = UnityEngine.Random.Range(0, _possibleTasks.Length);
-                    task = _possibleTasks[i];
+                    int i = UnityEngine.Random.Range(0, _startingTasks.Length);
+                    task = _startingTasks[i];
 
                 } while (task.IsTaskActive);
                 task.IsTaskActive = true;
-                task.TaskID = _taskIDCounter;
-                _taskIDCounter++;
                 TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
                 task.TaskUI = taskUI;
                 task.StartTask();
                 OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
             }
-
         }
 
-        private bool CheckIfTasksAreAvailable()
+        private bool CheckIfTasksAreAvailable(Task[] Tasks)
         {
-            for (int i = 0; i < _possibleTasks.Length; i++)
+            for (int i = 0; i < Tasks.Length; i++)
             {
-                if (!_possibleTasks[i].IsTaskActive)
+                if (!Tasks[i].IsTaskActive)
                 {
                     return true;
                 }               
@@ -187,8 +184,6 @@ namespace Tasks
         public void StartTask(Task task)
         {
             task.IsTaskActive = true;
-            task.TaskID = _taskIDCounter;
-            _taskIDCounter++;
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
