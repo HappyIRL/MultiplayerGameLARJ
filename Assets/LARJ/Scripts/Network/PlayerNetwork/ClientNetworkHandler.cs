@@ -562,27 +562,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableGOFromID((InteractableObjectID)data.ID));
 		AddInstanceToObjectList(instanceGO, data.UniqueInstanceID);
 		instanceGO.transform.localScale = data.LocalScale;
-
-
-		HighlightInteractables highlightInteractables = FindObjectOfType<HighlightInteractables>();
-		GameObject healthbarCanvas = Instantiate(HealthbarCanvasPrefab);
-
-		healthbarCanvas.transform.SetParent(instanceGO.transform);
-		healthbarCanvas.transform.position = transform.position + Vector3.up;
-
-		instanceGO.layer = LayerMask.NameToLayer("Garbage");
-		Interactable interactable = instanceGO.GetComponent<Interactable>();
-		Garbage garbage = instanceGO.AddComponent<Garbage>();
-
-		highlightInteractables.AddInteractable(interactable);
-
-		Image background = healthbarCanvas.transform.GetChild(0).GetComponent<Image>();
-		Image healthbar = background.transform.GetChild(0).GetComponent<Image>();
-
-		//garbage.SetHealthbarImages(healthbar, background);
-		garbage.StrokesToClean = 3;
-		interactable.EnableColliders();
-
+		InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
 
 		if (data.Position != null)
 		{
