@@ -13,7 +13,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     
     private Transform _deskWaypoint;
 
-    public Transform despawn;
+    [HideInInspector] public Transform despawn;
 
     private readonly float _range = 3f;
     private int _queuePosition;
@@ -22,8 +22,9 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private float _timer;
 
     private CustomerManager cm;
+    [SerializeField] private List<GameObject> _customerModels = null;
 
-   
+
     public override void Awake()
     {        
         base.Awake();
@@ -208,6 +209,15 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         {
             _stateMachine.TransitionTo("Entry");
         }
+
+        ChooseRandomModel();
+    }
+
+
+    private void ChooseRandomModel()
+    {
+        for (int i = 0; i < _customerModels.Count; i++) _customerModels[i].SetActive(false);
+        _customerModels[UnityEngine.Random.Range(0, _customerModels.Count)].SetActive(true);
     }
 
     #region Interactable Events

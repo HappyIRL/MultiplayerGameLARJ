@@ -16,6 +16,7 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] private ObjectPool _customerPool;
     [SerializeField] int noOfCustomers = 1;
     [SerializeField] [Range(1, 2)] float perWaveMultiplier = 1;
+
     // Customer Spawn rate
     private int _spawnTimer = 3;
 
@@ -30,7 +31,6 @@ public class CustomerSpawner : MonoBehaviour
     private bool _isLocal = true;
     public delegate void LARjCustomerSpawnEvent(GameObject go);
     public event LARjCustomerSpawnEvent OnCustomerSpawn;
-    private HighlightInteractables _highlightInteractables;
 
     IEnumerator Start()
     {
@@ -62,14 +62,8 @@ public class CustomerSpawner : MonoBehaviour
     {
         var go = _customerPool.GetObject();
         var customer = go.GetComponent<Customer>();
-        _highlightInteractables = FindObjectOfType<HighlightInteractables>();
 
         go.transform.position = _spawnPoint.position;
-
-        if (_highlightInteractables != null)
-        {
-            _highlightInteractables.AddInteractable(go.GetComponent<Interactable>());
-        }
 
         return go;
     }
@@ -81,14 +75,9 @@ public class CustomerSpawner : MonoBehaviour
             var go = _customerPool.GetObject();
             var customer = go.GetComponent<Customer>();
             customer.despawn = _despawnPoint;
-            _highlightInteractables = FindObjectOfType<HighlightInteractables>();
 
             go.transform.position = _spawnPoint.position;
 
-            if (_highlightInteractables != null)
-            {
-                _highlightInteractables.AddInteractable(go.GetComponent<Interactable>());
-            }
             OnCustomerSpawn?.Invoke(go);
         }
     }
