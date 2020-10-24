@@ -6,17 +6,14 @@ using UnityEngine.AI;
 using Tasks;
 using Photon.Pun;
 
-public class Customer : Interactable, IObjectPoolNotifier
+public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 {
     private StateMachine _stateMachine;
-    NavMeshAgent _agent;
-
-    [Header("Customer")]
-    public CustomerSpawner customerSpawner;
-    public ObjectPool customerPool;
-
+    NavMeshAgent _agent;       
+    
     private Transform _deskWaypoint;
-    private Transform _despawn;
+
+    public Transform despawn;
 
     private readonly float _range = 3f;
     private int _queuePosition;
@@ -24,89 +21,103 @@ public class Customer : Interactable, IObjectPoolNotifier
 
     private float _timer;
 
+    private CustomerManager cm;
+
+   
     public override void Awake()
-    {
+    {        
         base.Awake();
         InteractableID = (InteractableObjectID)73;
         _agent = GetComponent<NavMeshAgent>();
         _agent.enabled = false;       
     }
-
-    public override void Start()
-    {
-        base.Start();
-
-        _deskWaypoint = customerSpawner.deskWaypoint;
-        _despawn = customerSpawner.customerDespawnPoint;
-
-        // register statemachine and grab neccessary components
-        _stateMachine = new StateMachine();
-
-        var Entry = _stateMachine.CreateState("Entry", EntryStart, EntryUpdate, EntryExit);
-
-        var InQueue = _stateMachine.CreateState("InQueue", QueueStart, QueueUpdate, QueueExit);
-
-        var AtDesk = _stateMachine.CreateState("AtDesk", AtDeskStart, AtDeskUpdate, AtDeskExit);
-
-        var Leaving = _stateMachine.CreateState("Leaving", LeavingStart, LeavingUpdate, LeavingExit);
-
-        _agent.enabled = true;
-    }
     private void Update()
     {
         _stateMachine.Update();
     }
+    public override void Start()
+    {
+        base.Start();
+
+        _stateMachine = new StateMachine();
+        var Entry = _stateMachine.CreateState("Entry", EntryStart);
+        var InQueue = _stateMachine.CreateState("InQueue", QueueStart);
+        var MoveToDesk = _stateMachine.CreateState("MoveToDesk", MoveToDeskStart, MoveToDeskUpdate);
+        var AtDesk = _stateMachine.CreateState("AtDesk", AtDeskStart, AtDeskUpdate, AtDeskExit);
+        var Leaving = _stateMachine.CreateState("Leaving", LeavingStart, LeavingUpdate);
+
+        _agent.enabled = true;
+    }
+
+    
+
     #region Entry State
     private void EntryStart()
     {
         GetComponent<Renderer>().material.color = Color.white;
-
-        if (customerSpawner.deskIsFree) // Go get served
-        {
-            MoveToDesk();
-        }
-        else
-        {
-            QueueUp();
-        }
-    }
-    private void EntryUpdate()
-    {
-        if (DidArriveAtDesk()) _stateMachine.TransitionTo("AtDesk");
-    }
-    private void EntryExit()
-    {
-        
-    }
+        cm = CustomerManager.instance;
+                
+        _stateMachine.TransitionTo("InQueue");        
+    }   
 
     #endregion
     #region InQueue State
     private void QueueStart()
     {
-    }
-    private void QueueUpdate()
-    {
-        if (_queuePosition == 0)
+        cm.EnqueueCustomer(this.gameObject);
+        if (cm.DeskKvps.ContainsValue(true))
         {
-            if (customerSpawner.deskIsFree)
+            _stateMachine.TransitionTo("MoveToDesk");
+            Debug.Log("Gointodesk");
+            cm.DequeueCustomer();
+        }
+
+    }    
+    public void OnEnqueuedToQueue() // GET IN QUEUE POS
+    {
+        _queuePosition = cm.CustomerQueue.Count;
+
+        _agent.destination = cm.QueueWaypoints[_queuePosition - 1];
+    }
+
+    public void OnQueueUpdated() // MOVE UP THE QUEUE
+    {
+        _queuePosition--;
+        _agent.destination = cm.QueueWaypoints[_queuePosition - 1];
+    }    
+
+    public void OnLeftQueue() // MOVE TO DESK
+    {
+        var desks = cm.DeskWaypoints;
+        foreach (var desk in desks)
+        {
+            if (cm.DeskKvps[desk])
             {
-                customerSpawner.isFreeAtIndex[0] = true;
-                _stateMachine.TransitionTo("Entry");
+                _agent.destination = desk.position;
+                cm.JoinedDesk(desk);
+                _deskWaypoint = desk;
+                _stateMachine.TransitionTo("MoveToDesk");
+                return;
             }
         }
-        else
-        {
-            WaitInLine();
-        }
     }
-    private void QueueExit()
-    {
-    }
+
     #endregion
+    private void MoveToDeskStart()
+    {
+
+    } 
+    private void MoveToDeskUpdate()
+    {
+        if (DidArriveAtDesk())
+        {
+            _stateMachine.TransitionTo("AtDesk");
+        }
+    }  
     #region AtDesk State
     private void AtDeskStart()
     {
-        _isWaiting = true;
+        _timer = 0;
         StartCoroutine("LeaveAfterDelay");
         var rot = transform.rotation.eulerAngles;
         _agent.updateRotation = false;
@@ -116,51 +127,48 @@ public class Customer : Interactable, IObjectPoolNotifier
     }
     private void AtDeskUpdate()
     {
-    }   
+
+    }
     private void AtDeskExit()
     {
         _agent.updateRotation = true;
-    }
+        cm.LeftDesk(_deskWaypoint);
+    }  
+    IEnumerator LeaveAfterDelay()
+    {
+        while (_timer < 10) // PATIENCE ADDED HERE
+        {
+            _timer += Time.deltaTime;
+            yield return null;
+        }
+        // Log Failed Task
+        var color = Color.red;
+        GetComponent<Renderer>().material.color = color;
+               
+        _stateMachine.TransitionTo("Leaving");
+    }  
+
     #endregion
     #region Leaving State
     private void LeavingStart()
     {
-        customerSpawner.deskIsFree = true;
-        _timer = 0;
-        _agent.destination = _despawn.position;//GameObject.Find("CustomerDespawn").GetComponent<Transform>().position;
-    }
+        _agent.destination = despawn.position;       
+        cm.DequeueCustomer();
+    } // MOVE TO DESPAWN
 
     private void LeavingUpdate()
     {
         var distanceToDespawn = Vector3.Distance(transform.position, _agent.destination);
         if (distanceToDespawn <= _range)
         {
-            customerPool.ReturnObject(this.gameObject);
+            PooledGameObjectExtensions.ReturnToPool(this.gameObject);
             GetComponent<Renderer>().material.color = Color.white;
         }
-    }
+    } // DESPAWN ON ARRIVAL
 
-    private void LeavingExit()
-    {        
-    }
 
     #endregion   
-    private void WaitInLine()
-    {        
-        var posInFront = _queuePosition - 1;
-        for (int i = 0; i < customerSpawner.queueWaypoints.Count; i++)
-        {
-            if (customerSpawner.isFreeAtIndex[posInFront])
-            {
-                customerSpawner.isFreeAtIndex[_queuePosition] = true;
-                customerSpawner.isFreeAtIndex[posInFront] = false;
-                _agent.destination = customerSpawner.queueWaypoints[posInFront].position;
-                _queuePosition--;               
-                break;
-            }
-        }
-        
-    }
+   
     private void OnEnterTalk()
     {
     }
@@ -170,47 +178,13 @@ public class Customer : Interactable, IObjectPoolNotifier
         var color = Color.green;
         GetComponent<Renderer>().material.color = color;
         _stateMachine.TransitionTo("Leaving");
-    }
+    } // SUCCESSFUL TALK
 
     private void OnFailedTalk()
     {
     }
-    IEnumerator LeaveAfterDelay()
-    {
-        while (_timer < customerSpawner.patienceTimer)
-        {
-            _timer += Time.deltaTime;
-            yield return null;
-        }
-        // Log Failed Task
-        var color = Color.red;
-        GetComponent<Renderer>().material.color = color;
-
-        _isWaiting = false;
-        _stateMachine.TransitionTo("Leaving");
-    }  
-    private void MoveToDesk()
-    {
-        _agent.destination = new Vector3(
-                            _deskWaypoint.position.x,
-                            0,
-                            _deskWaypoint.position.z);
-        customerSpawner.deskIsFree = false;
-    }
-    private void QueueUp()
-    {
-        for (int i = 0; i < customerSpawner.queueWaypoints.Count; i++)
-        {
-            if (customerSpawner.isFreeAtIndex[i])
-            {
-                _agent.destination = customerSpawner.queueWaypoints[i].position;
-                _queuePosition = i;
-                customerSpawner.isFreeAtIndex[i] = false;
-                _stateMachine.TransitionTo("InQueue");
-                break;
-            }
-        }
-    }
+  
+       
     private bool DidArriveAtDesk()
     {
         var distanceToDesk = Vector3.Distance(transform.position, _deskWaypoint.position);
@@ -259,5 +233,7 @@ public class Customer : Interactable, IObjectPoolNotifier
     {
         OnFinishedTalk();
     }
+
+   
     #endregion
 }

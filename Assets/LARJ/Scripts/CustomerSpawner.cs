@@ -7,103 +7,64 @@ using UnityEngine;
 
 public class CustomerSpawner : MonoBehaviour
 {
-
+    [Header("Wave System")]
     // SPAWN OPTIONS
     [SerializeField] int noOfWaves = 1;
-    [SerializeField] int waveCooldown;
-    [SerializeField] float spawnsPerWave;
-    [SerializeField] float spawnCooldown = 5f;
-    [SerializeField] bool randomizeSpawnTime = false;
+    [SerializeField] int waveCooldown = 1;
 
-    [SerializeField] public float patienceTimer;
+    [Header("Customer")]
+    [SerializeField] private ObjectPool _customerPool;
+    [SerializeField] int noOfCustomers = 1;
+    [SerializeField] [Range(1, 2)] float perWaveMultiplier = 1;
+    // Customer Spawn rate
+    private int _spawnTimer = 3;
 
-    [HideInInspector] public Transform customerSpawnPoint;
-    [HideInInspector] public Transform customerDespawnPoint;
+    //[SerializeField] float patienceTimer = 10;
+    //[SerializeField] [Range(0, 1)] float patienceShrinkage = 1;
 
+    [Header("Spawn Waypoints")]
+    [SerializeField] Transform _spawnPoint;
+    [SerializeField] Transform _despawnPoint;
+    public Transform DespawnPoint { get { return _despawnPoint; } }
+
+    private bool _isLocal = true;
     public delegate void LARjCustomerSpawnEvent(GameObject go);
     public event LARjCustomerSpawnEvent OnCustomerSpawn;
-
-    private ObjectPool _customerPool;
-    private bool _isLocal = true;
-
-    // CUSTOMER OPTIONS
-
-
-
-    // References
-    [HideInInspector] public List <Transform> queueWaypoints;
-    [HideInInspector] public List<bool> isFreeAtIndex;
-    
-    [HideInInspector] public Transform deskWaypoint;
-    [HideInInspector] public bool deskIsFree = true;
-
     private HighlightInteractables _highlightInteractables;
-
-    void Awake()
-    {
-        customerSpawnPoint = GameObject.Find("CustomerSpawnPoint").GetComponent<Transform>();
-        _customerPool = GameObject.Find("CustomerPool").GetComponent<ObjectPool>();
-        deskWaypoint = GameObject.Find("DeskWaypoint").GetComponent<Transform>();
-        var queueList =  GameObject.Find("QueueWaypoints").GetComponent<Transform>();
-
-        foreach (Transform queueWaypoint in queueList)
-        {
-            queueWaypoints.Add(queueWaypoint);
-            isFreeAtIndex.Add(true);
-        }
-        customerDespawnPoint = GameObject.Find("CustomerDespawn").GetComponent<Transform>();       
-    }
-
 
     IEnumerator Start()
     {
-        if(PhotonNetwork.IsConnected)
+        if (PhotonNetwork.IsConnected)
             _isLocal = false;
         else
             _isLocal = true;
 
+
         for (int i = 0; i < noOfWaves; i++)
         {
-            var count = 0;
-            while (count < spawnsPerWave)
-            {
+            var currentNoOfCustomers = Mathf.RoundToInt(noOfCustomers * perWaveMultiplier * (i + 1));
 
-                yield return StartCoroutine(DoRandomizeSpawnTime());
-                //needs to be after the waitforseconds or else it's faster than the network handles
+            var count = 0;
+
+            while (count < currentNoOfCustomers)
+            {
+                yield return new WaitForSeconds(_spawnTimer);
                 SpawnCustomer();
                 count++;
             }
             yield return new WaitForSeconds(waveCooldown);
         }
-        
+
     }
 
-	private IEnumerator DoRandomizeSpawnTime()
-    {
-        if (randomizeSpawnTime)
-        {
-            var delay = UnityEngine.Random.Range(0.1f, spawnCooldown);
-            yield return new WaitForSeconds(delay);
-              
-        }
-        else
-        {
-
-            yield return new WaitForSeconds(spawnCooldown);
-               
-        }
-    }
 
     public GameObject SpawnNetworkedCustomer()
-	{
+    {
         var go = _customerPool.GetObject();
         var customer = go.GetComponent<Customer>();
         _highlightInteractables = FindObjectOfType<HighlightInteractables>();
 
-        customer.customerSpawner = this;
-        customer.customerPool = _customerPool;
-
-        go.transform.position = customerSpawnPoint.position;
+        go.transform.position = _spawnPoint.position;
 
         if (_highlightInteractables != null)
         {
@@ -111,20 +72,18 @@ public class CustomerSpawner : MonoBehaviour
         }
 
         return go;
-	}
+    }
 
     private void SpawnCustomer()
     {
-        if(_isLocal || PhotonNetwork.IsMasterClient)
-		{
+        if (_isLocal || PhotonNetwork.IsMasterClient)
+        {
             var go = _customerPool.GetObject();
             var customer = go.GetComponent<Customer>();
+            customer.despawn = _despawnPoint;
             _highlightInteractables = FindObjectOfType<HighlightInteractables>();
 
-            customer.customerSpawner = this;
-            customer.customerPool = _customerPool;
-
-            go.transform.position = customerSpawnPoint.position;
+            go.transform.position = _spawnPoint.position;
 
             if (_highlightInteractables != null)
             {

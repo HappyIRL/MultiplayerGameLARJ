@@ -28,7 +28,7 @@ public class StateMachine
 	public State initState;
 
 
-	public State CreateState(string name, System.Action onEnter,System.Action onFrame,System.Action onExit = null) 
+	public State CreateState(string name, System.Action onEnter,System.Action onFrame = null,System.Action onExit = null) 
 	{
 		var newState = new State();
 
