@@ -140,6 +140,9 @@ public class PlayerInteraction : MonoBehaviour
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;
                     _canInteract = true;
+
+                    if (InteractableInteractionType == InteractionType.PressTheCorrectKeys) _canUseArrowKeys = true;
+                    else _canUseArrowKeys = false;
                 }
             }
             else if (other.tag == "Printer")
@@ -164,6 +167,8 @@ public class PlayerInteraction : MonoBehaviour
                     InteractableInteractionType = interactable.InteractionType;
                     _canInteract = true;
 
+                    if (InteractableInteractionType == InteractionType.PressTheCorrectKeys) _canUseArrowKeys = true;
+                    else _canUseArrowKeys = false;
                 }
             }
         }
@@ -205,10 +210,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                if (!_canUseArrowKeys)
-                {
-                    _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
-                }
+                _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);              
             }
         }
     }
@@ -218,6 +220,8 @@ public class PlayerInteraction : MonoBehaviour
         if (_objectToInteract != null)
         {
             _objectToInteract.DisableButtonHints();
+            _objectToInteract.DisableProgressbar();
+            _objectToInteract.DeactivateArrowUI();
 
             if (_objectToInteract.CanInteractWhenPickedUp)
             {

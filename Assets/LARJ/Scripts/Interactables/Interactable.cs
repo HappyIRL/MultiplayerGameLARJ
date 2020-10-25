@@ -272,8 +272,10 @@ public abstract class Interactable : MonoBehaviour
             }
         }
     }
-    private void DeactivateArrowUI()
+    public void DeactivateArrowUI()
     {
+        if (InteractionType != InteractionType.PressTheCorrectKeys) return;
+
         KeyboardUpArrowHintImage.SetActive(false);
         KeyboardLeftArrowHintImage.SetActive(false);
         KeyboardDownArrowHintImage.SetActive(false);
@@ -294,6 +296,8 @@ public abstract class Interactable : MonoBehaviour
     }
     public void DisableProgressbar()
     {
+        if (Progressbar == null) return;
+
         Progressbar.gameObject.SetActive(false);
         ProgressbarBackground.gameObject.SetActive(false);
         Progressbar.fillAmount = 0;
