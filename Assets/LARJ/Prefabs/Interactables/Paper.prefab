@@ -169,7 +169,6 @@ MonoBehaviour:
   PressCountToFinishTask: 10
   CorrectKeysPressedCountToFinishTask: 10
   CanInteractWhenPickedUp: 0
-  _interactableID: 68
 --- !u!114 &6705345793431324033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,10 +181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd6c87044ae26d4abe5637047656138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rewardMoney: 0
-  _lostMoneyOnFail: 0
-  _timeToFinishTask: 0
-  _taskType: 0
+  _rewardMoney: 10
+  _lostMoneyOnFail: -50
+  _timeToFinishTask: 100
+  _taskType: 6
 --- !u!114 &5690055473500903219
 MonoBehaviour:
   m_ObjectHideFlags: 0

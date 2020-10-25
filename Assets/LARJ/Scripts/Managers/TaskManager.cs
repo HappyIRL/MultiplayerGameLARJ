@@ -212,5 +212,9 @@ namespace Tasks
                 OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
             }
         }
+        public void StartPaperTask(Interactable paperInteractible)
+        {
+
+        }
     }
 }

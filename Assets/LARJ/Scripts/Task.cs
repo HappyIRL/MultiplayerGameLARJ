@@ -14,6 +14,7 @@ namespace Tasks
         Cleaning,
         ExtinguishFire,
         Mail,
+        Paper,
         NotAssigned
     }
     public class Task : MonoBehaviour

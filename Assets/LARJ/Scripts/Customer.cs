@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using Tasks;
 using Photon.Pun;
+using UnityEngine.UI;
+using System.Threading;
 
 public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 {
     private StateMachine _stateMachine;
-    NavMeshAgent _agent;       
-    
+    NavMeshAgent _agent;
+
     private Transform _deskWaypoint;
 
     [HideInInspector] public Transform despawn;
@@ -19,18 +21,21 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private int _queuePosition;
     private bool _isWaiting;
 
+    private float _timeToFinishTask;
     private float _timer;
 
     private CustomerManager cm;
     [SerializeField] private List<GameObject> _customerModels = null;
-
+    [SerializeField] private Image _patienceImage;
+    [SerializeField] private Image _patienceImageBackground;
 
     public override void Awake()
-    {        
+    {
         base.Awake();
         InteractableID = (InteractableObjectID)73;
         _agent = GetComponent<NavMeshAgent>();
-        _agent.enabled = false;       
+        _agent.enabled = false;
+        _timeToFinishTask = GetComponent<Task>().GetTimeToFinishTask;
     }
     private void Update()
     {
@@ -46,19 +51,20 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         var AtDesk = _stateMachine.CreateState("AtDesk", AtDeskStart, AtDeskUpdate, AtDeskExit);
         var Leaving = _stateMachine.CreateState("Leaving", LeavingStart, LeavingUpdate);
 
+
         _agent.enabled = true;
     }
 
-    
+
 
     #region Entry State
     private void EntryStart()
     {
         GetComponent<Renderer>().material.color = Color.white;
         cm = CustomerManager.instance;
-                
-        _stateMachine.TransitionTo("InQueue");        
-    }   
+
+        _stateMachine.TransitionTo("InQueue");
+    }
 
     #endregion
     #region InQueue State
@@ -72,7 +78,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
             cm.DequeueCustomer();
         }
 
-    }    
+    }
     public void OnEnqueuedToQueue() // GET IN QUEUE POS
     {
         _queuePosition = cm.CustomerQueue.Count;
@@ -84,7 +90,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         _queuePosition--;
         _agent.destination = cm.QueueWaypoints[_queuePosition - 1];
-    }    
+    }
 
     public void OnLeftQueue() // MOVE TO DESK
     {
@@ -106,14 +112,14 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void MoveToDeskStart()
     {
 
-    } 
+    }
     private void MoveToDeskUpdate()
     {
         if (DidArriveAtDesk())
         {
             _stateMachine.TransitionTo("AtDesk");
         }
-    }  
+    }
     #region AtDesk State
     private void AtDeskStart()
     {
@@ -122,7 +128,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         var rot = transform.rotation.eulerAngles;
         _agent.updateRotation = false;
         transform.Rotate(-rot);
-        if(!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
+        if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
             TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
     }
     private void AtDeskUpdate()
@@ -133,27 +139,32 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         _agent.updateRotation = true;
         cm.LeftDesk(_deskWaypoint);
-    }  
+    }
     IEnumerator LeaveAfterDelay()
     {
-        float timeToFinishTask = GetComponent<Task>().GetTimeToFinishTask;
-        while (_timer < timeToFinishTask) // PATIENCE ADDED HERE
+        _patienceImage.gameObject.SetActive(true);
+        _patienceImageBackground.gameObject.SetActive(true);
+        while (_timer < _timeToFinishTask) // PATIENCE ADDED HERE
         {
+            _patienceImageBackground.fillAmount = 1 - _timer / _timeToFinishTask;
             _timer += Time.deltaTime;
             yield return null;
         }
         // Log Failed Task
         var color = Color.red;
         GetComponent<Renderer>().material.color = color;
-               
+        _patienceImage.gameObject.SetActive(false);
+        _patienceImageBackground.gameObject.SetActive(false);
         _stateMachine.TransitionTo("Leaving");
-    }  
+    }
 
     #endregion
     #region Leaving State
     private void LeavingStart()
     {
-        _agent.destination = despawn.position;       
+        _agent.destination = despawn.position;
+        _patienceImage.gameObject.SetActive(false);
+        _patienceImageBackground.gameObject.SetActive(false);
         cm.DequeueCustomer();
     } // MOVE TO DESPAWN
 
@@ -168,8 +179,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     } // DESPAWN ON ARRIVAL
 
 
-    #endregion   
-   
+    #endregion
+
     private void OnEnterTalk()
     {
     }
@@ -184,15 +195,15 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void OnFailedTalk()
     {
     }
-  
-       
+
+
     private bool DidArriveAtDesk()
     {
         var distanceToDesk = Vector3.Distance(transform.position, _deskWaypoint.position);
-        
+
         if (distanceToDesk <= _range)
         {
-            return true;            
+            return true;
         }
         else
         {
@@ -201,7 +212,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     }
     public void OnEnqueuedToPool()
     {
-       
+
     }
     public void OnCreatedOrDequeuedFromPool(bool created)
     {

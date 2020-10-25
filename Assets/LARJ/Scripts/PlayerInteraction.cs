@@ -280,23 +280,24 @@ public class PlayerInteraction : MonoBehaviour
     }
     public void OnRelease()
     {
+        _holdingTimer = 0f;
+
         Interactable objectToRelease;
 
         if (_isPickedUp) objectToRelease = _duplicator;
         else objectToRelease = _objectToInteract;
+        objectToRelease.DisableProgressbar();
 
         if (_holdingButton)
         {
             if (!_holdingWasFinished)
             {
+                Debug.Log(objectToRelease);
                 if (objectToRelease == null) return;
-
                 objectToRelease.HoldingFailedEvent();
                 LARJInteractableUse?.Invoke(objectToRelease.InteractableID, InteractableUseType.HoldFailed, objectToRelease.UniqueInstanceID, InteractableObjectID.None);
                 objectToRelease.EnableButtonHints(_playerInput.currentControlScheme);
-
             }
-
             _holdingButton = false;
             _holdingTimer = 0f;
             objectToRelease.DisableProgressbar();

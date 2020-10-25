@@ -61,6 +61,10 @@ namespace Tasks
                     title = "Reply E-Mail";
                     icon = _mailIcon;
                     break;
+                case TaskType.Paper:
+                    title = "Bring Paper To PaperBox";
+                    icon = _fireExtinguisherIcon;
+                    break;
                 case TaskType.NotAssigned:
                     Debug.Log("Error No Task Type was assigned");
                     break;

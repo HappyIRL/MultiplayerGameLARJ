@@ -122,8 +122,8 @@ public class Printer : Interactable
         PlaySound(_printerOutSound);
         _audioSource.loop = false;
 
-        InstantiateManager.Instance.Instantiate(_paperPrefab, _printerOutputPoint.position, _printerOutputPoint.rotation);
-
+        GameObject paper = InstantiateManager.Instance.Instantiate(_paperPrefab, _printerOutputPoint.position, _printerOutputPoint.rotation);
+        TaskManager.TaskManagerSingelton.StartTask(paper.GetComponent<Task>());
         DisableButtonHints();
     }
     private void FinishPrinting(GameObject objectToSpawn, bool alreadyNetworked)
