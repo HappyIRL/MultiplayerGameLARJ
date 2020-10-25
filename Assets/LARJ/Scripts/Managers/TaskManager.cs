@@ -190,9 +190,27 @@ namespace Tasks
             if(_isLocal || PhotonNetwork.IsMasterClient)
                 OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
-        public void StartPaperTask()
+        public void StartRandomFollowUpTask()
         {
+            if (PhotonNetwork.IsMasterClient || _isLocal)
+            {
+                Task task;
+                if (!CheckIfTasksAreAvailable(_followUpTasks))
+                {
+                    return;
+                }
+                do
+                {
+                    int i = UnityEngine.Random.Range(0, _followUpTasks.Length);
+                    task = _followUpTasks[i];
 
+                } while (task.IsTaskActive);
+                task.IsTaskActive = true;
+                TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
+                task.TaskUI = taskUI;
+                task.StartTask();
+                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            }
         }
     }
 }

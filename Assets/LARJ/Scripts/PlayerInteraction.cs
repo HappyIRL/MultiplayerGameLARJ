@@ -65,30 +65,30 @@ public class PlayerInteraction : MonoBehaviour
 
     private void ActivateInteractable(Interactable interactable, LARJTaskState state)
     {
-            switch(state)
-			{
-                case LARJTaskState.TaskComplete:
-                    if (AllowedInteractibles.Contains(interactable))
-                    {
-                        OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
-                        AllowedInteractibles.Remove(interactable);
-                    }
-                    break;
-                case LARJTaskState.TaskFailed:
-                    if (AllowedInteractibles.Contains(interactable))
-                    {
-                        OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
-                        AllowedInteractibles.Remove(interactable);
-                    }
-                    break;
-                case LARJTaskState.TaskStart:
-                    if (!AllowedInteractibles.Contains(interactable))
-                    {
-                        AllowedInteractibles.Add(interactable);
-                        OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
-                    }
-                    break;
-            }
+        switch (state)
+        {
+            case LARJTaskState.TaskComplete:
+                if (AllowedInteractibles.Contains(interactable))
+                {
+                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
+                    AllowedInteractibles.Remove(interactable);
+                }
+                break;
+            case LARJTaskState.TaskFailed:
+                if (AllowedInteractibles.Contains(interactable))
+                {
+                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
+                    AllowedInteractibles.Remove(interactable);
+                }
+                break;
+            case LARJTaskState.TaskStart:
+                if (!AllowedInteractibles.Contains(interactable))
+                {
+                    AllowedInteractibles.Add(interactable);
+                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
+                }
+                break;
+        }
     }
 
     private void Update()
@@ -117,9 +117,9 @@ public class PlayerInteraction : MonoBehaviour
                 }
 
                 else
-				{
+                {
                     objectToHold.HoldingFinishedEvent();
-				}
+                }
 
                 LARJInteractableUse?.Invoke(objectToHold.InteractableID, InteractableUseType.HoldFinish, objectToHold.UniqueInstanceID, _objectToInteract.InteractableID);
             }
@@ -135,7 +135,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                if (/*AllowedInteractibles.Contains(interactable)*/ true)
+                if (AllowedInteractibles.Contains(interactable) /* true*/)
                 {
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;
@@ -158,7 +158,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (ObjectToInteract == null)
             {
-                if (/*AllowedInteractibles.Contains(interactable)*/ true)
+                if (AllowedInteractibles.Contains(interactable)/* true*/)
                 {
                     ObjectToInteract = interactable;
                     InteractableInteractionType = interactable.InteractionType;

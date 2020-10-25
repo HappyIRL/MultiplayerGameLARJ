@@ -114,6 +114,7 @@ public class Telephone : Interactable
     {
         AnswerCall();
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+        TaskManager.TaskManagerSingelton.StartRandomFollowUpTask();
     }
 
     public override void StartInteractible()

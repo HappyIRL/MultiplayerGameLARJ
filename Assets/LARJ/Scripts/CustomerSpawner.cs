@@ -62,7 +62,14 @@ public class CustomerSpawner : MonoBehaviour
     {
         var go = _customerPool.GetObject();
         var customer = go.GetComponent<Customer>();
-
+        if (UnityEngine.Random.Range(0, 2) == 0)
+        {
+            customer.InteractionType = InteractionType.Hold;
+        }
+        else
+        {
+            customer.InteractionType = InteractionType.PressTheCorrectKeys;
+        }
         go.transform.position = _spawnPoint.position;
 
         return go;
@@ -74,6 +81,15 @@ public class CustomerSpawner : MonoBehaviour
         {
             var go = _customerPool.GetObject();
             var customer = go.GetComponent<Customer>();
+            if (UnityEngine.Random.Range(0, 2) == 0)
+            {
+                customer.InteractionType = InteractionType.Hold;
+            }
+            else
+            {
+                customer.InteractionType = InteractionType.PressTheCorrectKeys;
+            }
+
             customer.despawn = _despawnPoint;
 
             go.transform.position = _spawnPoint.position;

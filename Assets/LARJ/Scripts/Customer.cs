@@ -39,7 +39,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     public override void Start()
     {
         base.Start();
-
         _stateMachine = new StateMachine();
         var Entry = _stateMachine.CreateState("Entry", EntryStart);
         var InQueue = _stateMachine.CreateState("InQueue", QueueStart);
@@ -137,7 +136,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     }  
     IEnumerator LeaveAfterDelay()
     {
-        while (_timer < 10) // PATIENCE ADDED HERE
+        float timeToFinishTask = GetComponent<Task>().GetTimeToFinishTask;
+        while (_timer < timeToFinishTask) // PATIENCE ADDED HERE
         {
             _timer += Time.deltaTime;
             yield return null;
@@ -244,6 +244,11 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         OnFinishedTalk();
     }
 
-   
+    public override void PressTheCorrectKeysFinishedEvent()
+    {
+        OnFinishedTalk();
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+    }
+
     #endregion
 }
