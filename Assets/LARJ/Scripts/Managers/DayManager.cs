@@ -7,7 +7,11 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(AudioSource))]
 public class DayManager : MonoBehaviour
 {
+    [Header("Screens")]
     [SerializeField] private GameObject _dayFinishedScoreBoard = null;
+    [SerializeField] private GameObject _pausedScreen = null;
+
+    [Header("References")]
     [SerializeField] private TextMeshProUGUI _endScoreText = null;
     [SerializeField] private SceneChanger _sceneChanger = null;
     [SerializeField] private Score _score = null;
@@ -18,6 +22,8 @@ public class DayManager : MonoBehaviour
     private void Awake()
     {
         _dayFinishedScoreBoard.SetActive(false);
+        _pausedScreen.SetActive(false);
+
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _buttonClickSound;
     }
@@ -36,5 +42,30 @@ public class DayManager : MonoBehaviour
     {
         _audioSource.Play();
         _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void PauseGame()
+    {
+        _audioSource.Play();
+        _pausedScreen.SetActive(true);
+        Time.timeScale = 0;
+    }
+    public void ResumeGame()
+    {
+        _audioSource.Play();
+        Time.timeScale = 1;
+        _pausedScreen.SetActive(false);
+    }
+    public void PressESCInteraction()
+    {
+        if (_dayFinishedScoreBoard.activeSelf) return;
+
+        if (_pausedScreen.activeSelf)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
     }
 }

@@ -23,6 +23,7 @@ public enum InteractableUseType
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private Transform _objectHolder = null;
+    [SerializeField] private DayManager _dayManager = null;
 
     private bool _holdingButton = false;
     private bool _holdingWasFinished = false;
@@ -379,6 +380,10 @@ public class PlayerInteraction : MonoBehaviour
 
             _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Right, _playerInput.currentControlScheme);
         }
+    }
+    public void OnPressESC()
+    {
+        _dayManager.PressESCInteraction();
     }
     #endregion
 

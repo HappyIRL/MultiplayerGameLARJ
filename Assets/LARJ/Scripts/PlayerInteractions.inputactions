@@ -100,6 +100,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "PressESC",
+                    "type": "Button",
+                    "id": "e3e0ea4c-9278-4c6b-8804-a2d3669485e5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -408,6 +416,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "PressRightArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46e6522a-4441-4d3d-a170-6ca95f8d7878",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "PressESC",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "01a2c30c-3783-4972-a6d3-c2026c41d021",
+                    "path": "<Gamepad>/start",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PressESC",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
