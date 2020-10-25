@@ -259,6 +259,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         OnFinishedTalk();
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
+    public override void PressTheCorrectKeysStartedEvent(string currentPlayerControlScheme)
+    {
+        base.PressTheCorrectKeysStartedEvent(currentPlayerControlScheme);
+    }
 
     #endregion
 }
