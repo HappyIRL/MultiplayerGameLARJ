@@ -60,7 +60,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     #region Entry State
     private void EntryStart()
     {
-        GetComponent<Renderer>().material.color = Color.white;
         cm = CustomerManager.instance;
 
         _stateMachine.TransitionTo("InQueue");
@@ -150,8 +149,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
             yield return null;
         }
         // Log Failed Task
-        var color = Color.red;
-        GetComponent<Renderer>().material.color = color;
         _patienceImage.gameObject.SetActive(false);
         _patienceImageBackground.gameObject.SetActive(false);
         _stateMachine.TransitionTo("Leaving");
@@ -173,7 +170,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         if (distanceToDespawn <= _range)
         {
             PooledGameObjectExtensions.ReturnToPool(this.gameObject);
-            GetComponent<Renderer>().material.color = Color.white;
         }
     } // DESPAWN ON ARRIVAL
 
@@ -186,8 +182,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void OnFinishedTalk()
     {
         // Log Successful Talk
-        var color = Color.green;
-        GetComponent<Renderer>().material.color = color;
         _stateMachine.TransitionTo("Leaving");
     } // SUCCESSFUL TALK
 
@@ -256,6 +250,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 
     public override void PressTheCorrectKeysFinishedEvent()
     {
+        base.PressTheCorrectKeysFinishedEvent();
+
         OnFinishedTalk();
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }

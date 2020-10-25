@@ -20,6 +20,7 @@ namespace Tasks
         [SerializeField] private Sprite _cleaningIcon = null;
         [SerializeField] private Sprite _fireExtinguisherIcon = null;
         [SerializeField] private Sprite _printerIcon = null;
+        [SerializeField] private Sprite _paperboxIcon = null;
 
         private List<TaskUI> _activeUITasks = new List<TaskUI>();
 
@@ -63,7 +64,7 @@ namespace Tasks
                     break;
                 case TaskType.Paper:
                     title = "Bring Paper To PaperBox";
-                    icon = _fireExtinguisherIcon;
+                    icon = _paperboxIcon;
                     break;
                 case TaskType.NotAssigned:
                     Debug.Log("Error No Task Type was assigned");

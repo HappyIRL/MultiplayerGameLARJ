@@ -91,6 +91,7 @@ public abstract class Interactable : MonoBehaviour
     private int _currentCorrectKeysPressedCount = 0; 
     private Coroutine _lastCoroutine;
     private CorrectKeysInteraction _currentCorrectKey;
+    private bool _correctKeyEventStarted = false;
 
     public InteractableObjectID InteractableID { get; protected set; }
 
@@ -357,6 +358,8 @@ public abstract class Interactable : MonoBehaviour
     }
     public void PressCorrectKeyInteraction(CorrectKeysInteraction pressedKey, string currentPlayerControlScheme)
     {
+        if (_correctKeyEventStarted == false) return;
+
         if (pressedKey == _currentCorrectKey)
         {
             _currentCorrectKeysPressedCount++;
@@ -411,12 +414,16 @@ public abstract class Interactable : MonoBehaviour
     /// <param name="currentPlayerControlScheme"></param>
     public virtual void PressTheCorrectKeysStartedEvent(string currentPlayerControlScheme)
     {
+        _correctKeyEventStarted = true;
         _currentCorrectKeysPressedCount = 0;
         DisableButtonHintImages();
         SetRandomCorrectKeyInteraction(currentPlayerControlScheme);
     }
     public virtual void PressTheCorrectKeysFailedEvent() { }
-    public virtual void PressTheCorrectKeysFinishedEvent() { }
+    public virtual void PressTheCorrectKeysFinishedEvent() 
+    {
+        _correctKeyEventStarted = false;
+    }
     public virtual void MousePressEvent() { }
     public virtual void MouseReleaseEvent() { }
     public virtual void StartInteractible() { }
