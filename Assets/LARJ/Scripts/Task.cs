@@ -12,7 +12,7 @@ namespace Tasks
         Printer,
         Customer,
         Cleaning,
-        ExtinguishFire,
+        Money,
         Mail,
         Paper,
         NotAssigned
@@ -26,7 +26,7 @@ namespace Tasks
         private bool _isTaskActive = false;
         private Interactable _interactable;
         private Coroutine _cooldownCoroutine;
-        public TaskType GetTaskType { get => _taskType; }
+        public TaskType GetTaskType { get => _taskType; set => _taskType = value; }
 
         public TaskUI TaskUI { get; set; }
 
@@ -35,7 +35,7 @@ namespace Tasks
         public float GetTimeToFinishTask { get => _timeToFinishTask; }
         public bool IsTaskActive { get => _isTaskActive; set => _isTaskActive = value; }
         public Interactable GetInteractable { get => _interactable; }
-        
+
         private void Awake()
         {
             _interactable = GetComponent<Interactable>();
@@ -43,6 +43,10 @@ namespace Tasks
         public void StartTask()
         {
             _interactable.StartInteractible();
+            if (_cooldownCoroutine != null)
+            {
+                StopCoroutine(_cooldownCoroutine);
+            }
             _cooldownCoroutine = StartCoroutine(StartTaskCooldown());
         }
         IEnumerator StartTaskCooldown()

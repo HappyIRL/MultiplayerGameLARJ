@@ -20,9 +20,11 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private readonly float _range = 3f;
     private int _queuePosition;
     private bool _isWaiting;
+    private Coroutine _currentCoroutine;
 
     private float _timeToFinishTask;
     private float _timer;
+    public bool _isWaitingForMoney = false;
 
     private CustomerManager cm;
     [SerializeField] private List<GameObject> _customerModels = null;
@@ -50,11 +52,44 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         var MoveToDesk = _stateMachine.CreateState("MoveToDesk", MoveToDeskStart, MoveToDeskUpdate);
         var AtDesk = _stateMachine.CreateState("AtDesk", AtDeskStart, AtDeskUpdate, AtDeskExit);
         var Leaving = _stateMachine.CreateState("Leaving", LeavingStart, LeavingUpdate);
-
+        var WaitForMoney = _stateMachine.CreateState("WaitForMoney", WaitForMoneyStart, WaitForMoneyExit);
 
         _agent.enabled = true;
     }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (_isWaitingForMoney)
+        {
+            if (collision.gameObject.tag == "Money")
+            {
+                Destroy(collision.gameObject);
+                _stateMachine.TransitionTo("Leaving");
+                if (_currentCoroutine != null)
+                {
+                    StopCoroutine(_currentCoroutine);
+                }
+                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+            }
+        }
+    }
 
+    #region WaitForMoney State
+    private void WaitForMoneyStart()
+    {
+        if (_currentCoroutine != null)
+        {
+            StopCoroutine(_currentCoroutine);
+        }
+        _isWaitingForMoney = true;
+        StartCoroutine(LeaveAfterDelay());
+        TaskManager.TaskManagerSingelton.StartMoneyTask(GetComponent<Task>());
+    }
+
+    private void WaitForMoneyExit()
+    {
+    }
+
+    #endregion
 
 
     #region Entry State
@@ -122,7 +157,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void AtDeskStart()
     {
         _timer = 0;
-        StartCoroutine("LeaveAfterDelay");
+        _currentCoroutine = StartCoroutine("LeaveAfterDelay");
         var rot = transform.rotation.eulerAngles;
         _agent.updateRotation = false;
         transform.Rotate(-rot);
@@ -158,6 +193,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     #region Leaving State
     private void LeavingStart()
     {
+        _isWaitingForMoney = false;
         _agent.destination = despawn.position;
         _patienceImage.gameObject.SetActive(false);
         _patienceImageBackground.gameObject.SetActive(false);
@@ -258,6 +294,17 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     public override void PressTheCorrectKeysStartedEvent(string currentPlayerControlScheme)
     {
         base.PressTheCorrectKeysStartedEvent(currentPlayerControlScheme);
+    }
+    public override void PressEvent()
+    {
+        base.PressEvent();
+        if (!_isWaitingForMoney)
+        {
+            _isWaitingForMoney = true;
+            _timer = 0;
+            _stateMachine.TransitionTo("WaitForMoney");
+            TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+        }
     }
 
     #endregion

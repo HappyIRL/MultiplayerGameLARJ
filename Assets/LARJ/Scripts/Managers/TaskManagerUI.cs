@@ -18,7 +18,7 @@ namespace Tasks
         [SerializeField] private Sprite _mailIcon = null;
         [SerializeField] private Sprite _customerIcon = null;
         [SerializeField] private Sprite _cleaningIcon = null;
-        [SerializeField] private Sprite _fireExtinguisherIcon = null;
+        [SerializeField] private Sprite _moneyIcon = null;
         [SerializeField] private Sprite _printerIcon = null;
         [SerializeField] private Sprite _paperboxIcon = null;
 
@@ -54,9 +54,10 @@ namespace Tasks
                     title = "Pick up Garbage!";
                     icon = _cleaningIcon;
                     break;
-                case TaskType.ExtinguishFire:
-                    title = "ExtinguishFire";
-                    icon = _fireExtinguisherIcon;
+                case TaskType.Money:
+                    title = "Bring the Customer Money";
+                    icon = _moneyIcon;
+                    Debug.Log("Set Values for Money UI Task");
                     break;
                 case TaskType.Mail:
                     title = "Reply E-Mail";

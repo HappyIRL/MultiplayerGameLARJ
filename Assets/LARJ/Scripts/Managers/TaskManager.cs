@@ -8,11 +8,11 @@ using UnityEngine;
 namespace Tasks
 {
     public enum LARJTaskState
-	{
+    {
         TaskStart = 5,
         TaskFailed = 6,
         TaskComplete = 7
-	}
+    }
 
     public class TaskManager : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace Tasks
         [SerializeField] private float _delayBetweenTasks;
         [SerializeField] private float _variationOfTaskDelay;
         [SerializeField] private TaskManagerUI _taskManagerUI;
-        public TaskManagerUI TaskManagerUI { get => _taskManagerUI;}
+        public TaskManagerUI TaskManagerUI { get => _taskManagerUI; }
         [SerializeField] private Score _score;
         public Score Score { get => _score; }
         public delegate void LARJTaskEvent(Interactable interactable, LARJTaskState state);
@@ -67,7 +67,7 @@ namespace Tasks
         private void StartRandomStartingTask()
         {
             if (PhotonNetwork.IsMasterClient || _isLocal)
-			{
+            {
                 Task task;
                 if (!CheckIfTasksAreAvailable(_startingTasks))
                 {
@@ -94,7 +94,7 @@ namespace Tasks
                 if (!Tasks[i].IsTaskActive)
                 {
                     return true;
-                }               
+                }
             }
             return false;
         }
@@ -187,7 +187,7 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            if(_isLocal || PhotonNetwork.IsMasterClient)
+            if (_isLocal || PhotonNetwork.IsMasterClient)
                 OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
         public void StartRandomFollowUpTask()
@@ -212,9 +212,16 @@ namespace Tasks
                 OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
             }
         }
-        public void StartPaperTask(Interactable paperInteractible)
+        public void StartMoneyTask(Task task)
         {
-
+            Debug.Log("StartedMoneyTask");
+            task.IsTaskActive = true;
+            TaskUI taskUI = TaskManagerUI.SpawnUITask(TaskType.Money, task.GetRewardMoney, task.GetTimeToFinishTask);
+            Debug.Log("Called SpawnUITask");
+            task.TaskUI = taskUI;
+            task.StartTask();
+            if (_isLocal || PhotonNetwork.IsMasterClient)
+                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
     }
 }
