@@ -36973,7 +36973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67322e9fded25943b5df090e2d19302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractionType: 4
+  InteractionType: 2
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
   TransformForPickUp: {fileID: 0}
@@ -36994,7 +36994,7 @@ MonoBehaviour:
   GamepadRightArrowHintImage: {fileID: 563590602020863267}
   Progressbar: {fileID: 5898671512202329167}
   ProgressbarBackground: {fileID: 3999147897163749822}
-  HoldingTime: 10
+  HoldingTime: 5
   PressCountToFinishTask: 10
   CorrectKeysPressedCountToFinishTask: 10
   CanInteractWhenPickedUp: 0

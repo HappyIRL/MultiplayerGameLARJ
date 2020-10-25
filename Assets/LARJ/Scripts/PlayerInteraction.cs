@@ -141,8 +141,7 @@ public class PlayerInteraction : MonoBehaviour
                     InteractableInteractionType = interactable.InteractionType;
                     _canInteract = true;
 
-                    if (InteractableInteractionType == InteractionType.PressTheCorrectKeys) _canUseArrowKeys = true;
-                    else _canUseArrowKeys = false;
+                    if (InteractableInteractionType != InteractionType.PressTheCorrectKeys) _canUseArrowKeys = false;
                 }
             }
             else if (other.tag == "Printer")
@@ -167,8 +166,7 @@ public class PlayerInteraction : MonoBehaviour
                     InteractableInteractionType = interactable.InteractionType;
                     _canInteract = true;
 
-                    if (InteractableInteractionType == InteractionType.PressTheCorrectKeys) _canUseArrowKeys = true;
-                    else _canUseArrowKeys = false;
+                    if (InteractableInteractionType == InteractionType.PressTheCorrectKeys) _canUseArrowKeys = false;
                 }
             }
         }
