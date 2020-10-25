@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class Score : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText;
 
     private int _score = 0;
+    public int ScoreCount { get => _score; }
+
     public void UpdateScore(int reward, bool positive)
     {
         _scoreAddText.text = positive ? "+" + reward.ToString() : "-" + reward.ToString();

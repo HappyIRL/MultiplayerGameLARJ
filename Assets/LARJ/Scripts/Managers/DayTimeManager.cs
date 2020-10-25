@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class DayTimeManager : MonoBehaviour
 {
+    [SerializeField] private DayManager _dayManager = null;
+
     [Header("Times"), Tooltip("Hours in 24h format (0-24)")]
     public int DayStartTime = 6;
     public int DayEndTime = 18;
@@ -69,6 +71,7 @@ public class DayTimeManager : MonoBehaviour
                         if (CurrentHour == DayEndTime)
                         {
                             _startClock = false;
+                            EndDay();
                         }
 
                         if (CurrentHour == 24)
@@ -282,5 +285,10 @@ public class DayTimeManager : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+    private void EndDay()
+    {
+        _dayManager.ActivateDayFinishedScoreBoard();
     }
 }
