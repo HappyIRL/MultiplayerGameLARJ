@@ -54,6 +54,7 @@ public class InstantiateManager
 
 	public GameObject Instantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
+
 		if (PhotonNetwork.IsConnected)
 		{
 			if(!PhotonNetwork.IsMasterClient)
@@ -75,6 +76,7 @@ public class InstantiateManager
 	public GameObject ForceLocalInstantiate(GameObject prefabGO)
 	{
 		GameObject go = Object.Instantiate(prefabGO);
+		SpawnGarbageHealthbar(go);
 		return go;
 	}
 

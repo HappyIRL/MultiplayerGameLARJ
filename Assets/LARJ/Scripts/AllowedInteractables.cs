@@ -17,7 +17,7 @@ public class AllowedInteractables : MonoBehaviour
 		private set => _instance = value;
 	}
 
-	[SerializeField] private List<Interactable> _interactables = new List<Interactable>();
+	private List<Interactable> _interactables = new List<Interactable>();
 	public List<Interactable> Interactables { get => _interactables; private set => _interactables = value; }
 
 	private void Awake()
@@ -35,5 +35,10 @@ public class AllowedInteractables : MonoBehaviour
 				Interactables.Add(interactable);
 			}
 		}
+	}
+	public void AddInteractable(Interactable interactable)
+	{
+		if (!Interactables.Contains(interactable))
+			Interactables.Add(interactable);
 	}
 }

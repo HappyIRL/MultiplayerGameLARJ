@@ -84,7 +84,7 @@ public class PlayerInteraction : MonoBehaviour
             case LARJTaskState.TaskStart:
                 if (!AllowedInteractables.Instance.Interactables.Contains(interactable))
                 {
-                    AllowedInteractables.Instance.Interactables.Add(interactable);
+                    AllowedInteractables.Instance.AddInteractable(interactable);
                     OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                 }
                 break;
@@ -291,7 +291,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_holdingWasFinished)
             {
-                Debug.Log(objectToRelease);
                 if (objectToRelease == null) return;
                 objectToRelease.HoldingFailedEvent();
                 LARJInteractableUse?.Invoke(objectToRelease.InteractableID, InteractableUseType.HoldFailed, objectToRelease.UniqueInstanceID, InteractableObjectID.None);

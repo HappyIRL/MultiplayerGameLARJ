@@ -74,7 +74,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         if (cm.DeskKvps.ContainsValue(true))
         {
             _stateMachine.TransitionTo("MoveToDesk");
-            Debug.Log("Gointodesk");
             cm.DequeueCustomer();
         }
 

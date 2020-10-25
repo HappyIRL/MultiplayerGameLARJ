@@ -50,7 +50,6 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
 				}
 
 			}
-			Debug.Log("Updated List");
 		}
 	}
 }

@@ -106,6 +106,10 @@ public abstract class Interactable : MonoBehaviour
     public virtual void Start()
     {
         HighlightInteractables.Instance.AddInteractable(this);
+        if(AlwaysInteractable)
+		{
+            AllowedInteractables.Instance.AddInteractable(this);
+		}
         DisableButtonHintImages();
 
         if (CanInteractWhenPickedUp)

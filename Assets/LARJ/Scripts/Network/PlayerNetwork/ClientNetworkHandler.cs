@@ -85,11 +85,11 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void OnCustomerSpawn(GameObject go)
 	{
-		AddInstanceToObjectList(go);
+		AddInstanceToObjectLists(go);
 		RaiseNetworkedCustomer(_uniqueInstanceID);
 	}
 
-	private int AddInstanceToObjectList(GameObject go)
+	private int AddInstanceToObjectLists(GameObject go)
 	{
 		_uniqueInstanceID += 1;
 
@@ -103,8 +103,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_instanceIDs.Add(id, go);
 		go.GetComponent<Interactable>().UniqueInstanceID = id;
 	}
-
-	//Check all of these functions and if applied 0 check for what object needs to be in place
 	private GameObject GetInteractableGOFromID(int objectInstanceID)
 	{
 		if (_instanceIDs.ContainsKey(objectInstanceID))
@@ -114,7 +112,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		return null;
 	}
 
-	private GameObject GetInteractableGOFromID(InteractableObjectID prefabID)
+	private GameObject GetInteractableSceneGOFromID(InteractableObjectID prefabID)
 	{
 		switch(prefabID)
 		{
@@ -498,7 +496,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 			case LARJTaskState.TaskStart:
 				if (!AllowedInteractables.Instance.Interactables.Contains(interactable))
-					AllowedInteractables.Instance.Interactables.Add(GetInteractableGOFromID(data.ObjectInstanceID).GetComponent<Interactable>());
+					AllowedInteractables.Instance.AddInteractable(GetInteractableGOFromID(data.ObjectInstanceID).GetComponent<Interactable>());
 				task.TaskUI = taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
 				break;
 		}
@@ -520,7 +518,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
 		GameObject simulatedInteractableGO = GetInteractableGOFromID(data.ObjectInstanceID);
 		Interactable simulatedInteractable = simulatedInteractableGO.GetComponent<Interactable>();
-		GameObject simulatedCloneGO = GetInteractableGOFromID((InteractableObjectID)data.ItemInHandID);
+		GameObject simulatedCloneGO = GetInteractableSceneGOFromID((InteractableObjectID)data.ItemInHandID);
 
 
 		InteractableUseType type = (InteractableUseType)data.InteractableUseID;
@@ -562,7 +560,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveInstantiateOnOther(NotMasterClientInstantiateData data)
 	{
-		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableGOFromID((InteractableObjectID)data.ID));
+		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID));
 		AddInstanceToObjectList(instanceGO, data.UniqueInstanceID);
 		instanceGO.transform.localScale = data.LocalScale;
 		InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
@@ -578,9 +576,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		if(PhotonNetwork.IsMasterClient)
 		{
-			GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableGOFromID((InteractableObjectID)data.ID));
+			GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID));
 			instanceGO.transform.localScale = data.LocalScale;
-			int uniqueInstanceID = AddInstanceToObjectList(instanceGO);
+			InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
+			int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
 
 			if(data.Position != null)
 			{
@@ -595,7 +594,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveInteractableTransformOfMasterClient(InteractableTransformNetworkData data)
 	{
-		GameObject interactable = GetInteractableGOFromID((InteractableObjectID)data.ObjectID);
+		GameObject interactable = GetInteractableSceneGOFromID((InteractableObjectID)data.ObjectID);
 		interactable.transform.position = data.Position;
 		interactable.transform.eulerAngles = data.Rotation;
 		interactable.transform.localScale = data.LocalScale;
@@ -647,7 +646,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_interactables = go;
 		foreach(Interactable interactable in _interactables)
 		{
-			AddInstanceToObjectList(interactable.gameObject);
+			AddInstanceToObjectLists(interactable.gameObject);
 		}
 	}
 
@@ -677,7 +676,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	public GameObject OnMasterClientInstantiate(GameObject prefabGO)
 	{
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO);
-		int uniqueInstanceID = AddInstanceToObjectList(instanceGO);
+		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
+		InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
 		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), null, null, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
 		return instanceGO;
 	}
@@ -685,7 +685,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	public GameObject OnMasterClientInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, position, rotation);
-		int uniqueInstanceID = AddInstanceToObjectList(instanceGO);
+		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
+		InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
 		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), position, rotation, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
 		return instanceGO;
 	}
