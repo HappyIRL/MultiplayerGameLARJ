@@ -17,6 +17,7 @@ public class CleaningSpray : Interactable
 	{
         base.Awake();
         InteractableID = InteractableObjectID.CleaningSpray;
+        AlwaysInteractable = true;
     }
 
     public override void Start()

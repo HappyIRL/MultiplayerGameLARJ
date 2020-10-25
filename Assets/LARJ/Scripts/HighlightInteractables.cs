@@ -18,19 +18,12 @@ public class HighlightInteractables : MonoBehaviour
 		private set => _instance = value;
 	}
 
-
-
-	[SerializeField] private List<Interactable> _interactables;
-	public bool OutlineEnabled { get; private set; }
+	private List<Interactable> _interactables = new List<Interactable>();
+	public bool OutlineEnabled { get; private set; } = false;
 
 	private void Awake()
 	{
 		Instance = this;
-	}
-
-	private void Start()
-	{
-		OnHighlightTasks();
 	}
 
 	public void OnHighlightTasks()
@@ -44,14 +37,6 @@ public class HighlightInteractables : MonoBehaviour
 		foreach(Interactable interactable in _interactables)
 		{
 			interactable.OutlineRef.enabled = enabled;
-		}
-	}
-
-	public void OutlineInteractables(bool enabled, int startIndex, int length)
-	{
-		for(int i = startIndex; i < startIndex + length; i++)
-		{
-			_interactables[i].OutlineRef.enabled = enabled;
 		}
 	}
 

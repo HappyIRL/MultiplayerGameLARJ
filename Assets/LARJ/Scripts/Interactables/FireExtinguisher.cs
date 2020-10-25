@@ -20,6 +20,7 @@ public class FireExtinguisher : Interactable
         InteractableID = InteractableObjectID.FireExtinguisher;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _extinguishSound;
+        AlwaysInteractable = true;
     }
 
     private void StartExtinguishing()

@@ -23,6 +23,7 @@ public class Shotgun : Interactable
         InteractableID = InteractableObjectID.Shotgun;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _shotgunShootSound;
+        AlwaysInteractable = true;
     }
 
     private void Shoot()

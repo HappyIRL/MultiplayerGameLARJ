@@ -9,5 +9,6 @@ public class Money : Interactable
 	{
 		base.Awake();
 		InteractableID = _interactableID;
+		AlwaysInteractable = true;
 	}
 }

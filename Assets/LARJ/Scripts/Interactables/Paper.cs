@@ -10,6 +10,7 @@ public class Paper : Interactable
     public override void Awake()
     {
         base.Awake();
+        AlwaysInteractable = true;
     }
     void OnCollisionEnter(Collision collision)
     {

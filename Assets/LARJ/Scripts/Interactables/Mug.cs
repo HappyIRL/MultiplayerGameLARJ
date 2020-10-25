@@ -26,6 +26,7 @@ public class Mug : Interactable
     {
         base.Awake();
         InteractableID = _interactableID;
+        AlwaysInteractable = true;
     }
 
     public override void Start()

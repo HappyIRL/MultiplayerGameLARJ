@@ -477,8 +477,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		switch ((LARJTaskState)data.TaskState)
 		{
 			case LARJTaskState.TaskComplete:
-				if (_playerInteraction.AllowedInteractibles.Contains(interactable))
-					_playerInteraction.AllowedInteractibles.Remove(interactable);
+				if (AllowedInteractables.Instance.Interactables.Contains(interactable))
+					if (!interactable.AlwaysInteractable)
+						AllowedInteractables.Instance.Interactables.Remove(interactable);
 				task.IsTaskActive = false;
 				task.StopTask();
 				taskManagerUI.RemoveUITask(task.TaskUI);
@@ -486,8 +487,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				break;
 
 			case LARJTaskState.TaskFailed:
-				if (_playerInteraction.AllowedInteractibles.Contains(interactable))
-					_playerInteraction.AllowedInteractibles.Remove(interactable);
+				if (AllowedInteractables.Instance.Interactables.Contains(interactable))
+					if (!interactable.AlwaysInteractable)
+						AllowedInteractables.Instance.Interactables.Remove(interactable);
 				task.IsTaskActive = false;
 				task.StopTask();
 				taskManagerUI.RemoveUITask(task.TaskUI);
@@ -495,7 +497,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				break;
 
 			case LARJTaskState.TaskStart:
-				_playerInteraction.AllowedInteractibles.Add(GetInteractableGOFromID(data.ObjectInstanceID).GetComponent<Interactable>());
+				if (!AllowedInteractables.Instance.Interactables.Contains(interactable))
+					AllowedInteractables.Instance.Interactables.Add(GetInteractableGOFromID(data.ObjectInstanceID).GetComponent<Interactable>());
 				task.TaskUI = taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
 				break;
 		}

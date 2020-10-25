@@ -85,6 +85,8 @@ public abstract class Interactable : MonoBehaviour
     [HideInInspector] public int PressCountToFinishTask = 10;
     [HideInInspector] public int CorrectKeysPressedCountToFinishTask = 10;
     [HideInInspector] public bool CanInteractWhenPickedUp = false;
+    public int UniqueInstanceID { get; set; }
+    public bool AlwaysInteractable { get; protected set; } = false;
 
     private int _currentCorrectKeysPressedCount = 0; 
     private Coroutine _lastCoroutine;
@@ -92,7 +94,6 @@ public abstract class Interactable : MonoBehaviour
 
     public InteractableObjectID InteractableID { get; protected set; }
 
-    public int UniqueInstanceID { get; set; }
 
     public virtual void Awake()
     {
@@ -104,8 +105,8 @@ public abstract class Interactable : MonoBehaviour
     }
     public virtual void Start()
     {
-        DisableButtonHintImages();
         HighlightInteractables.Instance.AddInteractable(this);
+        DisableButtonHintImages();
 
         if (CanInteractWhenPickedUp)
         {

@@ -19,6 +19,7 @@ public class Stamp : Interactable
         base.Awake();
         Collider = GetComponent<Collider>();
         InteractableID = _interactableID;
+        AlwaysInteractable = true;
     }
 
     public override void MousePressEvent()

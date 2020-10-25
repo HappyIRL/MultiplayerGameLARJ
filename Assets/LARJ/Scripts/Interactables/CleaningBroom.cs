@@ -18,6 +18,7 @@ public class CleaningBroom : Interactable
     {
         base.Awake();
         InteractableID = InteractableObjectID.Broom;
+        AlwaysInteractable = true;
     }
 
     public override void Start()

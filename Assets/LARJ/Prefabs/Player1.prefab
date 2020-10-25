@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 1796752649}
   - component: {fileID: 1796752644}
   - component: {fileID: 4748318635019737820}
-  - component: {fileID: 1300299429452858257}
+  - component: {fileID: 6513618293198766141}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -693,7 +693,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectHolder: {fileID: 7433297014392487680}
-  AllowedInteractibles: []
 --- !u!143 &1796752649
 CharacterController:
   m_ObjectHideFlags: 0
@@ -743,7 +742,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2.1, z: 2}
   m_Center: {x: 0, y: 0, z: 1}
---- !u!114 &1300299429452858257
+--- !u!114 &6513618293198766141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

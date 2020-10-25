@@ -33,6 +33,7 @@ public class Printer : Interactable
 	{
 		base.Awake();
         InteractableID = InteractableObjectID.Printer;
+        AlwaysInteractable = true;
     }
 
 	public override void Start()
