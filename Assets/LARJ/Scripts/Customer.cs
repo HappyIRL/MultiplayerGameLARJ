@@ -171,10 +171,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void AtDeskExit()
     {
         _agent.updateRotation = true;
-        if (!_isWaitingForMoney)
-        {
-            cm.LeftDesk(_deskWaypoint);
-        }
     }
     IEnumerator LeaveAfterDelay()
     {
