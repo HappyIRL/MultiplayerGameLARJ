@@ -393,7 +393,7 @@ public class PlayerInteraction : MonoBehaviour
         if (_objectToInteract == null) return;
 
         _isPickedUp = true;
-        _objectToInteract.PickUpObject(_objectHolder);
+        _objectToInteract.PickUpObject(_objectHolder, gameObject);
 
         LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.PickUp, _objectToInteract.UniqueInstanceID, InteractableObjectID.None);
 

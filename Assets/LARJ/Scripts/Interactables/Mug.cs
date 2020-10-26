@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,6 +39,7 @@ public class Mug : Interactable
         DisableUI();
     }
 
+    #region tea drinking
     public void FillMug(AudioSource teaMachineAudioSource)
     {
         _fillMugCoroutine = StartCoroutine(FillMugCoroutine(teaMachineAudioSource));
@@ -49,6 +51,7 @@ public class Mug : Interactable
         {
             StopCoroutine(_fillMugCoroutine);
         }
+        DisableUI();
     }
     private void StartDrinking()
     {
@@ -58,12 +61,15 @@ public class Mug : Interactable
         if (_isSomethingIn)
         {
             _audioSource.Play();
+            ApplyRandomTeaEffect();
         }
 
         _animator.SetBool("StopDrinking", false);
         _animator.SetBool("StartDrinking", true);
         _isSomethingIn = false;
     }
+
+
     private void StopDrinking()
     {
         _audioSource.Stop();
@@ -87,6 +93,8 @@ public class Mug : Interactable
         teaMachineAudioSource.Stop();
         DisableUI();
     }
+    #endregion
+
     private void UpdateUI(float progress)
     {
         _progressbar.gameObject.SetActive(true);
@@ -106,4 +114,23 @@ public class Mug : Interactable
     {
         StopDrinking();
     }
+
+    #region tea effects
+    private void ApplyRandomTeaEffect()
+    {
+        if (PlayerWhoPickedThisUp == null) return;
+
+        PlayerMovement playerMovement = PlayerWhoPickedThisUp.GetComponent<PlayerMovement>();
+
+        if (UnityEngine.Random.value > 0.5f)
+        {
+            playerMovement.ApplySpeedEffect();
+        }
+        else
+        {
+            playerMovement.ApplyDashEffect();
+        }
+    }
+   
+    #endregion
 }

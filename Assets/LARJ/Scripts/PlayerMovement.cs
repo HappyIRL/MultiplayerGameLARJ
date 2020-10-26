@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _bodyTransform = null;
     private BoxCollider _boxCollider;
     private CharacterController _controller;
+    private PlayerTeaEffects _playerTeaEffects;
 
     private Vector3 _moveDirection = Vector3.zero;
     private Vector2 _inputVector = Vector2.zero;
@@ -22,11 +23,15 @@ public class PlayerMovement : MonoBehaviour
     private float _dashTimer = 0f;
     private bool _isDashOnCooldown = false;
     private bool _inDash = false;
+    private Coroutine _speedEffectCoroutine;
+    private Coroutine _dashEffectCoroutine;
+
 
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider>();
         _controller = GetComponent<CharacterController>();
+        _playerTeaEffects = GetComponent<PlayerTeaEffects>();
         _initialYPosition = transform.position.y;
     }
     public int GetPlayerIndex()
@@ -40,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        
+
         if (!_inDash)
         {
             Move();
@@ -67,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         if (_moveDirection != Vector3.zero)
         {
             _bodyTransform.forward = _moveDirection * -1;
-            _boxCollider.center = _bodyTransform.forward*-1;
+            _boxCollider.center = _bodyTransform.forward * -1;
         }
         _moveDirection = transform.TransformDirection(_moveDirection);
         _controller.Move(_moveDirection * _movementSpeed * Time.deltaTime);
@@ -100,4 +105,35 @@ public class PlayerMovement : MonoBehaviour
         _inDash = false;
         yield return null;
     }
+
+    #region tea effects
+    public void ApplySpeedEffect()
+    {
+        _playerTeaEffects.PlaySpeedParticles();
+
+        float prevSpeed = _movementSpeed;
+        _speedEffectCoroutine = StartCoroutine(WaitToRemoveSpeedEffect(prevSpeed));
+        _movementSpeed = 6f;
+    }
+    public void ApplyDashEffect()
+    {
+        _playerTeaEffects.PlayDashParticles();
+
+        float prevDashCooldown = _dashCooldown;
+        _dashEffectCoroutine = StartCoroutine(WaitToRemoveDashEffect(prevDashCooldown));
+        _dashCooldown = 0.1f;
+    }
+    private IEnumerator WaitToRemoveSpeedEffect(float prevSpeed)
+    {
+        yield return new WaitForSeconds(30f);
+        _movementSpeed = prevSpeed;
+        _playerTeaEffects.StopSpeedParticles();
+    }
+    private IEnumerator WaitToRemoveDashEffect(float prevDashCooldown)
+    {
+        yield return new WaitForSeconds(30f);
+        _dashCooldown = prevDashCooldown;
+        _playerTeaEffects.StopDashParticles();
+    }
+    #endregion
 }

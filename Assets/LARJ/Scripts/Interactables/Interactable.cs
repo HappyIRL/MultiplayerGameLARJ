@@ -92,6 +92,8 @@ public abstract class Interactable : MonoBehaviour
     private Coroutine _lastCoroutine;
     private CorrectKeysInteraction _currentCorrectKey;
     private bool _correctKeyEventStarted = false;
+    private GameObject _playerWhoPickedThisUp = null;
+    public GameObject PlayerWhoPickedThisUp { get => _playerWhoPickedThisUp; }
 
     public InteractableObjectID InteractableID { get; protected set; }
 
@@ -322,8 +324,10 @@ public abstract class Interactable : MonoBehaviour
         }
     }
 
-	public void PickUpObject(Transform parent)
+	public void PickUpObject(Transform parent, GameObject playerWhoPickedThisUp)
     {
+        _playerWhoPickedThisUp = playerWhoPickedThisUp;
+
         Rb.Sleep();
         TransformForPickUp.parent = parent;
         TransformForPickUp.localPosition = Vector3.zero;
@@ -336,6 +340,8 @@ public abstract class Interactable : MonoBehaviour
 
     public void DropObject()
     {
+        _playerWhoPickedThisUp = null;
+
         TransformForPickUp.parent = null;
         Rb.WakeUp();
         EnableColliders();
