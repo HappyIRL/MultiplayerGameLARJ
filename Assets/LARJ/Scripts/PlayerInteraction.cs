@@ -37,8 +37,8 @@ public class PlayerInteraction : MonoBehaviour
 
     public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type, int objectInstanceID, InteractableObjectID itemInHandID);
     public event LARJInteractableUseEvent LARJInteractableUse;
-    public delegate void LARJTaskEvent(InteractableObjectID id, LARJTaskState state, int objectInstanceID);
-    public event LARJTaskEvent OnNetworkTaskEvent;
+
+	public event Action<InteractableObjectID, LARJTaskState, int> OnNetworkTaskEvent;
 
     //Object to interact
     private Interactable _objectToInteract;
@@ -56,7 +56,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
-    private void Awake()
+    private void Start()
     {
         _playerInput = GetComponent<PlayerInput>();
         TaskManager.TaskManagerSingelton.OnTask += ActivateInteractable;
