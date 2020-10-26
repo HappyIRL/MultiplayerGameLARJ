@@ -31,6 +31,9 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     [SerializeField] private Image _patienceImage;
     [SerializeField] private Image _patienceImageBackground;
 
+    [SerializeField] private GameObject _speechBubble = null;
+    [SerializeField] private GameObject _moneyImage = null;
+
     public override void Awake()
     {
         base.Awake();
@@ -80,6 +83,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         {
             StopCoroutine(_currentCoroutine);
         }
+
+        _speechBubble.SetActive(true);
+        _moneyImage.SetActive(true);
+
         _isWaitingForMoney = true;
         StartCoroutine(LeaveAfterDelay());
         TaskManager.TaskManagerSingelton.StartMoneyTask(GetComponent<Task>());
@@ -192,6 +199,9 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     #region Leaving State
     private void LeavingStart()
     {
+        _speechBubble.SetActive(false);
+        _moneyImage.SetActive(false);
+
         _isWaitingForMoney = false;
         _agent.destination = despawn.position;
         _patienceImage.gameObject.SetActive(false);
