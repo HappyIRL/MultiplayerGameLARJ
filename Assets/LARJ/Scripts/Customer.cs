@@ -26,6 +26,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private float _timeToFinishTask;
     private float _timer;
     public bool _isWaitingForMoney = false;
+    public bool _wasHittedByBullet = false;
 
     private CustomerManager cm;
     [SerializeField] private List<GameObject> _customerModels = null;
@@ -76,6 +77,18 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
                 _stateMachine.TransitionTo("Leaving");
             }
         }
+
+        if (collision.gameObject.tag == "Bullet")
+        {
+            if (!_wasHittedByBullet)
+            {
+                TaskManager.TaskManagerSingelton.OnTaskFailed(GetComponent<Task>());
+                SetFearText();
+                _wasHittedByBullet = true;
+            
+                _stateMachine.TransitionTo("Leaving");
+            }
+        }
     }
 
     #region WaitForMoney State
@@ -107,6 +120,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void EntryStart()
     {
         cm = CustomerManager.instance;
+        _wasHittedByBullet = false;
 
         _stateMachine.TransitionTo("InQueue");
     }
@@ -284,9 +298,20 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         StartCoroutine(WaitToDeactivateSpeechBubble());
 
         string[] texts = { "I have no time!", "You're to slow!", "#@!*#~", "You will be fired!", "I will tell your boss!", "Faster!", "Get better!", "Good bye!", "Bye!", "You doing bad!", "I need a Coffee!",
-            "Bad bank!", "I need Money!", "I'm angry!", "I'm mad!", "!?!?!?", "What's going on here?!", "I go somewhere else!" };
+            "Bad bank!", "I need Money!", "I'm angry!", "I'm mad!", "!?!?!?", "What's going on here?!", "I go somewhere else!", "OMG!" };
 
         _customerSpeechText.text = texts[UnityEngine.Random.Range(0,texts.Length)];
+    }
+    private void SetFearText()
+    {
+        _customerSpeechText.gameObject.SetActive(true);
+        _speechBubble.SetActive(true);
+        StartCoroutine(WaitToDeactivateSpeechBubble());
+
+        string[] texts = { "OMG!", "Stop!", "Stop shooting!", "Ahhhhhh!", "Ahh", "Help!", "Medic!", "You're crazy!", "I never come back!", "Police!", "Call the police!", "I need help!", "You go to prison!",
+            "Put the weapon down!", "I am hurted!"};
+
+        _customerSpeechText.text = texts[UnityEngine.Random.Range(0, texts.Length)];
     }
     private IEnumerator WaitToDeactivateSpeechBubble()
     {
