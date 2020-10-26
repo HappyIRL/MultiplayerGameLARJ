@@ -171,7 +171,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void AtDeskExit()
     {
         _agent.updateRotation = true;
-        cm.LeftDesk(_deskWaypoint);
+        if (!_isWaitingForMoney)
+        {
+            cm.LeftDesk(_deskWaypoint);
+        }
     }
     IEnumerator LeaveAfterDelay()
     {
@@ -197,6 +200,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         _agent.destination = despawn.position;
         _patienceImage.gameObject.SetActive(false);
         _patienceImageBackground.gameObject.SetActive(false);
+        cm.LeftDesk(_deskWaypoint);
         cm.DequeueCustomer();
     } // MOVE TO DESPAWN
 
@@ -302,8 +306,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         {
             _isWaitingForMoney = true;
             _timer = 0;
-            _stateMachine.TransitionTo("WaitForMoney");
             TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+            _stateMachine.TransitionTo("WaitForMoney");
         }
     }
 
