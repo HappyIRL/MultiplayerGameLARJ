@@ -7,6 +7,7 @@ using Tasks;
 using Photon.Pun;
 using UnityEngine.UI;
 using System.Threading;
+using TMPro;
 
 public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 {
@@ -33,6 +34,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 
     [SerializeField] private GameObject _speechBubble = null;
     [SerializeField] private GameObject _moneyImage = null;
+    [SerializeField] private TextMeshProUGUI _customerSpeechText = null;
 
     public override void Awake()
     {
@@ -55,7 +57,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         var MoveToDesk = _stateMachine.CreateState("MoveToDesk", MoveToDeskStart, MoveToDeskUpdate);
         var AtDesk = _stateMachine.CreateState("AtDesk", AtDeskStart, AtDeskUpdate, AtDeskExit);
         var Leaving = _stateMachine.CreateState("Leaving", LeavingStart, LeavingUpdate);
-        var WaitForMoney = _stateMachine.CreateState("WaitForMoney", WaitForMoneyStart, WaitForMoneyExit);
+        var WaitForMoney = _stateMachine.CreateState("WaitForMoney", WaitForMoneyStart, null ,WaitForMoneyExit);
 
         _agent.enabled = true;
     }
@@ -65,13 +67,13 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         {
             if (collision.gameObject.tag == "Money")
             {
-                Destroy(collision.gameObject);
-                _stateMachine.TransitionTo("Leaving");
+                collision.gameObject.SetActive(false);
                 if (_currentCoroutine != null)
                 {
                     StopCoroutine(_currentCoroutine);
                 }
                 TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+                _stateMachine.TransitionTo("Leaving");
             }
         }
     }
@@ -94,6 +96,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 
     private void WaitForMoneyExit()
     {
+        _speechBubble.SetActive(false);
+        _moneyImage.SetActive(false);
     }
 
     #endregion
@@ -183,6 +187,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         _patienceImage.gameObject.SetActive(true);
         _patienceImageBackground.gameObject.SetActive(true);
+
         while (_timer < _timeToFinishTask) // PATIENCE ADDED HERE
         {
             _patienceImageBackground.fillAmount = 1 - _timer / _timeToFinishTask;
@@ -192,6 +197,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         // Log Failed Task
         _patienceImage.gameObject.SetActive(false);
         _patienceImageBackground.gameObject.SetActive(false);
+        CustomerLeavesAngry();
         _stateMachine.TransitionTo("Leaving");
     }
 
@@ -199,9 +205,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     #region Leaving State
     private void LeavingStart()
     {
-        _speechBubble.SetActive(false);
-        _moneyImage.SetActive(false);
-
         _isWaitingForMoney = false;
         _agent.destination = despawn.position;
         _patienceImage.gameObject.SetActive(false);
@@ -219,6 +222,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         }
     } // DESPAWN ON ARRIVAL
 
+    private void CustomerLeavesAngry()
+    {
+        SetComplaintText();
+    }
 
     #endregion
 
@@ -268,6 +275,24 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         for (int i = 0; i < _customerModels.Count; i++) _customerModels[i].SetActive(false);
         _customerModels[UnityEngine.Random.Range(0, _customerModels.Count)].SetActive(true);
+    }
+
+    private void SetComplaintText()
+    {
+        _customerSpeechText.gameObject.SetActive(true);
+        _speechBubble.SetActive(true);
+        StartCoroutine(WaitToDeactivateSpeechBubble());
+
+        string[] texts = { "I have no time!", "You're to slow!", "#@!*#~", "You will be fired!", "I will tell your boss!", "Faster!", "Get better!", "Good bye!", "Bye!", "You doing bad!", "I need a Coffee!",
+            "Bad bank!", "I need Money!", "I'm angry!", "I'm mad!", "!?!?!?", "What's going on here?!", "I go somewhere else!" };
+
+        _customerSpeechText.text = texts[UnityEngine.Random.Range(0,texts.Length)];
+    }
+    private IEnumerator WaitToDeactivateSpeechBubble()
+    {
+        yield return new WaitForSeconds(3f);
+        _customerSpeechText.gameObject.SetActive(false);
+        _speechBubble.SetActive(false);
     }
 
     #region Interactable Events
