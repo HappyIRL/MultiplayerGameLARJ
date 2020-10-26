@@ -18,7 +18,7 @@ public class AllowedInteractables : MonoBehaviour
 	}
 
 	private List<Interactable> _interactables = new List<Interactable>();
-	public List<Interactable> Interactables { get => _interactables;}
+	public List<Interactable> Interactables { get => _interactables; private set => _interactables = value; }
 
 	private void Awake()
 	{
@@ -32,13 +32,13 @@ public class AllowedInteractables : MonoBehaviour
 		{
 			if(interactable.AlwaysInteractable)
 			{
-				_interactables.Add(interactable);
+				Interactables.Add(interactable);
 			}
 		}
 	}
 	public void AddInteractable(Interactable interactable)
 	{
 		if (!Interactables.Contains(interactable))
-			_interactables.Add(interactable);
+			Interactables.Add(interactable);
 	}
 }
