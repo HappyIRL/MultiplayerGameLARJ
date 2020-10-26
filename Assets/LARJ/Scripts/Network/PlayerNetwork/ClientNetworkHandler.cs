@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum LARJNetworkEvents
 {
@@ -75,18 +74,18 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void SubscribeToEvents()
 	{
 		_playerFromID = GetPlayerFromID(_myID);
-		_customerSpawner = FindObjectOfType<CustomerSpawner>();
 		_playerInteraction = _playerFromID.GetComponent<PlayerInteraction>();
+		_customerSpawner = FindObjectOfType<CustomerSpawner>();
 		_dayTimeManager = FindObjectOfType<DayTimeManager>();
 		_customerSpawner.OnCustomerSpawn += OnCustomerSpawn;
 		_playerInteraction.OnNetworkTaskEvent += RaiseNetworkedTask;
 		_playerInteraction.LARJInteractableUse += RaiseNetworkedInteractable;
 	}
 
-	private void OnCustomerSpawn(GameObject go)
+	private void OnCustomerSpawn(GameObject go, InteractionType type)
 	{
 		AddInstanceToObjectLists(go);
-		RaiseNetworkedCustomer(_uniqueInstanceID);
+		RaiseNetworkedCustomer(_uniqueInstanceID, type);
 	}
 
 	private int AddInstanceToObjectLists(GameObject go)
@@ -297,6 +296,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void RaiseNetworkedTask(InteractableObjectID id, LARJTaskState state, int objectInstanceID)
 	{
+		Debug.LogError("RaiseNetworkedTask");
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
 			Receivers = ReceiverGroup.Others,
@@ -320,7 +320,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 	}
 
-	private void RaiseNetworkedCustomer(int _uniqueInstanceID)
+	private void RaiseNetworkedCustomer(int _uniqueInstanceID, InteractionType type)
 	{
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
@@ -336,6 +336,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		CustomerNetworkData interactableNetworkData = new CustomerNetworkData()
 		{
 			UniqueInstanceID = _uniqueInstanceID,
+			Type = type
 		};
 
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.CustomerSpawn, interactableNetworkData, raiseEventOptions, sendOptions);
@@ -461,8 +462,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		simulatedInteractable.MouseReleaseEvent();
 	}
 
-	private void ReceiveTaskUpdate(TaskNetworkData data)
+	private void ReceiveTaskEvent(TaskNetworkData data)
 	{
+		Debug.Log("ReceiveTaskEvent");
 		_myPlayer = GetPlayerFromID(_myID);
 		_playerInteraction = _myPlayer.GetComponent<PlayerInteraction>();
 		Debug.Log(data.ObjectInstanceID);
@@ -504,7 +506,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveCustomerSpawn(CustomerNetworkData data)
 	{
-		var go = _customerSpawner.SpawnNetworkedCustomer();
+		var go = _customerSpawner.SpawnNetworkedCustomer(data.Type);
 		go.GetComponent<Interactable>().UniqueInstanceID = _uniqueInstanceID;
 		if (!_instanceIDs.ContainsKey(data.UniqueInstanceID))
 		{
@@ -563,7 +565,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID));
 		AddInstanceToObjectList(instanceGO, data.UniqueInstanceID);
 		instanceGO.transform.localScale = data.LocalScale;
-		InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
 
 		if (data.Position != null)
 		{
@@ -578,7 +579,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		{
 			GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID));
 			instanceGO.transform.localScale = data.LocalScale;
-			InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
 			int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
 
 			if(data.Position != null)
@@ -613,7 +613,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveInteractableUpdate((InteractableNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.TaskUpdate:
-				ReceiveTaskUpdate((TaskNetworkData)photonEvent.CustomData);
+				ReceiveTaskEvent((TaskNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.CustomerSpawn:
 				ReceiveCustomerSpawn((CustomerNetworkData)photonEvent.CustomData);
@@ -675,18 +675,18 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	public GameObject OnMasterClientInstantiate(GameObject prefabGO)
 	{
+		Debug.Log("OnMasterClientInstantiate: " + prefabGO);
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO);
 		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
-		InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
 		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), null, null, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
 		return instanceGO;
 	}
 
 	public GameObject OnMasterClientInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
+		Debug.Log("OnMasterClientInstantiate: " + prefabGO);
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, position, rotation);
 		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
-		InstantiateManager.Instance.SpawnGarbageHealthbar(instanceGO);
 		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), position, rotation, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
 		return instanceGO;
 	}

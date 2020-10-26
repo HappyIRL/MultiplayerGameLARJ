@@ -69,17 +69,21 @@ public class PlayerInteraction : MonoBehaviour
             case LARJTaskState.TaskComplete:
                 if (AllowedInteractables.Instance.Interactables.Contains(interactable))
                 {
-                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                     if(!interactable.AlwaysInteractable)
+					{
+                        OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
+					}
                 }
                 break;
             case LARJTaskState.TaskFailed:
                 if (AllowedInteractables.Instance.Interactables.Contains(interactable))
                 {
-                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                     if (!interactable.AlwaysInteractable)
+					{
+                        OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
+                    }
                 }
                 break;
             case LARJTaskState.TaskStart:

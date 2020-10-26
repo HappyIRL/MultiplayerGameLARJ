@@ -29,17 +29,11 @@ public class CustomerSpawner : MonoBehaviour
     public Transform DespawnPoint { get { return _despawnPoint; } }
 
     private bool _isLocal = true;
-    public delegate void LARjCustomerSpawnEvent(GameObject go);
+    public delegate void LARjCustomerSpawnEvent(GameObject go, InteractionType type);
     public event LARjCustomerSpawnEvent OnCustomerSpawn;
 
     IEnumerator Start()
     {
-        if (PhotonNetwork.IsConnected)
-            _isLocal = false;
-        else
-            _isLocal = true;
-
-
         for (int i = 0; i < noOfWaves; i++)
         {
             var currentNoOfCustomers = Mathf.RoundToInt(noOfCustomers * perWaveMultiplier * (i + 1));
@@ -58,33 +52,23 @@ public class CustomerSpawner : MonoBehaviour
     }
 
 
-    public GameObject SpawnNetworkedCustomer()
+    public GameObject SpawnNetworkedCustomer(InteractionType type)
     {
         var go = _customerPool.GetObject();
         var customer = go.GetComponent<Customer>();
-        int i = UnityEngine.Random.Range(0, 3);
-        switch (i)
-        {
-            case 0:
-                customer.InteractionType = InteractionType.Hold;
-                break;
-            case 1:
-                customer.InteractionType = InteractionType.Press;
-                break;
-            case 2:
-                customer.InteractionType = InteractionType.PressTheCorrectKeys;
-                break;
-            default:
-                break;
-        }
+
+        customer.InteractionType = type;
+
         go.transform.position = _spawnPoint.position;
+
+        customer.despawn = _despawnPoint;
 
         return go;
     }
 
     private void SpawnCustomer()
     {
-        if (_isLocal || PhotonNetwork.IsMasterClient)
+        if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
         {
             var go = _customerPool.GetObject();
             var customer = go.GetComponent<Customer>();
@@ -108,7 +92,7 @@ public class CustomerSpawner : MonoBehaviour
 
             go.transform.position = _spawnPoint.position;
 
-            OnCustomerSpawn?.Invoke(go);
+            OnCustomerSpawn?.Invoke(go, customer.InteractionType);
         }
     }
 }

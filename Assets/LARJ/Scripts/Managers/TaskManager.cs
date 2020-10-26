@@ -214,10 +214,8 @@ namespace Tasks
         }
         public void StartMoneyTask(Task task)
         {
-            Debug.Log("StartedMoneyTask");
             task.IsTaskActive = true;
             TaskUI taskUI = TaskManagerUI.SpawnUITask(TaskType.Money, task.GetRewardMoney, task.GetTimeToFinishTask);
-            Debug.Log("Called SpawnUITask");
             task.TaskUI = taskUI;
             task.StartTask();
             if (_isLocal || PhotonNetwork.IsMasterClient)

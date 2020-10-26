@@ -83,12 +83,13 @@ public class InstantiateManager
 	public GameObject ForceLocalInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
 		GameObject go = Object.Instantiate(prefabGO, position, rotation);
+		SpawnGarbageHealthbar(go);
 		return go;
 	}
 
 	public void SpawnGarbageHealthbar(GameObject duplicatedObject)
     {
-		GameObject healthbarCanvas = Instantiate(HealthbarCanvasHolder.Instance.HealthbarCanvasPrefab);
+		GameObject healthbarCanvas = Object.Instantiate(HealthbarCanvasHolder.Instance.HealthbarCanvasPrefab);
 		healthbarCanvas.transform.SetParent(duplicatedObject.transform);
 		healthbarCanvas.transform.position = duplicatedObject.transform.position + Vector3.up;
 

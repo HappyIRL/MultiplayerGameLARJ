@@ -19,6 +19,8 @@ public class NetworkCharacterSetup: MonoBehaviourPunCallbacks
 
 	public ClientNetworkHandler ClientNetworkHandler { get => _clientNetworkHandler; }
 
+
+
 	private void Start()
 	{
 		PhotonPeer.RegisterType(typeof(ClientNetworkData), (byte)LARJNetworkEvents.PCUpdate, ClientNetworkData.SerializeMethod, ClientNetworkData.DeserializeMethod);
