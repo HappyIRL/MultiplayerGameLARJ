@@ -50,6 +50,7 @@ namespace Tasks
         }
         void Update()
         {
+           
             _timer += Time.deltaTime;
             if (_timer >= _currentDelay)
             {
