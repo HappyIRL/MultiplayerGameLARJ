@@ -41,7 +41,7 @@ public class SafeOpener : MonoBehaviour
 
         while (Quaternion.Angle(_door.rotation, targetRotation) > 0.01f)
         {
-            _door.rotation = Quaternion.RotateTowards(_door.rotation, targetRotation, 3f);
+            _door.rotation = Quaternion.RotateTowards(_door.rotation, targetRotation, 5f);
             yield return null;
         }
 
@@ -54,7 +54,7 @@ public class SafeOpener : MonoBehaviour
 
         while (Quaternion.Angle(_door.rotation, targetRotation) > 0.01f)
         {
-            _door.rotation = Quaternion.RotateTowards(_door.rotation, targetRotation, 3f);
+            _door.rotation = Quaternion.RotateTowards(_door.rotation, targetRotation, 5f);
             yield return null;
         }
 
