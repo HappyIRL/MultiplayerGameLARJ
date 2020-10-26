@@ -54,7 +54,15 @@ namespace Tasks
             int timer = 0;
             while (timer < _timeToFinishTask)
             {
+                if (Time.timeScale != 0)
+                {
                 timer++;
+                }
+                else
+                {
+                    StopCoroutine(_cooldownCoroutine);
+                    break;
+                }
                 yield return new WaitForSeconds(1);
             }
             TaskManager.TaskManagerSingelton.OnTaskFailed(this);
