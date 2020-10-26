@@ -1,11 +1,7 @@
-﻿using Photon.Pun;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public enum InteractableUseType
 {
@@ -37,8 +33,8 @@ public class PlayerInteraction : MonoBehaviour
 
     public delegate void LARJInteractableUseEvent(InteractableObjectID id, InteractableUseType type, int objectInstanceID, InteractableObjectID itemInHandID);
     public event LARJInteractableUseEvent LARJInteractableUse;
-    public delegate void LARJTaskEvent(InteractableObjectID id, LARJTaskState state, int objectInstanceID);
-    public event LARJTaskEvent OnNetworkTaskEvent;
+
+    public event Action<InteractableObjectID, LARJTaskState, int> OnNetworkTaskEvent;
 
     //Object to interact
     private Interactable _objectToInteract;
@@ -56,7 +52,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
-    private void Awake()
+    private void Start()
     {
         _playerInput = GetComponent<PlayerInput>();
         TaskManager.TaskManagerSingelton.OnTask += ActivateInteractable;
@@ -69,18 +65,18 @@ public class PlayerInteraction : MonoBehaviour
             case LARJTaskState.TaskComplete:
                 if (AllowedInteractables.Instance.Interactables.Contains(interactable))
                 {
-                    if(!interactable.AlwaysInteractable)
-					{
+                    if (!interactable.AlwaysInteractable)
+                    {
                         OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
-					}
+                    }
                 }
                 break;
             case LARJTaskState.TaskFailed:
                 if (AllowedInteractables.Instance.Interactables.Contains(interactable))
                 {
                     if (!interactable.AlwaysInteractable)
-					{
+                    {
                         OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
                     }
@@ -213,7 +209,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);              
+                _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
             }
         }
     }

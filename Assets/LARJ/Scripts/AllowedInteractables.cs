@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class AllowedInteractables : MonoBehaviour
@@ -18,7 +17,7 @@ public class AllowedInteractables : MonoBehaviour
 	}
 
 	private List<Interactable> _interactables = new List<Interactable>();
-	public List<Interactable> Interactables { get => _interactables; private set => _interactables = value; }
+	public List<Interactable> Interactables { get => _interactables; }
 
 	private void Awake()
 	{
@@ -28,17 +27,17 @@ public class AllowedInteractables : MonoBehaviour
 	private void Start()
 	{
 		Interactable[] interactables = FindObjectsOfType<Interactable>();
-		foreach(Interactable interactable in interactables)
+		foreach (Interactable interactable in interactables)
 		{
-			if(interactable.AlwaysInteractable)
+			if (interactable.AlwaysInteractable)
 			{
-				Interactables.Add(interactable);
+				_interactables.Add(interactable);
 			}
 		}
 	}
 	public void AddInteractable(Interactable interactable)
 	{
 		if (!Interactables.Contains(interactable))
-			Interactables.Add(interactable);
+			_interactables.Add(interactable);
 	}
 }
