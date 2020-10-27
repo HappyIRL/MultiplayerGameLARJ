@@ -23,8 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private float _dashTimer = 0f;
     private bool _isDashOnCooldown = false;
     private bool _inDash = false;
-    private Coroutine _speedEffectCoroutine;
-    private Coroutine _dashEffectCoroutine;
+    private int _revertMovementMultiplicator = 1;
 
 
     private void Awake()
@@ -68,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        _moveDirection = new Vector3(_inputVector.x, 0, _inputVector.y);
+        _moveDirection = new Vector3(_inputVector.x, 0, _inputVector.y) * _revertMovementMultiplicator;
         if (_moveDirection != Vector3.zero)
         {
             _bodyTransform.forward = _moveDirection * -1;
@@ -112,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
         _playerTeaEffects.PlaySpeedParticles();
 
         float prevSpeed = _movementSpeed;
-        _speedEffectCoroutine = StartCoroutine(WaitToRemoveSpeedEffect(prevSpeed));
+        StartCoroutine(WaitToRemoveSpeedEffect(prevSpeed));
         _movementSpeed = 6f;
     }
     public void ApplyDashEffect()
@@ -120,9 +119,17 @@ public class PlayerMovement : MonoBehaviour
         _playerTeaEffects.PlayDashParticles();
 
         float prevDashCooldown = _dashCooldown;
-        _dashEffectCoroutine = StartCoroutine(WaitToRemoveDashEffect(prevDashCooldown));
+        StartCoroutine(WaitToRemoveDashEffect(prevDashCooldown));
         _dashCooldown = 0.1f;
     }
+    public void ApplyBadEffect()
+    {
+        _playerTeaEffects.PlayBadParticles();
+
+        StartCoroutine(WaitToRemoveBadEffect());
+        _revertMovementMultiplicator = -1;
+    }
+
     private IEnumerator WaitToRemoveSpeedEffect(float prevSpeed)
     {
         yield return new WaitForSeconds(30f);
@@ -134,6 +141,12 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(30f);
         _dashCooldown = prevDashCooldown;
         _playerTeaEffects.StopDashParticles();
+    }
+    private IEnumerator WaitToRemoveBadEffect()
+    {
+        yield return new WaitForSeconds(30f);
+        _revertMovementMultiplicator = 1;
+        _playerTeaEffects.StopBadParticles();
     }
     #endregion
 }

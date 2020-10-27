@@ -6,6 +6,7 @@ public class PlayerTeaEffects : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _speedParticles = null;
     [SerializeField] private ParticleSystem _dashParticles = null;
+    [SerializeField] private ParticleSystem _badParticles = null;
 
     public void PlaySpeedParticles()
     {
@@ -15,6 +16,12 @@ public class PlayerTeaEffects : MonoBehaviour
     {
         _dashParticles.Play();
     }
+    public void PlayBadParticles()
+    {
+        _badParticles.Play();
+    }
+
+
     public void StopSpeedParticles()
     {
         _speedParticles.Stop();
@@ -22,5 +29,9 @@ public class PlayerTeaEffects : MonoBehaviour
     public void StopDashParticles()
     {
         _dashParticles.Stop();
+    }
+    public void StopBadParticles()
+    {
+        _badParticles.Stop();
     }
 }

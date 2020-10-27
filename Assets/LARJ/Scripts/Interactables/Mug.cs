@@ -124,11 +124,20 @@ public class Mug : Interactable
 
         if (UnityEngine.Random.value > 0.5f)
         {
-            playerMovement.ApplySpeedEffect();
+            //good effect
+            if (UnityEngine.Random.value > 0.5f)
+            {
+                playerMovement.ApplySpeedEffect();
+            }
+            else
+            {
+                playerMovement.ApplyDashEffect();
+            }
         }
         else
         {
-            playerMovement.ApplyDashEffect();
+            //bad effect
+            playerMovement.ApplyBadEffect();
         }
     }
    

@@ -122,6 +122,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         cm = CustomerManager.instance;
         _wasHittedByBullet = false;
 
+        _speechBubble.SetActive(false);
+        _moneyImage.SetActive(false);
+        _customerSpeechText.gameObject.SetActive(false);
+
         _stateMachine.TransitionTo("InQueue");
     }
 
@@ -298,7 +302,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         StartCoroutine(WaitToDeactivateSpeechBubble());
 
         string[] texts = { "I have no time!", "You're to slow!", "#@!*#~", "You will be fired!", "I will tell your boss!", "Faster!", "Get better!", "Good bye!", "Bye!", "You doing bad!", "I need a Coffee!",
-            "Bad bank!", "I need Money!", "I'm angry!", "I'm mad!", "!?!?!?", "What's going on here?!", "I go somewhere else!", "OMG!" };
+            "Bad bank!", "I need Money!", "I'm angry!", "I'm mad!", "!?!?!?", "What's going on here?!", "I go somewhere else!", "OMG!", "Give me Money!", "My grandma can do better!" };
 
         _customerSpeechText.text = texts[UnityEngine.Random.Range(0,texts.Length)];
     }
@@ -309,7 +313,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         StartCoroutine(WaitToDeactivateSpeechBubble());
 
         string[] texts = { "OMG!", "Stop!", "Stop shooting!", "Ahhhhhh!", "Ahh", "Help!", "Medic!", "You're crazy!", "I never come back!", "Police!", "Call the police!", "I need help!", "You go to prison!",
-            "Put the weapon down!", "I am hurted!"};
+            "Put the weapon down!", "I am hurted!", "What are you doing!?", "Let me go!"};
 
         _customerSpeechText.text = texts[UnityEngine.Random.Range(0, texts.Length)];
     }
