@@ -295,7 +295,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void RaiseNetworkedTask(InteractableObjectID id, LARJTaskState state, int objectInstanceID)
 	{
-		Debug.Log("RaiseNetworkedTask");
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
 			Receivers = ReceiverGroup.Others,
@@ -462,7 +461,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		_myPlayer = GetPlayerFromID(_myID);
 		Interactable interactable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponent<Interactable>();
-		Debug.Log(interactable);
 		Task task = interactable.GetComponent<Task>();
 		TaskManagerUI taskManagerUI = TaskManager.TaskManagerSingelton.TaskManagerUI;
 		Score score = TaskManager.TaskManagerSingelton.Score;
@@ -509,7 +507,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveInteractableUpdate(InteractableNetworkData data)
 	{
-		Debug.LogError("ReceiveInteractableUpdate");
 		GameObject simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
 		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
 		GameObject simulatedInteractableGO = GetInteractableGOFromID(data.ObjectInstanceID);
