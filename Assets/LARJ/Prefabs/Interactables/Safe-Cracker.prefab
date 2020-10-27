@@ -1359,6 +1359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7423567203501390115}
   - component: {fileID: -7811016883008707755}
+  - component: {fileID: 6750270268034408208}
   m_Layer: 0
   m_Name: Safe-Cracker
   m_TagString: Untagged
@@ -1394,7 +1395,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crackerPool: {fileID: 0}
-  timeToCrack: 0
+--- !u!114 &6750270268034408208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7438494788967298231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 535c2dccdbf867b4cab9e82ac5ea50b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pool: {fileID: 0}
 --- !u!1 &7654464796460211274
 GameObject:
   m_ObjectHideFlags: 0

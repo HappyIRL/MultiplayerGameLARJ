@@ -6,7 +6,7 @@ using UnityEngine;
 public class Cracker : MonoBehaviour, IObjectPoolNotifier 
 {
     public ObjectPool crackerPool;
-    private int timeToCrack 10;
+    private int _timeToCrack = 10;
 
     private int _timer = 0;
 
@@ -29,7 +29,7 @@ public class Cracker : MonoBehaviour, IObjectPoolNotifier
 
     private IEnumerator Start()
     {
-        while (_timer <= timeToCrack)
+        while (_timer <= _timeToCrack)
         {
             yield return new WaitForSeconds(1);
             _timer++;

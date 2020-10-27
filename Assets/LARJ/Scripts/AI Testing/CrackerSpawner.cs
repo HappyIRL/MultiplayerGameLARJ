@@ -7,11 +7,58 @@ public class CrackerSpawner : MonoBehaviour
 {
     [SerializeField] private ObjectPool _crackerPool;
     [SerializeField] private Transform _spawnPoint;
-    public void SpawnCracker()
+
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem _dustParticles = null;
+    [SerializeField] private ParticleSystem _dirtParticles = null;
+
+    [Header("Cracks")]
+    [SerializeField] private List<GameObject> _crackImages = null;
+
+
+    private void Start()
+    {
+        StartSpawningCracker();
+    }
+
+    public void StartSpawningCracker()
+    {
+        StartCoroutine(StartCrackerVisuals());
+    }
+    private IEnumerator StartCrackerVisuals()
+    {
+        _dustParticles.Play();
+        yield return new WaitForSeconds(3f);
+
+        for (int i = 0; i < _crackImages.Count; i++)
+        {
+            SpawnCrack(i);
+            yield return new WaitForSeconds(3f);
+        }
+
+        SpawnCracker();
+        StopParticles();
+    }
+    private void SpawnCracker()
     {        
         var go = _crackerPool.GetObject();
         var cracker = go.GetComponent<Cracker>();
-                    
-        go.transform.position = _spawnPoint.position;       
+
+        cracker.crackerPool = _crackerPool;
+        go.transform.position = _spawnPoint.position;           
+    }
+    private void SpawnCrack(int crackIndex)
+    {
+        _dirtParticles.Play();
+        for (int i = 0; i < _crackImages.Count; i++)
+        {
+            if (i == crackIndex) _crackImages[i].SetActive(true);
+            else _crackImages[i].SetActive(false);
+        }
+    }
+    private void StopParticles()
+    {
+        _dirtParticles.Stop();
+        _dustParticles.Stop();
     }
 }
