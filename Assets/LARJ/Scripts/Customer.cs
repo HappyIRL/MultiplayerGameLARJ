@@ -109,6 +109,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 
     private void WaitForMoneyExit()
     {
+        if (_currentCoroutine != null)
+        {
+            StopCoroutine(_currentCoroutine);
+        }
         _speechBubble.SetActive(false);
         _moneyImage.SetActive(false);
     }
