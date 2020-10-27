@@ -6,7 +6,7 @@ using UnityEngine;
 public class Cracker : MonoBehaviour, IObjectPoolNotifier 
 {
     public ObjectPool crackerPool;
-    public int timeToCrack;
+    private int timeToCrack 10;
 
     private int _timer = 0;
 
