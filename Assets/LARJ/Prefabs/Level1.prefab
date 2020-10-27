@@ -4104,7 +4104,7 @@ CapsuleCollider:
   m_Radius: 0.42781904
   m_Height: 2.2487683
   m_Direction: 1
-  m_Center: {x: 0.01018061, y: 1.1243842, z: 0.035847507}
+  m_Center: {x: 0.01018061, y: 0.47, z: 0.035847507}
 --- !u!65 &6819291592080028845
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4203,7 +4203,7 @@ CapsuleCollider:
   m_Radius: 0.42781922
   m_Height: 2.2487683
   m_Direction: 1
-  m_Center: {x: 0.010180614, y: 1.1243842, z: 0.035847522}
+  m_Center: {x: 0.010180614, y: 0.47, z: 0.035847522}
 --- !u!136 &6819291592293338674
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4217,7 +4217,7 @@ CapsuleCollider:
   m_Radius: 0.42781904
   m_Height: 2.2487683
   m_Direction: 1
-  m_Center: {x: 0.01018061, y: 1.1243842, z: 0.035847507}
+  m_Center: {x: 0.01018061, y: 0.5, z: 0.035847507}
 --- !u!65 &6819291592293985929
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4244,7 +4244,7 @@ CapsuleCollider:
   m_Radius: 0.42781895
   m_Height: 2.2487683
   m_Direction: 1
-  m_Center: {x: 0.010180607, y: 1.1243842, z: 0.0358475}
+  m_Center: {x: 0.010180607, y: 0.47, z: 0.0358475}
 --- !u!65 &6819291592361358277
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4933,7 +4933,7 @@ CapsuleCollider:
   m_Radius: 0.427819
   m_Height: 2.2487683
   m_Direction: 1
-  m_Center: {x: 0.010180608, y: 1.1243842, z: 0.035847504}
+  m_Center: {x: 0.010180608, y: 0.47, z: 0.035847504}
 --- !u!65 &6819291593160986456
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5177,7 +5177,7 @@ CapsuleCollider:
   m_Radius: 0.42781895
   m_Height: 2.2487683
   m_Direction: 1
-  m_Center: {x: 0.010180607, y: 1.1243842, z: 0.0358475}
+  m_Center: {x: 0.010180607, y: 0.68, z: 0.0358475}
 --- !u!65 &6819291593411712435
 BoxCollider:
   m_ObjectHideFlags: 0

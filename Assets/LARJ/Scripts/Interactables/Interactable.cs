@@ -90,9 +90,11 @@ public abstract class Interactable : MonoBehaviour
 
     private int _currentCorrectKeysPressedCount = 0; 
     private Coroutine _lastCoroutine;
+    private Coroutine _moveToGroundCoroutine;
     private CorrectKeysInteraction _currentCorrectKey;
     private bool _correctKeyEventStarted = false;
     private GameObject _playerWhoPickedThisUp = null;
+
     public GameObject PlayerWhoPickedThisUp { get => _playerWhoPickedThisUp; }
 
     public InteractableObjectID InteractableID { get; protected set; }
@@ -327,6 +329,7 @@ public abstract class Interactable : MonoBehaviour
 	public void PickUpObject(Transform parent, GameObject playerWhoPickedThisUp)
     {
         _playerWhoPickedThisUp = playerWhoPickedThisUp;
+        if(_moveToGroundCoroutine != null) StopCoroutine(_moveToGroundCoroutine);
 
         Rb.Sleep();
         TransformForPickUp.parent = parent;
@@ -345,9 +348,25 @@ public abstract class Interactable : MonoBehaviour
         TransformForPickUp.parent = null;
         Rb.WakeUp();
         EnableColliders();
-        CheckForDropZone();
+
+        if (!CheckForDropZone())
+        {
+            InteractablePositionChecker.Instance.CheckPosition(TransformForPickUp);
+            _moveToGroundCoroutine = StartCoroutine(MoveToGround());
+        }        
     }
-    private void CheckForDropZone()
+    private IEnumerator MoveToGround()
+    {
+        Vector3 ground = TransformForPickUp.position;
+        ground.y = 0.3f;
+
+        while (Vector3.Distance(ground, TransformForPickUp.position) > 0.01f)
+        {
+            TransformForPickUp.position = Vector3.MoveTowards(TransformForPickUp.position, ground, Time.deltaTime * 5f);
+            yield return null;
+        }
+    }
+    private bool CheckForDropZone()
     {
         Collider[] colliders = Physics.OverlapSphere(TransformForPickUp.position, 0.5f, LayerMask.GetMask("DropZone"));
         DropZone dropZone = null;
@@ -359,8 +378,10 @@ public abstract class Interactable : MonoBehaviour
 
         if (dropZone != null)
         {
-            transform.position = dropZone.GetRandomPositionInsideDropZone();        
+            transform.position = dropZone.GetRandomPositionInsideDropZone();
+            return true;
         }
+        return false;
     }
     public void PressCorrectKeyInteraction(CorrectKeysInteraction pressedKey, string currentPlayerControlScheme)
     {

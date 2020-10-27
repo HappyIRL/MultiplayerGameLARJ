@@ -37337,6 +37337,7 @@ MonoBehaviour:
   CanInteractWhenPickedUp: 0
   despawn: {fileID: 0}
   _isWaitingForMoney: 0
+  _wasHittedByBullet: 0
   _customerModels:
   - {fileID: 4252221464123936360}
   - {fileID: 522123121430206069}

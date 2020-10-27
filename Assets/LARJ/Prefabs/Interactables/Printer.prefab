@@ -259,7 +259,6 @@ MonoBehaviour:
   - {fileID: 5545901458407704316}
   - {fileID: 5608353760089001703}
   - {fileID: 6812733997601456057}
-  _highlightInteractables: {fileID: 0}
   _healtbarCanvasPrefab: {fileID: 6080349377339825878, guid: 4eff1e7c0becd7b4bbcaf2db1ca9f6b6, type: 3}
   _printerInSound: {fileID: 8300000, guid: c330c837cf2da574aa8e114261d2cb8f, type: 3}
   _printerInProgressSound: {fileID: 8300000, guid: 2bff79ec55c2289498f0dbb1fef92969, type: 3}

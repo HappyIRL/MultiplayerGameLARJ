@@ -24,7 +24,7 @@ public class Vehicle : MonoBehaviour, IObjectPoolNotifier
     }
     public void StartVehicle()
     {
-        _targetPosition = transform.position + transform.forward * 50f;
+        _targetPosition = transform.position + transform.forward * 100f;
         StartCoroutine(MoveVehicle());
     }
 

@@ -181,6 +181,7 @@ MonoBehaviour:
   _drinkingSound: {fileID: 8300000, guid: bfe842652605fbe4fb54f0cc145a3162, type: 3}
   _progressbarBG: {fileID: 4006078653061355369}
   _progressbar: {fileID: 8374966117365417109}
+  _interactableID: 0
 --- !u!82 &2020570886180453900
 AudioSource:
   m_ObjectHideFlags: 0
