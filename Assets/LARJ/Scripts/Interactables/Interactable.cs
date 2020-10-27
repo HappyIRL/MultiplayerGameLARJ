@@ -325,6 +325,14 @@ public abstract class Interactable : MonoBehaviour
             _colliders[i].enabled = false;
         }
     }
+    public void EnableOutline()
+    {
+        OutlineRef.enabled = true;
+    }
+    public void DisableOutline()
+    {
+        OutlineRef.enabled = false;
+    }
 
 	public void PickUpObject(Transform parent, GameObject playerWhoPickedThisUp)
     {

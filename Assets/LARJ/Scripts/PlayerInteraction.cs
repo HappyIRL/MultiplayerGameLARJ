@@ -211,6 +211,7 @@ public class PlayerInteraction : MonoBehaviour
             {
                 _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
             }
+            _objectToInteract.EnableOutline();
         }
     }
 
@@ -221,6 +222,7 @@ public class PlayerInteraction : MonoBehaviour
             _objectToInteract.DisableButtonHints();
             _objectToInteract.DisableProgressbar();
             _objectToInteract.DeactivateArrowUI();
+            _objectToInteract.DisableOutline();
 
             if (_objectToInteract.CanInteractWhenPickedUp)
             {
