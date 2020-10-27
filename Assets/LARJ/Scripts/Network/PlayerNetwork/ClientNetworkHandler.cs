@@ -35,8 +35,10 @@ public enum LARJParentID
 
 public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 {
-	[SerializeField] private GameObject[] _players = new GameObject[4];
-	[SerializeField] private List<Interactable> _interactables = new List<Interactable>();
+	private GameObject[] _players = new GameObject[4];
+	private List<GameObject> _interactableGOs = new List<GameObject>();
+	private List<GameObject> _syncPositionObjects = new List<GameObject>();
+
 
 	public GameObject HealthbarCanvasPrefab;
 	private LARJNetworkID _myID = 0;
@@ -52,6 +54,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void Awake()
 	{
+		PhotonNetwork.AddCallbackTarget(this);
 		_customerSpawner = FindObjectOfType<CustomerSpawner>();
 	}
 
@@ -64,10 +67,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_customerSpawner.OnCustomerSpawn += OnCustomerSpawn;
 		playerInteraction.LARJInteractableUse += RaiseNetworkedInteractable;
 		playerInteraction.OnNetworkTaskEvent += RaiseNetworkedTask;
+		_dayTimeManager = FindObjectOfType<DayTimeManager>();
 
-
-		PhotonNetwork.AddCallbackTarget(this);
-		SubscribeToEvents();
 		if (!PhotonNetwork.IsMasterClient)
 			RaiseOnSceneLoad();
 	}
@@ -81,10 +82,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 	}
 	#region Private - Methods
-	private void SubscribeToEvents()
-	{
-		_dayTimeManager = FindObjectOfType<DayTimeManager>();
-	}
 
 	private void OnCustomerSpawn(GameObject go, InteractionType type)
 	{
@@ -96,7 +93,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		_uniqueInstanceID += 1;
 
 		_instanceIDs.Add(_uniqueInstanceID, go);
-		go.GetComponent<Interactable>().UniqueInstanceID = _uniqueInstanceID;
+		go.GetComponentInChildren<Interactable>().UniqueInstanceID = _uniqueInstanceID;
 
 		return _uniqueInstanceID;
 	}
@@ -106,7 +103,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		if (!_instanceIDs.ContainsKey(id))
 		{
 			_instanceIDs.Add(id, go);
-			go.GetComponent<Interactable>().UniqueInstanceID = id;
+			go.GetComponentInChildren<Interactable>().UniqueInstanceID = id;
 		}
 	}
 	private GameObject GetInteractableGOFromID(int objectInstanceID)
@@ -123,39 +120,39 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		switch (prefabID)
 		{
 			case InteractableObjectID.Broom:
-				return _interactables[0].gameObject;
+				return _interactableGOs[0];
 			case InteractableObjectID.Telephone1:
-				return _interactables[1].gameObject;
+				return _interactableGOs[1];
 			case InteractableObjectID.Telephone2:
-				return _interactables[2].gameObject;
+				return _interactableGOs[2];
 			case InteractableObjectID.FireExtinguisher:
-				return _interactables[3].gameObject;
+				return _interactableGOs[3];
 			case InteractableObjectID.PC:
-				return _interactables[4].gameObject;
+				return _interactableGOs[4];
 			case InteractableObjectID.Printer:
-				return _interactables[5].gameObject;
+				return _interactableGOs[5];
 			case InteractableObjectID.Shotgun:
-				return _interactables[6].gameObject;
+				return _interactableGOs[6];
 			case InteractableObjectID.WaterCooler:
-				return _interactables[7].gameObject;
+				return _interactableGOs[7];
 			case InteractableObjectID.CleaningSpray:
-				return _interactables[8].gameObject;
+				return _interactableGOs[8];
 			case InteractableObjectID.Money:
-				return _interactables[9].gameObject;
+				return _interactableGOs[9];
 			case InteractableObjectID.Money2:
-				return _interactables[10].gameObject;
+				return _interactableGOs[10];
 			case InteractableObjectID.Mug:
-				return _interactables[11].gameObject;
+				return _interactableGOs[11];
 			case InteractableObjectID.Mug2:
-				return _interactables[12].gameObject;
+				return _interactableGOs[12];
 			case InteractableObjectID.Mug3:
-				return _interactables[13].gameObject;
+				return _interactableGOs[13];
 			case InteractableObjectID.Mug4:
-				return _interactables[14].gameObject;
+				return _interactableGOs[14];
 			case InteractableObjectID.Stamp:
-				return _interactables[15].gameObject;
+				return _interactableGOs[15];
 			case InteractableObjectID.Stamp2:
-				return _interactables[16].gameObject;
+				return _interactableGOs[16];
 			default:
 				return null;
 		}
@@ -209,35 +206,32 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.NotifyMasterOnSceneLoad, clientNetworkData, raiseEventOptions, sendOptions);
 	}
 
-	private void RaiseOnStartInteractablePositions()
+	private void RaiseOnStartInteractablePositions(GameObject go)
 	{
-		foreach (Interactable interactable in _interactables)
+		Vector3 position = go.transform.position;
+		Vector3 rotation = go.transform.eulerAngles;
+		Vector3 localScale = go.transform.localScale;
+
+		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
-			Vector3 position = interactable.gameObject.transform.position;
-			Vector3 rotation = interactable.gameObject.transform.eulerAngles;
-			Vector3 localScale = interactable.gameObject.transform.localScale;
+			Receivers = ReceiverGroup.Others,
+			CachingOption = EventCaching.DoNotCache
+		};
 
-			RaiseEventOptions raiseEventOptions = new RaiseEventOptions
-			{
-				Receivers = ReceiverGroup.Others,
-				CachingOption = EventCaching.DoNotCache
-			};
+		SendOptions sendOptions = new SendOptions
+		{
+			Reliability = true
+		};
 
-			SendOptions sendOptions = new SendOptions
-			{
-				Reliability = true
-			};
+		InteractableTransformNetworkData interactableTransform = new InteractableTransformNetworkData()
+		{
+			Position = position,
+			Rotation = rotation,
+			LocalScale = localScale,
+			ObjectID = (byte)go.GetComponentInChildren<Interactable>().InteractableID
+	};
 
-			InteractableTransformNetworkData interactableTransform = new InteractableTransformNetworkData()
-			{
-				Position = position,
-				Rotation = rotation,
-				LocalScale = localScale,
-				ObjectID = (byte)interactable.InteractableID
-			};
-
-			PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.SyncInteractablesFromMaster, interactableTransform, raiseEventOptions, sendOptions);
-		}
+		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.SyncInteractablesFromMaster, interactableTransform, raiseEventOptions, sendOptions);
 	}
 
 	private void UpdateLocalPlayerController()
@@ -420,10 +414,14 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		simulatedInteractableGO.transform.parent = simulatedPlayerObjectHolder.transform;
 	}
 
-	private void ReceiveSimulatedPlayerDrop(GameObject simulatedInteractableGO, Interactable simulatedInteractable)
+	private void ReceiveSimulatedPlayerDrop(Interactable simulatedInteractable)
 	{
-		simulatedInteractableGO.transform.parent = null;
-		simulatedInteractable.EnableColliders();
+		simulatedInteractable.DropObject();
+
+		if (simulatedInteractable.CanInteractWhenPickedUp)
+		{
+			simulatedInteractable.DisablePickedUpButtonHints();
+		}
 	}
 
 	private void ReceiveSimulatedPlayerPress(Interactable simulatedInteractable)
@@ -460,8 +458,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void ReceiveTaskEvent(TaskNetworkData data)
 	{
 		_myPlayer = GetPlayerFromID(_myID);
-		Interactable interactable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponent<Interactable>();
-		Task task = interactable.GetComponent<Task>();
+		Interactable interactable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponentInChildren<Interactable>();
+		Task task = interactable.GetComponentInChildren<Task>();
 		TaskManagerUI taskManagerUI = TaskManager.TaskManagerSingelton.TaskManagerUI;
 		Score score = TaskManager.TaskManagerSingelton.Score;
 
@@ -510,7 +508,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		GameObject simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
 		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
 		GameObject simulatedInteractableGO = GetInteractableGOFromID(data.ObjectInstanceID);
-		Interactable simulatedInteractable = simulatedInteractableGO.GetComponent<Interactable>();
+		Interactable simulatedInteractable = simulatedInteractableGO.GetComponentInChildren<Interactable>();
 		GameObject simulatedCloneGO = GetInteractableSceneGOFromID((InteractableObjectID)data.ItemInHandID);
 
 
@@ -519,7 +517,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		switch (type)
 		{
 			case InteractableUseType.Drop:
-				ReceiveSimulatedPlayerDrop(simulatedInteractableGO, simulatedInteractable);
+				ReceiveSimulatedPlayerDrop(simulatedInteractable);
 				break;
 			case InteractableUseType.PickUp:
 				ReceiveSimulatedPlayerPickUp(simulatedInteractableGO, simulatedInteractable, simulatedPlayerObjectHolder);
@@ -622,7 +620,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveInteractableTransformOfMasterClient((InteractableTransformNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.NotifyMasterOnSceneLoad:
-				RaiseOnStartInteractablePositions();
+				foreach (GameObject go in _interactableGOs)
+				{
+					RaiseOnStartInteractablePositions(go);
+				}
 				break;
 
 		}
@@ -632,12 +633,13 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	#region Public - Methods
 
-	public void SetInteractables(List<Interactable> go)
+	public void SetInteractables(List<GameObject> interactableGOs)
 	{
-		_interactables = go;
-		foreach (Interactable interactable in _interactables)
+		_interactableGOs = interactableGOs;
+
+		foreach (GameObject gameobject in _interactableGOs)
 		{
-			AddInstanceToObjectLists(interactable.gameObject);
+			AddInstanceToObjectLists(gameobject);
 		}
 	}
 
