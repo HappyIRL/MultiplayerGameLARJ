@@ -18,6 +18,7 @@ public class DayManager : MonoBehaviour
     [SerializeField] private AudioClip _buttonClickSound = null;
 
     private AudioSource _audioSource;
+    private bool _canPressEsc = true;
 
     private void Awake()
     {
@@ -32,14 +33,18 @@ public class DayManager : MonoBehaviour
     {
         _dayFinishedScoreBoard.SetActive(true);
         _endScoreText.text = $"Money: {_score.ScoreCount}";
+        Time.timeScale = 0;
     }
     public void GoToMainMenu()
     {
+        Time.timeScale = 1;
+        _canPressEsc = false;
         _audioSource.Play();
         _sceneChanger.FadeToScene(0);
     }
     public void ReplayDay()
     {
+        Time.timeScale = 1;
         _audioSource.Play();
         _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -57,15 +62,18 @@ public class DayManager : MonoBehaviour
     }
     public void PressESCInteraction()
     {
-        if (_dayFinishedScoreBoard.activeSelf) return;
+        if (_canPressEsc)
+        {
+            if (_dayFinishedScoreBoard.activeSelf) return;
 
-        if (_pausedScreen.activeSelf)
-        {
-            ResumeGame();
-        }
-        else
-        {
-            PauseGame();
+            if (_pausedScreen.activeSelf)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
         }
     }
 }
