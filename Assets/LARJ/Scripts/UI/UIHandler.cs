@@ -10,6 +10,7 @@ public class UIHandler : MonoBehaviour
 {
     [SerializeField] private GameObject _mainMenuScreen = null;
     [SerializeField] private GameObject _startPlayScreen = null;
+    [SerializeField] private GameObject _settingsScreen = null;
     [SerializeField] private GameObject _networkSectionScreen = null;
     [SerializeField] private GameObject _gameTitle = null;
     [SerializeField] private GameObject _connectionDialog;
@@ -31,12 +32,14 @@ public class UIHandler : MonoBehaviour
     private List<Image> _playerImages = new List<Image>();
     private Vector3 _gTSavedPos;
     private AudioSource _audioSource;
+    private SFXManager _sFXManager;
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _buttonClickSound;
         _gTSavedPos = _gameTitle.transform.position;
+        _sFXManager = SFXManager.Instance;
 
         foreach (GameObject go in _playerImageGOs)
         {
@@ -48,7 +51,7 @@ public class UIHandler : MonoBehaviour
 
     public void PlayButtonClickSound()
     {
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _buttonClickSound);
     }
     public void ExitGame()
     {
@@ -58,11 +61,17 @@ public class UIHandler : MonoBehaviour
     {
         _mainMenuScreen.SetActive(true);
         _startPlayScreen.SetActive(false);
+        _settingsScreen.SetActive(false);
     }
     public void OpenStartPlayScreen()
     {
         _mainMenuScreen.SetActive(false);
         _startPlayScreen.SetActive(true);
+    }
+    public void OpenSettingsScreen()
+    {
+        _mainMenuScreen.SetActive(false);
+        _settingsScreen.SetActive(true);
     }
 
     public void StartGame()

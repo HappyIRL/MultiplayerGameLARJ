@@ -16,6 +16,7 @@ public class PC : Interactable
     private AudioSource _audioSource;
     private int _pressCount = 0;
     private Coroutine _lastCoroutine;
+    private SFXManager _sFXManager;
 
     public override void Awake()
     {
@@ -27,6 +28,7 @@ public class PC : Interactable
     {
         base.Start();
         _audioSource = GetComponent<AudioSource>();
+        _sFXManager = SFXManager.Instance;
         DisableUI();
     }
 
@@ -41,8 +43,8 @@ public class PC : Interactable
         if (_lastCoroutine != null) StopCoroutine(_lastCoroutine);
 
         _pressCount++;
-        _audioSource.clip = _singleKeyboardTypingSounds[UnityEngine.Random.Range(0, _singleKeyboardTypingSounds.Count)];
-        _audioSource.Play();
+        AudioClip clip = _singleKeyboardTypingSounds[UnityEngine.Random.Range(0, _singleKeyboardTypingSounds.Count)];
+        _sFXManager.PlaySound(_audioSource, clip);
         UpdateUI();
         _lastCoroutine = StartCoroutine(WaitToDisableUI());
 
@@ -54,7 +56,7 @@ public class PC : Interactable
 
     private void StopTyping()
     {
-        _audioSource.Stop();
+        _sFXManager.StopAudioSource(_audioSource);
         DisableUI();
     }
 

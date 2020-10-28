@@ -24,6 +24,7 @@ public class Telephone : Interactable
     private AudioSource _audioSource;
     private bool _callAnswered = false;
     private Coroutine _lastCoroutine;
+    private SFXManager _sFXManager;
 
     public override void Awake()
     {
@@ -37,11 +38,12 @@ public class Telephone : Interactable
     {
         base.Start();
         _meshRenderer = GetComponent<MeshRenderer>();
+        _sFXManager = SFXManager.Instance;
     }
 
     public void StartTelephoneRinging()
     {
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _ringingSound);
         _callAnswered = false;
         _lastCoroutine = StartCoroutine(TelephoneRingingCoroutine());
     }
@@ -81,7 +83,7 @@ public class Telephone : Interactable
 
     private void EndCall()
     {
-        _audioSource.Stop();
+        _sFXManager.StopAudioSource(_audioSource);
         _callAnswered = true;
         ChangeMaterial(_standardScreenMaterial);
         DisableButtonHints();

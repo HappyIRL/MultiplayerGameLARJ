@@ -13,6 +13,7 @@ public class FireExtinguisher : Interactable
 
     private AudioSource _audioSource;
     private bool _isExtinguishing = false;
+    private SFXManager _sFXManager;
 
     public override void Awake()
     {
@@ -22,10 +23,15 @@ public class FireExtinguisher : Interactable
         _audioSource.clip = _extinguishSound;
         AlwaysInteractable = true;
     }
+    public override void Start()
+    {
+        base.Start();
+        _sFXManager = SFXManager.Instance;
+    }
 
     private void StartExtinguishing()
     {
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _extinguishSound);
         _foamParticles.Play();
 
         _isExtinguishing = true;
@@ -34,7 +40,7 @@ public class FireExtinguisher : Interactable
     }
     private void StopExtinguishing()
     {
-        _audioSource.Stop();
+        _sFXManager.StopAudioSource(_audioSource);
         _foamParticles.Stop();
 
         _isExtinguishing = false;

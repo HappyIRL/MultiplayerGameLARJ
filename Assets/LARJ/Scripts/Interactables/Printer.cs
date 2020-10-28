@@ -28,6 +28,7 @@ public class Printer : Interactable
     private AudioSource _audioSource;
     private Coroutine _lastCoroutine;
     private GameObject _papergameObject;
+    private SFXManager _sFXManager;
 
 	public override void Awake()
 	{
@@ -40,6 +41,7 @@ public class Printer : Interactable
     {
         base.Start();
         _audioSource = GetComponent<AudioSource>();
+        _sFXManager = SFXManager.Instance;
         SetPrinterOutputPoint();
     }
     private void SetPrinterOutputPoint()
@@ -96,8 +98,7 @@ public class Printer : Interactable
 
     private void PlaySound(AudioClip clip)
     {
-        _audioSource.clip = clip;
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, clip);
     }
 
     private void StartPrinting()
@@ -158,7 +159,7 @@ public class Printer : Interactable
         {
             StopCoroutine(_lastCoroutine);
         }
-        _audioSource.Stop();
+        _sFXManager.StopAudioSource(_audioSource);
         _audioSource.loop = false;
     }
 

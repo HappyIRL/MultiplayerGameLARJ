@@ -7,10 +7,12 @@ public class TeaMachine : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource = null;
     [SerializeField] private AudioClip _teaMachineSound = null;
+    private SFXManager _sFXManager;
 
     private void Start()
     {
         _audioSource.clip = _teaMachineSound;
+        _sFXManager = SFXManager.Instance;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,7 +23,7 @@ public class TeaMachine : MonoBehaviour
             if (mug != null)
             {
                 mug.FillMug(_audioSource);
-                _audioSource.Play();
+                _sFXManager.PlaySound(_audioSource, _teaMachineSound);
             }
         }
     }
@@ -34,7 +36,7 @@ public class TeaMachine : MonoBehaviour
             if (mug != null)
             {
                 mug.StopFillingMug();
-                _audioSource.Stop();
+                _sFXManager.StopAudioSource(_audioSource);
             }
         }
     }

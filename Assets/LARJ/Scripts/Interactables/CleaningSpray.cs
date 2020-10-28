@@ -12,6 +12,7 @@ public class CleaningSpray : Interactable
     [SerializeField] private LayerMask _cleaningLayer;
 
     private AudioSource _audioSource;
+    private SFXManager _sFXManager;
 
     public override void Awake()
 	{
@@ -25,12 +26,13 @@ public class CleaningSpray : Interactable
         base.Start();
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _spraySound;
+        _sFXManager = SFXManager.Instance;
     }
 
     private void Clean()
     {
         _sprayParticles.Play();
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _spraySound);
 
         RaycastHit hit;
         if (Physics.SphereCast(_cleaningPoint.position, 1f, _cleaningPoint.forward,out hit, 5f, _cleaningLayer))

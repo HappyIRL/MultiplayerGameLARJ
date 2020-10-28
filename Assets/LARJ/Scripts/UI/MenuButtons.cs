@@ -28,6 +28,11 @@ public class MenuButtons : MonoBehaviour
         _uiHandler.PlayButtonClickSound();
         _uiHandler.OpenMainMenuScreen();
     }
+    public void OnClick_OpenSettingsScreen()
+    {
+        _uiHandler.OpenSettingsScreen();
+        _uiHandler.PlayButtonClickSound();
+    }
 
     public void OnClick_EnterLocalSection()
 	{

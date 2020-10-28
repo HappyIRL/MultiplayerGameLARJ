@@ -18,6 +18,7 @@ public class DayManager : MonoBehaviour
     [SerializeField] private AudioClip _buttonClickSound = null;
 
     private AudioSource _audioSource;
+    private SFXManager _sFXManager;
     private bool _canPressEsc = true;
 
     private void Awake()
@@ -27,6 +28,10 @@ public class DayManager : MonoBehaviour
 
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _buttonClickSound;
+    }
+    private void Start()
+    {
+        _sFXManager = SFXManager.Instance;
     }
 
     public void ActivateDayFinishedScoreBoard()
@@ -39,24 +44,24 @@ public class DayManager : MonoBehaviour
     {
         Time.timeScale = 1;
         _canPressEsc = false;
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _buttonClickSound);
         _sceneChanger.FadeToScene(0);
     }
     public void ReplayDay()
     {
         Time.timeScale = 1;
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _buttonClickSound);
         _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void PauseGame()
     {
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _buttonClickSound);
         _pausedScreen.SetActive(true);
         Time.timeScale = 0;
     }
     public void ResumeGame()
     {
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _buttonClickSound);
         Time.timeScale = 1;
         _pausedScreen.SetActive(false);
     }

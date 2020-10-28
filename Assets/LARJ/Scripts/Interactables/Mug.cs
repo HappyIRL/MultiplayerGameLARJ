@@ -21,6 +21,7 @@ public class Mug : Interactable
     private Coroutine _fillMugCoroutine;
     private AudioSource _audioSource;
     private bool _isSomethingIn = false;
+    private SFXManager _sFXManager;
     [SerializeField] private InteractableObjectID _interactableID;
 
     public override void Awake()
@@ -36,6 +37,7 @@ public class Mug : Interactable
         _teaImageCanvas.position = _bottomFillPoint.position;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _drinkingSound;
+        _sFXManager = SFXManager.Instance;
         DisableUI();
     }
 
@@ -60,7 +62,7 @@ public class Mug : Interactable
 
         if (_isSomethingIn)
         {
-            _audioSource.Play();
+            _sFXManager.PlaySound(_audioSource, _drinkingSound);
             ApplyRandomTeaEffect();
         }
 
@@ -72,7 +74,7 @@ public class Mug : Interactable
 
     private void StopDrinking()
     {
-        _audioSource.Stop();
+        _sFXManager.StopAudioSource(_audioSource);
         _animator.SetBool("StartDrinking", false);
         _animator.SetBool("StopDrinking", true);
 

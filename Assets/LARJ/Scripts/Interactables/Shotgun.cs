@@ -15,6 +15,7 @@ public class Shotgun : Interactable
     [SerializeField] private int _interactableID;
 
     private AudioSource _audioSource;
+    private SFXManager _sFXManager;
     private bool _canShoot = true;
 
     public override void Awake()
@@ -25,13 +26,18 @@ public class Shotgun : Interactable
         _audioSource.clip = _shotgunShootSound;
         AlwaysInteractable = true;
     }
+    public override void Start()
+    {
+        base.Start();
+        _sFXManager = SFXManager.Instance;
+    }
 
     private void Shoot()
     {
         if (_canShoot)
         {
             _canShoot = false;
-            _audioSource.Play();
+            _sFXManager.PlaySound(_audioSource, _shotgunShootSound);
 
             for (int i = 0; i < _bulletCount; i++)
             {

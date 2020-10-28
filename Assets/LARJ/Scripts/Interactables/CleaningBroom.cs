@@ -12,6 +12,7 @@ public class CleaningBroom : Interactable
     [SerializeField] private Transform _broomBottom = null;
     [SerializeField] private LayerMask _garbageLayerMask;
     private AudioSource _audioSource;
+    private SFXManager _sFXManager;
     private bool _isCleaning = false;
 
     public override void Awake()
@@ -27,6 +28,7 @@ public class CleaningBroom : Interactable
 
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _cleaningSound;
+        _sFXManager = SFXManager.Instance;
     }
 
     //called on animator
@@ -50,13 +52,13 @@ public class CleaningBroom : Interactable
     {
         _animator.enabled = true;
         _animator.Play("CleaningBroom");
-        _audioSource.Play();
+        _sFXManager.PlaySound(_audioSource, _cleaningSound);
         _animator.SetBool("IsCleaning", true);
         _isCleaning = true;
     }
     private void StopCleaning()
     {
-        _audioSource.Stop();
+        _sFXManager.StopAudioSource(_audioSource);
         _animator.SetBool("IsCleaning", false);
         _isCleaning = false;
         _animator.enabled = false;
