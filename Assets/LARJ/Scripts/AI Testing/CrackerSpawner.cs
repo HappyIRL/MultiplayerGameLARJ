@@ -33,7 +33,7 @@ public class CrackerSpawner : MonoBehaviour
         for (int i = 0; i < _crackImages.Count; i++)
         {
             SpawnCrack(i);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1f);
         }
 
         SpawnCracker();
