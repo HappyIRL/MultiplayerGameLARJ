@@ -34,6 +34,11 @@ namespace Tasks
         private float _timer = 0f;
         private float _currentDelay;
 
+        private int _failedTasks = 0;
+        private int _completedTasks = 0;
+        public int FailedTaks { get => _failedTasks; }
+        public int CompletedTasks { get => _completedTasks; }
+
         private void Awake()
         {
             if (PhotonNetwork.IsConnected)
@@ -169,6 +174,8 @@ namespace Tasks
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetRewardMoney, true);
             OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
+
+            _completedTasks++;
         }
 
 
@@ -181,6 +188,8 @@ namespace Tasks
             _score.UpdateScore(task.GetLostMoneyOnFail, false);
             if (_isLocal || PhotonNetwork.IsMasterClient)
                 OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed);
+
+            _failedTasks++;
         }
         public void StartTask(Task task)
         {

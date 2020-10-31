@@ -26,7 +26,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private float _timeToFinishTask;
     private float _timer;
     public bool _isWaitingForMoney = false;
-    public bool _wasHittedByBullet = false;
+    public bool _wasHitByBullet = false;
 
     private CustomerManager cm;
     [SerializeField] private List<GameObject> _customerModels = null;
@@ -80,11 +80,11 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 
         if (collision.gameObject.tag == "Bullet")
         {
-            if (!_wasHittedByBullet)
+            if (!_wasHitByBullet)
             {
                 TaskManager.TaskManagerSingelton.OnTaskFailed(GetComponent<Task>());
                 SetFearText();
-                _wasHittedByBullet = true;
+                _wasHitByBullet = true;
             
                 _stateMachine.TransitionTo("Leaving");
             }
@@ -124,7 +124,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void EntryStart()
     {
         cm = CustomerManager.instance;
-        _wasHittedByBullet = false;
+        _wasHitByBullet = false;
 
         _speechBubble.SetActive(false);
         _moneyImage.SetActive(false);

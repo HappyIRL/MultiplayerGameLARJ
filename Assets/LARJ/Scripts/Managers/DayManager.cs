@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Tasks;
 
 [RequireComponent(typeof(AudioSource))]
 public class DayManager : MonoBehaviour
@@ -11,10 +12,16 @@ public class DayManager : MonoBehaviour
     [SerializeField] private GameObject _dayFinishedScoreBoard = null;
     [SerializeField] private GameObject _pausedScreen = null;
 
-    [Header("References")]
+    [Header("Texts")]
     [SerializeField] private TextMeshProUGUI _endScoreText = null;
+    [SerializeField] private TextMeshProUGUI _failedTaskText = null;
+    [SerializeField] private TextMeshProUGUI _completedTaskText = null;
+    [SerializeField] private GameObject _newHighScoreText = null;
+
+    [Header("References")]
     [SerializeField] private SceneChanger _sceneChanger = null;
     [SerializeField] private Score _score = null;
+    [SerializeField] private TaskManager _taskManager = null;
     [SerializeField] private AudioClip _buttonClickSound = null;
 
     private AudioSource _audioSource;
@@ -37,9 +44,29 @@ public class DayManager : MonoBehaviour
     public void ActivateDayFinishedScoreBoard()
     {
         _dayFinishedScoreBoard.SetActive(true);
-        _endScoreText.text = $"Money: {_score.ScoreCount}";
+        SetScoreTexts();
         Time.timeScale = 0;
     }
+
+    private void SetScoreTexts()
+    {
+        int money = _score.ScoreCount;
+        if (money > PlayerPrefs.GetInt("HighscoreMoney", 0))
+        {
+            _newHighScoreText.SetActive(true);
+            PlayerPrefs.SetInt("HighscoreMoney", money);
+        }
+        else
+        {
+            _newHighScoreText.SetActive(false);
+        }
+
+
+        _endScoreText.text = $"Money: {money}";
+        _failedTaskText.text = $"Failed Tasks: {_taskManager.FailedTaks}";
+        _completedTaskText.text = $"Completed Tasks: {_taskManager.CompletedTasks}";
+    }
+
     public void GoToMainMenu()
     {
         Time.timeScale = 1;
