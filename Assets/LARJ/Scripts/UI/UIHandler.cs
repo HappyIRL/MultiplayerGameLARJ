@@ -11,12 +11,16 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameObject _mainMenuScreen = null;
     [SerializeField] private GameObject _startPlayScreen = null;
     [SerializeField] private GameObject _settingsScreen = null;
+    [SerializeField] private GameObject _creditsScreen = null;
     [SerializeField] private GameObject _networkSectionScreen = null;
     [SerializeField] private GameObject _gameTitle = null;
     [SerializeField] private GameObject _connectionDialog;
     [SerializeField] private GameObject _failedToConnectDialog;
     [SerializeField] private GameObject _waitingForPlayersScreen;
     [SerializeField] private GameObject _startGamebutton;
+
+
+    [SerializeField] private Credits _credits;
 
     [SerializeField] private AudioClip _buttonClickSound = null;
 
@@ -62,6 +66,8 @@ public class UIHandler : MonoBehaviour
         _mainMenuScreen.SetActive(true);
         _startPlayScreen.SetActive(false);
         _settingsScreen.SetActive(false);
+        _creditsScreen.SetActive(false);
+        _credits.StopCredits();
     }
     public void OpenStartPlayScreen()
     {
@@ -72,6 +78,12 @@ public class UIHandler : MonoBehaviour
     {
         _mainMenuScreen.SetActive(false);
         _settingsScreen.SetActive(true);
+    }
+    public void OpenCreditsScreen()
+    {
+        _mainMenuScreen.SetActive(false);
+        _creditsScreen.SetActive(true);
+        _credits.StartCredits();
     }
 
     public void StartGame()
