@@ -48,8 +48,7 @@ public class PlayerInteraction : MonoBehaviour
             if (_objectToInteract != value)
             {
                 DeselectOldObject();
-                if(value != null)
-                    SelectNewObject(value);
+                SelectNewObject(value);
             }
         }
     }
@@ -204,6 +203,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void SelectNewObject(Interactable value)
     {
+        Debug.Log("GameObject: " + value);
         _objectToInteract = value;
 
         if (_objectToInteract != null)

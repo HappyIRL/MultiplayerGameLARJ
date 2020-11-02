@@ -121,14 +121,17 @@ public class Printer : Interactable
             StopCoroutine(_lastCoroutine);
         }
 
-        PlaySound(_printerOutSound);
-        _audioSource.loop = false;
-
         GameObject paper = InstantiateManager.Instance.Instantiate(_paperPrefab, _printerOutputPoint.position, _printerOutputPoint.rotation);
-        TaskManager.TaskManagerSingelton.StartTask(paper.GetComponent<Task>());
-        DisableButtonHints();
+
+        if(paper != null)
+		{
+            PlaySound(_printerOutSound);
+            _audioSource.loop = false;
+            TaskManager.TaskManagerSingelton.StartTask(paper.GetComponent<Task>());
+            DisableButtonHints();
+		}
     }
-    private void FinishPrinting(GameObject objectToSpawn, bool alreadyNetworked)
+    private void FinishPrinting(GameObject objectToSpawn)
     {
         GameObject go = null;
 
@@ -137,11 +140,7 @@ public class Printer : Interactable
             StopCoroutine(_lastCoroutine);
         }
 
-
-        if(!alreadyNetworked)
-		{
-           go = InstantiateManager.Instance.Instantiate(objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
-		}
+        go = InstantiateManager.Instance.Instantiate(objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
 
         if(go != null)
 		{
@@ -180,7 +179,7 @@ public class Printer : Interactable
     }
     public override void HoldingFinishedEvent(GameObject pickUpObject)
     {
-        FinishPrinting(pickUpObject, false);
+        FinishPrinting(pickUpObject);
     }
 
     public override void OnNetworkHoldingFinishedEvent()

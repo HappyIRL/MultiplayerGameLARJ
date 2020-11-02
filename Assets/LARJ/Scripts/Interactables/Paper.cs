@@ -7,9 +7,12 @@ using UnityEngine;
 [Serializable]
 public class Paper : Interactable
 {
+    [SerializeField] private InteractableObjectID _interactableID;
+
     public override void Awake()
     {
         base.Awake();
+        InteractableID = _interactableID;
         AlwaysInteractable = true;
     }
     void OnCollisionEnter(Collision collision)

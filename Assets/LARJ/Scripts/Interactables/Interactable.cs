@@ -41,6 +41,7 @@ public enum InteractableObjectID
     Mug4,
     Stamp,
     Stamp2,
+    Paper,
     None
 }
 

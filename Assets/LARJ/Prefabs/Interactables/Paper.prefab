@@ -169,6 +169,7 @@ MonoBehaviour:
   PressCountToFinishTask: 10
   CorrectKeysPressedCountToFinishTask: 10
   CanInteractWhenPickedUp: 0
+  _interactableID: 17
 --- !u!114 &6705345793431324033
 MonoBehaviour:
   m_ObjectHideFlags: 0

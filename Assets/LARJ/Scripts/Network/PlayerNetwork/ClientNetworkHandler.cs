@@ -37,7 +37,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 {
 	private GameObject[] _players = new GameObject[4];
 	private List<GameObject> _interactableGOs = new List<GameObject>();
-	private List<GameObject> _syncPositionObjects = new List<GameObject>();
 
 
 	public GameObject HealthbarCanvasPrefab;
@@ -153,6 +152,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				return _interactableGOs[15];
 			case InteractableObjectID.Stamp2:
 				return _interactableGOs[16];
+			case InteractableObjectID.Paper:
+				return _interactableGOs[17];
 			default:
 				return null;
 		}
@@ -620,10 +621,11 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveInteractableTransformOfMasterClient((InteractableTransformNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.NotifyMasterOnSceneLoad:
-				foreach (GameObject go in _interactableGOs)
+				for (int i = 0; i < _interactableGOs.Count - 1; i++)
 				{
-					RaiseOnStartInteractablePositions(go);
+					RaiseOnStartInteractablePositions(_interactableGOs[i]);
 				}
+
 				break;
 
 		}
@@ -662,7 +664,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	public GameObject OnMasterClientInstantiate(GameObject prefabGO)
 	{
-		Debug.Log("OnMasterClientInstantiate: " + prefabGO);
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, true);
 		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
 		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), null, null, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
@@ -671,7 +672,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	public GameObject OnMasterClientInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
-		Debug.Log("OnMasterClientInstantiate: " + prefabGO);
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, position, rotation, true);
 		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
 		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), position, rotation, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
