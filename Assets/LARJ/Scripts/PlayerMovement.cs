@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _dashDistance = 25f;
     [SerializeField] private float _dashSpeed = 10;
     [SerializeField] private Transform _bodyTransform = null;
+    [SerializeField] private ParticleSystem _moveParticles = null;
     private BoxCollider _boxCollider;
     private CharacterController _controller;
     private PlayerTeaEffects _playerTeaEffects;
@@ -72,7 +73,15 @@ public class PlayerMovement : MonoBehaviour
         {
             _bodyTransform.forward = _moveDirection * -1;
             _boxCollider.center = _bodyTransform.forward * -1;
+
+            if(!_moveParticles.isPlaying) _moveParticles.Play();
         }
+        else
+        {
+            _moveParticles.Stop();
+        }
+
+
         _moveDirection = transform.TransformDirection(_moveDirection);
         _controller.Move(_moveDirection * _movementSpeed * Time.deltaTime);
         if (transform.position.y != _initialYPosition)
