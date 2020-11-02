@@ -203,7 +203,6 @@ public class PlayerInteraction : MonoBehaviour
 
     private void SelectNewObject(Interactable value)
     {
-        Debug.Log("GameObject: " + value);
         _objectToInteract = value;
 
         if (_objectToInteract != null)

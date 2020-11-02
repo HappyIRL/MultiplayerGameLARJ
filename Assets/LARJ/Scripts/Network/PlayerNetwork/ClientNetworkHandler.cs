@@ -36,7 +36,8 @@ public enum LARJParentID
 public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 {
 	private GameObject[] _players = new GameObject[4];
-	private List<GameObject> _interactableGOs = new List<GameObject>();
+	private List<Interactable> _interactables = new List<Interactable>();
+		private List<GameObject> _syncOnStartGOs = new List<GameObject>();
 
 
 	public GameObject HealthbarCanvasPrefab;
@@ -119,41 +120,41 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		switch (prefabID)
 		{
 			case InteractableObjectID.Broom:
-				return _interactableGOs[0];
+				return _interactables[0].gameObject;
 			case InteractableObjectID.Telephone1:
-				return _interactableGOs[1];
+				return _interactables[1].gameObject;
 			case InteractableObjectID.Telephone2:
-				return _interactableGOs[2];
+				return _interactables[2].gameObject;
 			case InteractableObjectID.FireExtinguisher:
-				return _interactableGOs[3];
+				return _interactables[3].gameObject;
 			case InteractableObjectID.PC:
-				return _interactableGOs[4];
+				return _interactables[4].gameObject;
 			case InteractableObjectID.Printer:
-				return _interactableGOs[5];
+				return _interactables[5].gameObject;
 			case InteractableObjectID.Shotgun:
-				return _interactableGOs[6];
+				return _interactables[6].gameObject;
 			case InteractableObjectID.WaterCooler:
-				return _interactableGOs[7];
+				return _interactables[7].gameObject;
 			case InteractableObjectID.CleaningSpray:
-				return _interactableGOs[8];
+				return _interactables[8].gameObject;
 			case InteractableObjectID.Money:
-				return _interactableGOs[9];
+				return _interactables[9].gameObject;
 			case InteractableObjectID.Money2:
-				return _interactableGOs[10];
+				return _interactables[10].gameObject;
 			case InteractableObjectID.Mug:
-				return _interactableGOs[11];
+				return _interactables[11].transform.parent.gameObject;
 			case InteractableObjectID.Mug2:
-				return _interactableGOs[12];
+				return _interactables[12].transform.parent.gameObject;
 			case InteractableObjectID.Mug3:
-				return _interactableGOs[13];
+				return _interactables[13].transform.parent.gameObject;
 			case InteractableObjectID.Mug4:
-				return _interactableGOs[14];
+				return _interactables[14].transform.parent.gameObject;
 			case InteractableObjectID.Stamp:
-				return _interactableGOs[15];
+				return _interactables[15].transform.parent.gameObject;
 			case InteractableObjectID.Stamp2:
-				return _interactableGOs[16];
+				return _interactables[16].transform.parent.gameObject;
 			case InteractableObjectID.Paper:
-				return _interactableGOs[17];
+				return _interactables[17].gameObject;
 			default:
 				return null;
 		}
@@ -207,7 +208,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.NotifyMasterOnSceneLoad, clientNetworkData, raiseEventOptions, sendOptions);
 	}
 
-	private void RaiseOnStartInteractablePositions(GameObject go)
+	private void RaiseOnStartInteractablePositions(GameObject go, byte objectID)
 	{
 		Vector3 position = go.transform.position;
 		Vector3 rotation = go.transform.eulerAngles;
@@ -229,8 +230,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			Position = position,
 			Rotation = rotation,
 			LocalScale = localScale,
-			ObjectID = (byte)go.GetComponentInChildren<Interactable>().InteractableID
-	};
+			ObjectIndex = objectID
+		};
 
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.SyncInteractablesFromMaster, interactableTransform, raiseEventOptions, sendOptions);
 	}
@@ -504,12 +505,12 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		}
 	}
 
-	private void ReceiveInteractableUpdate(InteractableNetworkData data)
+	private void ReceiveInteractableEvent(InteractableNetworkData data)
 	{
 		GameObject simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
 		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
-		GameObject simulatedInteractableGO = GetInteractableGOFromID(data.ObjectInstanceID);
-		Interactable simulatedInteractable = simulatedInteractableGO.GetComponentInChildren<Interactable>();
+		Interactable simulatedInteractable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponentInChildren<Interactable>();
+		GameObject simulatedInteractableGO = simulatedInteractable.gameObject;
 		GameObject simulatedCloneGO = GetInteractableSceneGOFromID((InteractableObjectID)data.ItemInHandID);
 
 
@@ -584,10 +585,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveInteractableTransformOfMasterClient(InteractableTransformNetworkData data)
 	{
-		GameObject interactable = GetInteractableSceneGOFromID((InteractableObjectID)data.ObjectID);
-		interactable.transform.position = data.Position;
-		interactable.transform.eulerAngles = data.Rotation;
-		interactable.transform.localScale = data.LocalScale;
+		GameObject goToSync = _syncOnStartGOs[data.ObjectIndex];
+		goToSync.transform.position = data.Position;
+		goToSync.transform.eulerAngles = data.Rotation;
+		goToSync.transform.localScale = data.LocalScale;
 	}
 
 	public void OnEvent(EventData photonEvent)
@@ -600,7 +601,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveUpdatePC((ClientNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.InteractableUpdate:
-				ReceiveInteractableUpdate((InteractableNetworkData)photonEvent.CustomData);
+				ReceiveInteractableEvent((InteractableNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.TaskUpdate:
 				ReceiveTaskEvent((TaskNetworkData)photonEvent.CustomData);
@@ -621,9 +622,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveInteractableTransformOfMasterClient((InteractableTransformNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.NotifyMasterOnSceneLoad:
-				for (int i = 0; i < _interactableGOs.Count - 1; i++)
+
+				for (int i = 0; i < _syncOnStartGOs.Count; i++)
 				{
-					RaiseOnStartInteractablePositions(_interactableGOs[i]);
+					RaiseOnStartInteractablePositions(_syncOnStartGOs[i], (byte)i);
 				}
 
 				break;
@@ -635,13 +637,14 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	#region Public - Methods
 
-	public void SetInteractables(List<GameObject> interactableGOs)
+	public void SetInteractables(List<Interactable> interactables, List<GameObject> syncOnStartGOs)
 	{
-		_interactableGOs = interactableGOs;
+		_interactables = interactables;
+		_syncOnStartGOs = syncOnStartGOs;
 
-		foreach (GameObject gameobject in _interactableGOs)
+		foreach (Interactable interactable in interactables)
 		{
-			AddInstanceToObjectLists(gameobject);
+			AddInstanceToObjectLists(interactable.gameObject);
 		}
 	}
 

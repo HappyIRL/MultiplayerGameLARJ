@@ -8,7 +8,8 @@ public class NetworkCharacterSetup : MonoBehaviourPunCallbacks
 {
 	[SerializeField] private GameObject _playerPrefab;
 	[SerializeField] private GameObject _simulatedPlayer;
-	[SerializeField] private List<GameObject> _interactables = new List<GameObject>();
+	[SerializeField] private List<Interactable> _interactables = new List<Interactable>();
+	[SerializeField] private List<GameObject> _syncOnStartGOs = new List<GameObject>();
 	[SerializeField] private GameObject _healtbarCanvasPrefab = null;
 
 	private GameObject[] _players = new GameObject[4];
@@ -42,7 +43,7 @@ public class NetworkCharacterSetup : MonoBehaviourPunCallbacks
 				}
 			}
 			ClientNetworkHandler.SetPlayers(_players);
-			ClientNetworkHandler.SetInteractables(_interactables);
+			ClientNetworkHandler.SetInteractables(_interactables, _syncOnStartGOs);
 			ClientNetworkHandler.HealthbarCanvasPrefab = _healtbarCanvasPrefab;
 		}
 	}
