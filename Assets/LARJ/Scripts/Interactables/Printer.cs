@@ -23,7 +23,6 @@ public class Printer : Interactable
     [SerializeField] private AudioClip _printerInSound = null;
     [SerializeField] private AudioClip _printerInProgressSound = null;
     [SerializeField] private AudioClip _printerOutSound = null;
-    [SerializeField] private int _interactableID;
 
     private AudioSource _audioSource;
     private Coroutine _lastCoroutine;
@@ -133,14 +132,12 @@ public class Printer : Interactable
     }
     private void FinishPrinting(GameObject objectToSpawn)
     {
-        GameObject go = null;
-
         if (_lastCoroutine != null)
         {
             StopCoroutine(_lastCoroutine);
         }
 
-        go = InstantiateManager.Instance.Instantiate(objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
+        GameObject go = InstantiateManager.Instance.Instantiate(objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
 
         if(go != null)
 		{

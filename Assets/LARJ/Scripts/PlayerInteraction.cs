@@ -52,9 +52,13 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
+    private void Awake()
+	{
+        _playerInput = GetComponent<PlayerInput>();
+    }
+
     private void Start()
     {
-        _playerInput = GetComponent<PlayerInput>();
         TaskManager.TaskManagerSingelton.OnTask += ActivateInteractable;
     }
 
@@ -208,9 +212,8 @@ public class PlayerInteraction : MonoBehaviour
         if (_objectToInteract != null)
         {
             if (!_isPickedUp)
-            {
                 _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
-            }
+
             _objectToInteract.EnableOutline();
         }
     }

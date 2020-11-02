@@ -37,7 +37,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 {
 	private GameObject[] _players = new GameObject[4];
 	private List<Interactable> _interactables = new List<Interactable>();
-		private List<GameObject> _syncOnStartGOs = new List<GameObject>();
+	private List<GameObject> _syncOnStartGOs = new List<GameObject>();
 
 
 	public GameObject HealthbarCanvasPrefab;
@@ -178,7 +178,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private InteractableObjectID GetInteractableIDOfGameObject(GameObject prefabGO)
 	{
-		Interactable interactable = prefabGO.GetComponentInChildren<Interactable>();
+		Interactable interactable = prefabGO.GetComponent<Interactable>();
 		return interactable.InteractableID;
 	}
 
@@ -441,9 +441,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		simulatedInteractable.HoldingFailedEvent();
 	}
 
-	private void ReceiveSimulatedPlayerFinishHold(Interactable simulatedInteractable, GameObject simulatedCloneGO)
+	private void ReceiveSimulatedPlayerFinishHold(Interactable simulatedInteractable, GameObject simulatedInteractableGO)
 	{
-		if (simulatedCloneGO == null)
+		//BIG FKN SHIIIIT  - Takes care of paper or duplication being done twice
+		if (simulatedInteractableGO == null)
 			simulatedInteractable.OnNetworkHoldingFinishedEvent();
 	}
 
@@ -511,7 +512,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
 		Interactable simulatedInteractable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponentInChildren<Interactable>();
 		GameObject simulatedInteractableGO = simulatedInteractable.gameObject;
-		GameObject simulatedCloneGO = GetInteractableSceneGOFromID((InteractableObjectID)data.ItemInHandID);
 
 
 		InteractableUseType type = (InteractableUseType)data.InteractableUseID;
@@ -534,7 +534,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveSimulatedPlayerFailedHold(simulatedInteractable);
 				break;
 			case InteractableUseType.HoldFinish:
-				ReceiveSimulatedPlayerFinishHold(simulatedInteractable, simulatedCloneGO);
+				ReceiveSimulatedPlayerFinishHold(simulatedInteractable, simulatedInteractableGO);
 				break;
 			case InteractableUseType.MousePress:
 				ReceiveSimulatedPlayerMousePress(simulatedInteractable);
@@ -669,7 +669,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, true);
 		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
-		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), null, null, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
+		RaiseOnInstantiate(GetInteractableIDOfGameObject(instanceGO), null, null, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
 		return instanceGO;
 	}
 
@@ -677,7 +677,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, position, rotation, true);
 		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
-		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), position, rotation, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
+		RaiseOnInstantiate(GetInteractableIDOfGameObject(instanceGO), position, rotation, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
 		return instanceGO;
 	}
 

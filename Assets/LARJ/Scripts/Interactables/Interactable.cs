@@ -98,7 +98,7 @@ public abstract class Interactable : MonoBehaviour
 
     public GameObject PlayerWhoPickedThisUp { get => _playerWhoPickedThisUp; }
 
-    public InteractableObjectID InteractableID { get; protected set; }
+    public virtual InteractableObjectID InteractableID { get; protected set; }
 
 
     public virtual void Awake()
