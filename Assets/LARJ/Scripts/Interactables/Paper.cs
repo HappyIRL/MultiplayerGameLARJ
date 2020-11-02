@@ -16,7 +16,6 @@ public class Paper : Interactable
     {
         if (collision.gameObject.tag =="PaperBox")
         {
-            Debug.Log("In Paper Box");
             TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
             Destroy(gameObject);
         }

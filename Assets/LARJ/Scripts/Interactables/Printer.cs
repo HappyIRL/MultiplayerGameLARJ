@@ -122,11 +122,12 @@ public class Printer : Interactable
 
         GameObject paper = InstantiateManager.Instance.Instantiate(_paperPrefab, _printerOutputPoint.position, _printerOutputPoint.rotation);
 
+
         if(paper != null)
 		{
+            TaskManager.TaskManagerSingelton.StartTask(paper.GetComponent<Task>());
             PlaySound(_printerOutSound);
             _audioSource.loop = false;
-            TaskManager.TaskManagerSingelton.StartTask(paper.GetComponent<Task>());
             DisableButtonHints();
 		}
     }
@@ -137,7 +138,7 @@ public class Printer : Interactable
             StopCoroutine(_lastCoroutine);
         }
 
-        GameObject go = InstantiateManager.Instance.Instantiate(objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
+        GameObject go = InstantiateManager.Instance.Instantiate (objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
 
         if(go != null)
 		{

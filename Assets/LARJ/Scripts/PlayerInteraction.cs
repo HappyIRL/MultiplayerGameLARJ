@@ -71,9 +71,10 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     if (!interactable.AlwaysInteractable)
                     {
-                        OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
+                        DisableInteraction(interactable);
                     }
+                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                 }
                 break;
             case LARJTaskState.TaskFailed:
@@ -81,9 +82,10 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     if (!interactable.AlwaysInteractable)
                     {
-                        OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
+                        DisableInteraction(interactable);
                     }
+                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                 }
                 break;
             case LARJTaskState.TaskStart:
@@ -182,18 +184,9 @@ public class PlayerInteraction : MonoBehaviour
 
         if (interactable != null)
         {
-            if (!_isPickedUp)
-            {
-                interactable.DisableButtonHints();
-                _canInteract = true;
-                _holdingButton = false;
+            DisableInteraction(interactable);
 
-                if (interactable == ObjectToInteract)
-                {
-                    ObjectToInteract = null;
-                }
-            }
-            else if (other.tag == "Printer")
+            if (other.tag == "Printer")
             {
                 if (_duplicator != null)
                 {
@@ -204,6 +197,21 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
     #endregion
+
+    private void DisableInteraction(Interactable interactable)
+	{
+        if (!_isPickedUp)
+        {
+            interactable.DisableButtonHints();
+            _canInteract = true;
+            _holdingButton = false;
+
+            if (interactable == ObjectToInteract)
+            {
+                ObjectToInteract = null;
+            }
+        }
+    }
 
     private void SelectNewObject(Interactable value)
     {

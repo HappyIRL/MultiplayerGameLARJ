@@ -105,71 +105,9 @@ namespace Tasks
             return false;
         }
 
-        ///// <summary>
-        ///// Updates the TasksTExt in  the UI, taskType decides which Taskstext should be modified and positive means eigther increasing the Taskcounter or decreasing it.
-        ///// </summary>
-        ///// <param name="taskType"></param>
-        ///// <param name="positive"></param>
-        //private void UpdateTasksText(int taskType, bool positive)
-        //{
-        //    if (positive)
-        //    {
-        //        _taskListCounter[taskType]++;
-        //        switch (taskType)
-        //        {
-        //            case 0:
-        //                _tasksListText[taskType].text = _taskListCounter[taskType] + " Answer Phone Call!";
-        //                break;
-        //            case 1:
-        //                _tasksListText[taskType].text = _taskListCounter[taskType] + " Print Documents!!";
-        //                break;
-        //            case 2:
-        //                _tasksListText[taskType].text = _taskListCounter[taskType] + " Talk to Customer!!!";
-        //                break;
-        //            //Add more if we have more Tasks
-        //            default:
-        //                Debug.LogError("Task is missing TaskType");
-        //                break;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        _taskListCounter[taskType]--;
-        //        if (_taskListCounter[taskType] > 0)
-        //        {
-        //            switch (taskType)
-        //            {
-        //                case 0:
-        //                    _tasksListText[taskType].text = _taskListCounter[taskType] + " Answer Phone Call!";
-        //                    break;
-        //                case 1:
-        //                    _tasksListText[taskType].text = _taskListCounter[taskType] + " Print Documents!!";
-        //                    break;
-        //                case 2:
-        //                    _tasksListText[taskType].text = _taskListCounter[taskType] + " Talk to Customer!!!";
-        //                    break;
-        //                //Add more if we have more Tasks
-        //                default:
-        //                    break;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (_taskListCounter[taskType] < 0)
-        //            {
-        //                Debug.LogError("Try to delete a Task, that was never given.");
-        //                _taskListCounter[taskType] = 0;
-        //            }
-        //            _tasksListText[taskType].text = "";
-        //        }
-        //    }
-
-        //}
-
         public void OnTaskCompleted(Task task)
         {
             task.IsTaskActive = false;
-            //UpdateTasksText((int)taskType, false);
             task.StopTask();
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetRewardMoney, true);
@@ -182,12 +120,10 @@ namespace Tasks
         public void OnTaskFailed(Task task)
         {
             task.IsTaskActive = false;
-            //UpdateTasksText((int)taskType, false);
             task.StopTask();
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetLostMoneyOnFail, false);
-            if (_isLocal || PhotonNetwork.IsMasterClient)
-                OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed);
+            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed);
 
             _failedTasks++;
         }
@@ -197,30 +133,26 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            if (_isLocal || PhotonNetwork.IsMasterClient)
-                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
         public void StartRandomFollowUpTask()
         {
-            if (PhotonNetwork.IsMasterClient || _isLocal)
+            Task task;
+            if (!CheckIfTasksAreAvailable(_followUpTasks))
             {
-                Task task;
-                if (!CheckIfTasksAreAvailable(_followUpTasks))
-                {
-                    return;
-                }
-                do
-                {
-                    int i = UnityEngine.Random.Range(0, _followUpTasks.Length);
-                    task = _followUpTasks[i];
-
-                } while (task.IsTaskActive);
-                task.IsTaskActive = true;
-                TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
-                task.TaskUI = taskUI;
-                task.StartTask();
-                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+                return;
             }
+            do
+            {
+                int i = UnityEngine.Random.Range(0, _followUpTasks.Length);
+                task = _followUpTasks[i];
+
+            } while (task.IsTaskActive);
+            task.IsTaskActive = true;
+            TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
+            task.TaskUI = taskUI;
+            task.StartTask();
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
         public void StartMoneyTask(Task task)
         {
@@ -228,8 +160,7 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(TaskType.Money, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            if (_isLocal || PhotonNetwork.IsMasterClient)
-                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
     }
 }

@@ -142,17 +142,17 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			case InteractableObjectID.Money2:
 				return _interactables[10].gameObject;
 			case InteractableObjectID.Mug:
-				return _interactables[11].transform.parent.gameObject;
+				return _interactables[11].gameObject;
 			case InteractableObjectID.Mug2:
-				return _interactables[12].transform.parent.gameObject;
+				return _interactables[12].gameObject;
 			case InteractableObjectID.Mug3:
-				return _interactables[13].transform.parent.gameObject;
+				return _interactables[13].gameObject;
 			case InteractableObjectID.Mug4:
-				return _interactables[14].transform.parent.gameObject;
+				return _interactables[14].gameObject;
 			case InteractableObjectID.Stamp:
-				return _interactables[15].transform.parent.gameObject;
+				return _interactables[15].gameObject;
 			case InteractableObjectID.Stamp2:
-				return _interactables[16].transform.parent.gameObject;
+				return _interactables[16].gameObject;
 			case InteractableObjectID.Paper:
 				return _interactables[17].gameObject;
 			default:
@@ -409,11 +409,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveSimulatedPlayerPickUp(GameObject simulatedInteractableGO, Interactable simulatedInteractable, GameObject simulatedPlayerObjectHolder)
 	{
-		simulatedInteractable.DisableColliders();
-
-		simulatedInteractableGO.transform.rotation = simulatedPlayerObjectHolder.transform.rotation;
-		simulatedInteractableGO.transform.position = simulatedPlayerObjectHolder.transform.position;
-		simulatedInteractableGO.transform.parent = simulatedPlayerObjectHolder.transform;
+		simulatedInteractable.PickUpObject(simulatedPlayerObjectHolder.transform, simulatedInteractableGO);
 	}
 
 	private void ReceiveSimulatedPlayerDrop(Interactable simulatedInteractable)
@@ -460,9 +456,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveTaskEvent(TaskNetworkData data)
 	{
-		_myPlayer = GetPlayerFromID(_myID);
-		Interactable interactable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponentInChildren<Interactable>();
-		Task task = interactable.GetComponentInChildren<Task>();
+		Interactable interactable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponent<Interactable>();
+		Task task = interactable.GetComponent<Task>();
 		TaskManagerUI taskManagerUI = TaskManager.TaskManagerSingelton.TaskManagerUI;
 		Score score = TaskManager.TaskManagerSingelton.Score;
 
@@ -476,6 +471,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				task.StopTask();
 				taskManagerUI.RemoveUITask(task.TaskUI);
 				score.UpdateScore(task.GetRewardMoney, true);
+				Debug.LogError($"ReceiveTaskEvent - Interactable: {interactable} with Task {task}, State: {(LARJTaskState)data.TaskState}");
 				break;
 
 			case LARJTaskState.TaskFailed:
@@ -486,12 +482,14 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				task.StopTask();
 				taskManagerUI.RemoveUITask(task.TaskUI);
 				score.UpdateScore(task.GetLostMoneyOnFail, false);
+				Debug.LogError($"ReceiveTaskEvent - Interactable: {interactable} with Task {task}, State: {(LARJTaskState)data.TaskState}");
 				break;
 
 			case LARJTaskState.TaskStart:
 				if (!AllowedInteractables.Instance.Interactables.Contains(interactable))
-					AllowedInteractables.Instance.AddInteractable(GetInteractableGOFromID(data.ObjectInstanceID).GetComponent<Interactable>());
+					AllowedInteractables.Instance.AddInteractable(interactable);
 				task.TaskUI = taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
+				
 				break;
 		}
 	}
@@ -579,6 +577,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			}
 
 			RaiseOnInstantiate((InteractableObjectID)data.ID, data.Position, data.Rotation, data.LocalScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
+
+			if((InteractableObjectID)data.ID == InteractableObjectID.Paper) TaskManager.TaskManagerSingelton.StartTask(instanceGO.GetComponent<Task>());
 		}
 
 	}
@@ -622,12 +622,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveInteractableTransformOfMasterClient((InteractableTransformNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.NotifyMasterOnSceneLoad:
-
 				for (int i = 0; i < _syncOnStartGOs.Count; i++)
 				{
 					RaiseOnStartInteractablePositions(_syncOnStartGOs[i], (byte)i);
 				}
-
 				break;
 
 		}
