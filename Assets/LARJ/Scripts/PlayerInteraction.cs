@@ -48,7 +48,8 @@ public class PlayerInteraction : MonoBehaviour
             if (_objectToInteract != value)
             {
                 DeselectOldObject();
-                SelectNewObject(value);
+                if(value != null)
+                    SelectNewObject(value);
             }
         }
     }

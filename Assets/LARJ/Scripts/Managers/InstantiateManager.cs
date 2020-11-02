@@ -73,17 +73,19 @@ public class InstantiateManager
 		return null;
 	}
 
-	public GameObject ForceLocalInstantiate(GameObject prefabGO)
+	public GameObject ForceLocalInstantiate(GameObject prefabGO, bool IsGarbage)
 	{
 		GameObject go = Object.Instantiate(prefabGO);
-		SpawnGarbageHealthbar(go);
+		if(IsGarbage)
+			SpawnGarbageHealthbar(go);
 		return go;
 	}
 
-	public GameObject ForceLocalInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
+	public GameObject ForceLocalInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation, bool IsGarbage)
 	{
 		GameObject go = Object.Instantiate(prefabGO, position, rotation);
-		SpawnGarbageHealthbar(go);
+		if (IsGarbage)
+			SpawnGarbageHealthbar(go);
 		return go;
 	}
 

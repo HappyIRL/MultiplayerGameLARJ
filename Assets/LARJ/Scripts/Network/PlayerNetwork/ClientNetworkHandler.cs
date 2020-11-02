@@ -176,7 +176,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private InteractableObjectID GetInteractableIDOfGameObject(GameObject prefabGO)
 	{
-		Interactable interactable = prefabGO.GetComponent<Interactable>();
+		Interactable interactable = prefabGO.GetComponentInChildren<Interactable>();
 		return interactable.InteractableID;
 	}
 
@@ -551,7 +551,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveInstantiateOnOther(NotMasterClientInstantiateData data)
 	{
-		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID));
+		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID), true);
 		AddInstanceToObjectList(instanceGO, data.UniqueInstanceID);
 		instanceGO.transform.localScale = data.LocalScale;
 
@@ -566,7 +566,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
-			GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID));
+			GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID), true);
 			instanceGO.transform.localScale = data.LocalScale;
 			int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
 
@@ -663,7 +663,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	public GameObject OnMasterClientInstantiate(GameObject prefabGO)
 	{
 		Debug.Log("OnMasterClientInstantiate: " + prefabGO);
-		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO);
+		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, true);
 		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
 		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), null, null, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
 		return instanceGO;
@@ -672,7 +672,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	public GameObject OnMasterClientInstantiate(GameObject prefabGO, Vector3 position, Quaternion rotation)
 	{
 		Debug.Log("OnMasterClientInstantiate: " + prefabGO);
-		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, position, rotation);
+		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(prefabGO, position, rotation, true);
 		int uniqueInstanceID = AddInstanceToObjectLists(instanceGO);
 		RaiseOnInstantiate(GetInteractableIDOfGameObject(prefabGO), position, rotation, instanceGO.transform.localScale, LARJNetworkEvents.InstantiateOnOther, uniqueInstanceID);
 		return instanceGO;

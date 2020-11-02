@@ -41,7 +41,6 @@ public class Stamp : Interactable
     {
         if (CanPrint)
         {
-            Debug.Log("Print");
             SpawnStampPrint(collision);
             CanPrint = false;
         }
@@ -49,7 +48,8 @@ public class Stamp : Interactable
 
     private void SpawnStampPrint(Collision collision)
     {
-        GameObject obj = InstantiateManager.Instance.Instantiate(_stampPrintPrefab);
+        GameObject obj = InstantiateManager.Instance.ForceLocalInstantiate(_stampPrintPrefab, false);
+        Debug.Log(obj);
         obj.transform.position = collision.GetContact(0).point;
         obj.transform.forward = collision.GetContact(0).normal;
         obj.transform.parent = collision.transform;

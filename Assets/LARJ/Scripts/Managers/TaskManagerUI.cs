@@ -57,7 +57,6 @@ namespace Tasks
                 case TaskType.Money:
                     title = "Bring the Customer Money";
                     icon = _moneyIcon;
-                    Debug.Log("Set Values for Money UI Task");
                     break;
                 case TaskType.Mail:
                     title = "Reply E-Mail";
