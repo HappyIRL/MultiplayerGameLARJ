@@ -10,8 +10,6 @@ public enum LARJNetworkState
 
 public class LARJConnectToPhoton : MonoBehaviourPunCallbacks
 {
-
-	//Called with a LARJNetworkStatus. Invokes LARJNetworkStatusEvent.
 	private void Start()
 	{
 		PhotonNetwork.AutomaticallySyncScene = true;

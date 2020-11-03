@@ -403,7 +403,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		if (_simulatedPlayerGO != null)
 		{
 			_simulatedPlayerGO.transform.position = data.Position;
-			_simulatedPlayerGO.GetComponent<SimulatedPlayer>()._baseCharacter.transform.eulerAngles = data.Rotation;
+			_simulatedPlayerGO.GetComponent<PlayerCharacterAppearance>()._baseCharacter.transform.eulerAngles = data.Rotation;
 		}
 	}
 
@@ -505,7 +505,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void ReceiveInteractableEvent(InteractableNetworkData data)
 	{
 		GameObject simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
-		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponent<SimulatedPlayer>()._objectHolder;
+		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponent<PlayerCharacterAppearance>()._objectHolder;
 		Interactable simulatedInteractable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponentInChildren<Interactable>();
 		GameObject simulatedInteractableGO = simulatedInteractable.gameObject;
 

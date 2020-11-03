@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Singletons/MasterManager")]
 public class MasterManager : ScriptableObject
@@ -11,6 +9,7 @@ public class MasterManager : ScriptableObject
 	public GameSettings GameSettings { get { return Instance._gameSettings; } }
 
 	private static MasterManager _instance = null;
+	public int PlayerCount { get; private set; }
 
 	public static MasterManager Instance
 	{
@@ -24,5 +23,5 @@ public class MasterManager : ScriptableObject
 			}
 			return _instance;
 		}
-	}
+	} 
 }

@@ -33,14 +33,14 @@ public class NetworkCharacterSetup : MonoBehaviourPunCallbacks
 			{
 				if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == i)
 				{
-					_players[i] = Instantiate(_playerPrefab);
+					_players[i] = Instantiate(_playerPrefab, new Vector3(PhotonNetwork.LocalPlayer.ActorNumber - 3, 1.155f, 1), Quaternion.identity);
 				}
 				else
 				{
-					_players[i] = Instantiate(_simulatedPlayer);
-					var simPlayer = _players[i].GetComponent<SimulatedPlayer>();
-					simPlayer.SetHairColor(Color.HSVToRGB((float)i / 4, 1, 1));
+					_players[i] = Instantiate(_simulatedPlayer, new Vector3(i - 2, 1.155f, 1), Quaternion.identity);
 				}
+				var simPlayer = _players[i].GetComponent<PlayerCharacterAppearance>();
+				simPlayer.SetHairColor(Color.HSVToRGB((float)i / 4, 1, 1));
 			}
 			ClientNetworkHandler.SetPlayers(_players);
 			ClientNetworkHandler.SetInteractables(_interactables, _syncOnStartGOs);

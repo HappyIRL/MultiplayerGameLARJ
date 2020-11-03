@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimulatedPlayer : MonoBehaviour
+public class PlayerCharacterAppearance : MonoBehaviour
 {
     [SerializeField] private MeshRenderer _meshRenderer;
 
