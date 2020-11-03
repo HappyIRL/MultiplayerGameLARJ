@@ -17,7 +17,8 @@ public class Paper : Interactable
         if (collision.gameObject.tag =="PaperBox")
         {
             TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            //Destroy(gameObject);
         }
     }
 	public override InteractableObjectID InteractableID { get => InteractableObjectID.Paper; protected set => base.InteractableID = value; }

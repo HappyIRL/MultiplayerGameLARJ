@@ -471,7 +471,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				task.StopTask();
 				taskManagerUI.RemoveUITask(task.TaskUI);
 				score.UpdateScore(task.GetRewardMoney, true);
-				Debug.LogError($"ReceiveTaskEvent - Interactable: {interactable} with Task {task}, State: {(LARJTaskState)data.TaskState}");
 				break;
 
 			case LARJTaskState.TaskFailed:
@@ -482,7 +481,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				task.StopTask();
 				taskManagerUI.RemoveUITask(task.TaskUI);
 				score.UpdateScore(task.GetLostMoneyOnFail, false);
-				Debug.LogError($"ReceiveTaskEvent - Interactable: {interactable} with Task {task}, State: {(LARJTaskState)data.TaskState}");
 				break;
 
 			case LARJTaskState.TaskStart:

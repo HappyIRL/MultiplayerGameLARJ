@@ -29,8 +29,6 @@ namespace Tasks
         public event LARJTaskEvent OnTask;
         //[SerializeField] private TextMeshProUGUI[] _tasksListText;
         public static TaskManager TaskManagerSingelton;
-
-        private bool _isLocal;
         private float _timer = 0f;
         private float _currentDelay;
 
@@ -41,10 +39,6 @@ namespace Tasks
 
         private void Awake()
         {
-            if (PhotonNetwork.IsConnected)
-                _isLocal = false;
-            else
-                _isLocal = true;
             _currentDelay = _delayBetweenTasks;
             TaskManagerSingelton = this;
         }
@@ -72,7 +66,7 @@ namespace Tasks
 
         private void StartRandomStartingTask()
         {
-            if (PhotonNetwork.IsMasterClient || _isLocal)
+            if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)
             {
                 Task task;
                 if (!CheckIfTasksAreAvailable(_startingTasks))
@@ -152,6 +146,7 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
+            Debug.Log("StartRandomFollowUpTask: " + task.name);
             OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
         public void StartMoneyTask(Task task)

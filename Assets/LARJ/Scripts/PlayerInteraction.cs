@@ -92,8 +92,9 @@ public class PlayerInteraction : MonoBehaviour
                 if (!AllowedInteractables.Instance.Interactables.Contains(interactable))
                 {
                     AllowedInteractables.Instance.AddInteractable(interactable);
-                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                 }
+                OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
+
                 break;
         }
     }
@@ -118,6 +119,8 @@ public class PlayerInteraction : MonoBehaviour
                 _holdingButton = false;
                 _holdingWasFinished = true;
 
+                LARJInteractableUse?.Invoke(objectToHold.InteractableID, InteractableUseType.HoldFinish, objectToHold.UniqueInstanceID, _objectToInteract.InteractableID);
+
                 if (_isPickedUp)
                 {
                     objectToHold.HoldingFinishedEvent(_objectToInteract.TransformForPickUp.gameObject);
@@ -127,8 +130,6 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     objectToHold.HoldingFinishedEvent();
                 }
-
-                LARJInteractableUse?.Invoke(objectToHold.InteractableID, InteractableUseType.HoldFinish, objectToHold.UniqueInstanceID, _objectToInteract.InteractableID);
             }
         }
     }
@@ -422,12 +423,12 @@ public class PlayerInteraction : MonoBehaviour
         _isPickedUp = false;
         _objectToInteract.DropObject();
 
-        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Drop, _objectToInteract.UniqueInstanceID, InteractableObjectID.None);
 
         if (_objectToInteract.CanInteractWhenPickedUp)
         {
             _objectToInteract.DisablePickedUpButtonHints();
         }
+        LARJInteractableUse?.Invoke(_objectToInteract.InteractableID, InteractableUseType.Drop, _objectToInteract.UniqueInstanceID, InteractableObjectID.None);
 
         _objectToInteract = null;
     }
