@@ -65,8 +65,8 @@ public class DoorOpeningMechanism2 : MonoBehaviour
         if (_door1Coroutine != null) StopCoroutine(_door1Coroutine);
         if (_door2Coroutine != null) StopCoroutine(_door2Coroutine);
 
-        _door1Coroutine = StartCoroutine(MoveDoor1(_door1.position + _door1.forward * -3f));
-        _door2Coroutine = StartCoroutine(MoveDoor2(_door2.position + _door2.forward * -3f));
+        _door1Coroutine = StartCoroutine(MoveDoor1(_door1.position + _door1.forward * 1f));
+        _door2Coroutine = StartCoroutine(MoveDoor2(_door2.position + _door2.forward * 1f));
     }
     private void CloseDoor()
     {
