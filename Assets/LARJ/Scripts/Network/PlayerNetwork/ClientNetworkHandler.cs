@@ -335,9 +335,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void RaiseNetworkedInteractable(InteractableUseType type, int objectInstanceID, InteractableObjectID itemInHandID)
 	{
-
-		Debug.LogError($"SENDING:  Id: {_myID} Type: {type} ObejctInstanceID: {objectInstanceID} ItemInHandID: {itemInHandID}");
-
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
 			Receivers = ReceiverGroup.Others,
@@ -367,8 +364,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void RaiseOnInstantiate(InteractableObjectID id, Vector3? position, Quaternion? rotation, Vector3 localScale, LARJNetworkEvents instantiationType, int uniqueInstanceID)
 	{
-		Debug.LogError($"Receiving:  Id: {id}  ObejctInstanceID: {uniqueInstanceID}");
-
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
 			Receivers = ReceiverGroup.Others,
@@ -510,8 +505,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void ReceiveInteractableEvent(InteractableNetworkData data)
 	{
 
-		Debug.LogError($"Received:  Id: {data.ID} Type: {data.InteractableUseID} ObejctInstanceID: {data.ObjectInstanceID} ItemInHandID: {data.ItemInHandID}");
-
 		GameObject simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
 		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponentInChildren<PlayerCharacterAppearance>()._objectHolder;
 		Interactable simulatedInteractable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponentInChildren<Interactable>();
@@ -557,9 +550,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveInstantiateOnOther(NotMasterClientInstantiateData data)
 	{
-		Debug.LogError($"Receiving:  Id: {data.ID}  ObejctInstanceID: {data.UniqueInstanceID}");
-
-
 		GameObject instanceGO = InstantiateManager.Instance.ForceLocalInstantiate(GetInteractableSceneGOFromID((InteractableObjectID)data.ID), true);
 		AddInstanceToObjectList(instanceGO, data.UniqueInstanceID);
 
