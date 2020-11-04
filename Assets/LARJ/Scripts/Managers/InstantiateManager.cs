@@ -91,10 +91,12 @@ public class InstantiateManager
 
 	public void SpawnGarbageHealthbar(GameObject duplicatedObject)
     {
-		GameObject healthbarCanvas = Object.Instantiate(HealthbarCanvasHolder.Instance.HealthbarCanvasPrefab);
-		healthbarCanvas.transform.SetParent(duplicatedObject.transform);
-		healthbarCanvas.transform.position = duplicatedObject.transform.position + Vector3.up;
-
-		duplicatedObject.AddComponent<Garbage>();
+		if(duplicatedObject.GetComponent<Garbage>() == null)
+		{
+			GameObject healthbarCanvas = Object.Instantiate(HealthbarCanvasHolder.Instance.HealthbarCanvasPrefab);
+			healthbarCanvas.transform.SetParent(duplicatedObject.transform);
+			healthbarCanvas.transform.position = duplicatedObject.transform.position + Vector3.up;
+			duplicatedObject.AddComponent<Garbage>();
+		}
 	}
 }
