@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _dashSpeed = 10;
     [SerializeField] private Transform _bodyTransform = null;
     [SerializeField] private ParticleSystem _moveParticles = null;
+    [SerializeField] private ParticleSystem _dashParticles = null;
     private BoxCollider _boxCollider;
     private CharacterController _controller;
     private PlayerTeaEffects _playerTeaEffects;
@@ -95,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
         if (inputValue.isPressed && !_isDashOnCooldown)
         {
             StartCoroutine(Dash());
+            _dashParticles.Play();
         }
     }
     IEnumerator Dash()
@@ -106,6 +108,7 @@ public class PlayerMovement : MonoBehaviour
         _isDashOnCooldown = true;
         while (i <= 1)
         {
+            _moveDirection.y = 0;
             _controller.Move(_moveDirection * _dashDistance * Time.deltaTime);
             i += Time.deltaTime * _dashSpeed;
             yield return null;
