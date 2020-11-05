@@ -9,13 +9,13 @@ public class CleaningSpray : Interactable
     [SerializeField] private ParticleSystem _sprayParticles = null;
     [SerializeField] private Transform _cleaningPoint = null;
     [SerializeField] private AudioClip _spraySound = null;
-    [SerializeField] private LayerMask _cleaningLayer;
+    [SerializeField] private LayerMask _playerLayer;
 
     private AudioSource _audioSource;
     private SFXManager _sFXManager;
 
     public override void Awake()
-	{
+    {
         base.Awake();
         InteractableID = InteractableObjectID.CleaningSpray;
         AlwaysInteractable = true;
@@ -35,9 +35,13 @@ public class CleaningSpray : Interactable
         _sFXManager.PlaySound(_audioSource, _spraySound);
 
         RaycastHit hit;
-        if (Physics.SphereCast(_cleaningPoint.position, 1f, _cleaningPoint.forward,out hit, 5f, _cleaningLayer))
+        if (Physics.SphereCast(_cleaningPoint.position, 1f, _cleaningPoint.forward, out hit, 5f, _playerLayer))
         {
-            Destroy(hit.collider.gameObject);
+            var obj = hit.collider.GetComponent<PlayerMovement>();
+            if (obj != null)
+            {
+                obj.RemoveAllEffects();
+            }
         }
     }
 

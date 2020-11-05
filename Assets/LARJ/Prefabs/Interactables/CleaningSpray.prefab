@@ -6930,9 +6930,9 @@ MonoBehaviour:
   _sprayParticles: {fileID: 3103888934085668624}
   _cleaningPoint: {fileID: 1081342358591209317}
   _spraySound: {fileID: 8300000, guid: 59cffd16543b8804d9bf7551006759b1, type: 3}
-  _cleaningLayer:
+  _playerLayer:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 32768
 --- !u!1 &8570933535859460461
 GameObject:
   m_ObjectHideFlags: 0

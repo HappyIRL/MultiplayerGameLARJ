@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,6 +27,11 @@ public class PlayerMovement : MonoBehaviour
     private bool _isDashOnCooldown = false;
     private bool _inDash = false;
     private int _revertMovementMultiplicator = 1;
+    private float _prevSpeed;
+    private float _prevDashCooldown;
+    private Coroutine _speedEffectCoroutine;
+    private Coroutine _dashEffectCoroutine;
+    private Coroutine _badEffectCoroutine;
 
 
     private void Awake()
@@ -34,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _playerTeaEffects = GetComponent<PlayerTeaEffects>();
         _initialYPosition = transform.position.y;
+        _prevSpeed = _movementSpeed;
+        _prevDashCooldown = _dashCooldown;
     }
     public int GetPlayerIndex()
     {
@@ -75,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
             _bodyTransform.forward = _moveDirection * -1;
             _boxCollider.center = _bodyTransform.forward * -1;
 
-            if(!_moveParticles.isPlaying) _moveParticles.Play();
+            if (!_moveParticles.isPlaying) _moveParticles.Play();
         }
         else
         {
@@ -121,37 +129,58 @@ public class PlayerMovement : MonoBehaviour
     public void ApplySpeedEffect()
     {
         _playerTeaEffects.PlaySpeedParticles();
-
-        float prevSpeed = _movementSpeed;
-        StartCoroutine(WaitToRemoveSpeedEffect(prevSpeed));
+        if (_speedEffectCoroutine != null)
+        {
+            StopCoroutine(_speedEffectCoroutine);
+        }
+        _speedEffectCoroutine = StartCoroutine(WaitToRemoveSpeedEffect());
         _movementSpeed = 6f;
     }
     public void ApplyDashEffect()
     {
         _playerTeaEffects.PlayDashParticles();
-
-        float prevDashCooldown = _dashCooldown;
-        StartCoroutine(WaitToRemoveDashEffect(prevDashCooldown));
+        if (_dashEffectCoroutine != null)
+        {
+            StopCoroutine(_dashEffectCoroutine);
+        }
+        _dashEffectCoroutine = StartCoroutine(WaitToRemoveDashEffect());
         _dashCooldown = 0.1f;
     }
     public void ApplyBadEffect()
     {
         _playerTeaEffects.PlayBadParticles();
-
-        StartCoroutine(WaitToRemoveBadEffect());
+        if (_badEffectCoroutine != null)
+        {
+            StopCoroutine(_badEffectCoroutine);
+        }
+        _badEffectCoroutine = StartCoroutine(WaitToRemoveBadEffect());
         _revertMovementMultiplicator = -1;
     }
-
-    private IEnumerator WaitToRemoveSpeedEffect(float prevSpeed)
+    public void RemoveAllEffects()
+    {
+        _movementSpeed = _prevSpeed;
+        _dashCooldown = _prevDashCooldown;
+        _revertMovementMultiplicator = 1;
+        _playerTeaEffects.StopSpeedParticles();
+        _playerTeaEffects.StopDashParticles();
+        _playerTeaEffects.StopBadParticles();
+        if (_speedEffectCoroutine != null)
+            StopCoroutine(_speedEffectCoroutine);
+        if (_dashEffectCoroutine != null)
+            StopCoroutine(_dashEffectCoroutine);
+        if (_badEffectCoroutine != null)
+            StopCoroutine(_badEffectCoroutine);
+    }
+    private IEnumerator WaitToRemoveSpeedEffect()
     {
         yield return new WaitForSeconds(30f);
-        _movementSpeed = prevSpeed;
+        _movementSpeed = _prevSpeed;
         _playerTeaEffects.StopSpeedParticles();
     }
-    private IEnumerator WaitToRemoveDashEffect(float prevDashCooldown)
+    private IEnumerator WaitToRemoveDashEffect()
     {
         yield return new WaitForSeconds(30f);
-        _dashCooldown = prevDashCooldown;
+        _dashCooldown = _prevDashCooldown;
         _playerTeaEffects.StopDashParticles();
     }
     private IEnumerator WaitToRemoveBadEffect()
