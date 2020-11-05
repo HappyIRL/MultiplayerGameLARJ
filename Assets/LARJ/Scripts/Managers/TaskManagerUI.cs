@@ -26,6 +26,8 @@ namespace Tasks
 
         public TaskUI SpawnUITask(TaskType taskType, int rewardMoney, float timeToCompleteTask)
         {
+            if (taskType == TaskType.Customer) return null;
+
             GameObject obj = _taskUIPool.GetObject();
             TaskUI task = obj.GetComponent<TaskUI>();
 
@@ -46,10 +48,10 @@ namespace Tasks
                     title = "Print Documents!";
                     icon = _printerIcon;
                     break;
-                case TaskType.Customer:
-                    title = "Serve Customer!";
-                    icon = _customerIcon;
-                    break;
+                //case TaskType.Customer:
+                //    title = "Serve Customer!";
+                //    icon = _customerIcon;
+                //    break;
                 case TaskType.Cleaning:
                     title = "Pick up Garbage!";
                     icon = _cleaningIcon;
