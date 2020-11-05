@@ -12,6 +12,7 @@ TagManager:
   - Mug
   - Money
   - PaperBox
+  - Safe
   layers:
   - Default
   - TransparentFX

@@ -45,6 +45,7 @@ public class CrackerSpawner : MonoBehaviour
         var cracker = go.GetComponent<Cracker>();
 
         cracker.crackerPool = _crackerPool;
+        cracker.CrackerSpawner = this;
         go.transform.position = _spawnPoint.position;           
     }
     private void SpawnCrack(int crackIndex)
@@ -60,5 +61,18 @@ public class CrackerSpawner : MonoBehaviour
     {
         _dirtParticles.Stop();
         _dustParticles.Stop();
+    }
+    public void CloseHole()
+    {
+        StartCoroutine(CloseHoleCoroutine());
+    }
+    private IEnumerator CloseHoleCoroutine()
+    {
+        for (int i = _crackImages.Count - 1; i >= 0; i--)
+        {
+            SpawnCrack(i);
+            yield return new WaitForSeconds(1f);
+        }
+        _crackImages[0].SetActive(false);
     }
 }
