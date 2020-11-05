@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4000013730804486}
   - component: {fileID: 198000013794084858}
   - component: {fileID: 199000013610181882}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4697,7 +4697,9 @@ GameObject:
   - component: {fileID: 4000012166036088}
   - component: {fileID: 5840391838427297197}
   - component: {fileID: 7788045481972084405}
-  m_Layer: 0
+  - component: {fileID: 6690418780240415020}
+  - component: {fileID: -1972375962839058379}
+  m_Layer: 16
   m_Name: TinyFire
   m_TagString: Fire
   m_Icon: {fileID: 0}
@@ -4732,12 +4734,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6623c83e496834abd6a26efd6f93dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FirePool: {fileID: 0}
+  FireSpawner: {fileID: 0}
   _maxHealth: 10
   _chanceOfSpawningAnotherFire: 0.01
   _child1: {fileID: 4000010042286394}
   _child2: {fileID: 4000013730804486}
   _healthbarImage: {fileID: 6247639574907361005}
   _healthbarBackground: {fileID: 3465390968113312540}
+  _audioSource: {fileID: -1972375962839058379}
+  _fireSound: {fileID: 8300000, guid: fadbef93037f29b47b8fad9e791ba6d7, type: 3}
 --- !u!135 &7788045481972084405
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4751,6 +4757,115 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.8
   m_Center: {x: 0, y: 0.61, z: 0}
+--- !u!114 &6690418780240415020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011671376998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 535c2dccdbf867b4cab9e82ac5ea50b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pool: {fileID: 0}
+--- !u!82 &-1972375962839058379
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011671376998}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1000013861588696
 GameObject:
   m_ObjectHideFlags: 0
@@ -4762,7 +4877,7 @@ GameObject:
   - component: {fileID: 4000010042286394}
   - component: {fileID: 198000011545952112}
   - component: {fileID: 199000012247684184}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9445,6 +9560,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4000012166036088}
     m_Modifications:
+    - target: {fileID: 3306543072879933328, guid: 4eff1e7c0becd7b4bbcaf2db1ca9f6b6, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3754623262700260698, guid: 4eff1e7c0becd7b4bbcaf2db1ca9f6b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -9520,6 +9639,14 @@ PrefabInstance:
     - target: {fileID: 6080349377339825878, guid: 4eff1e7c0becd7b4bbcaf2db1ca9f6b6, type: 3}
       propertyPath: m_Name
       value: HealthbarCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6080349377339825878, guid: 4eff1e7c0becd7b4bbcaf2db1ca9f6b6, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8344793038831230495, guid: 4eff1e7c0becd7b4bbcaf2db1ca9f6b6, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4eff1e7c0becd7b4bbcaf2db1ca9f6b6, type: 3}

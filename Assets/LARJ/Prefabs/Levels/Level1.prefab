@@ -5087,7 +5087,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6819291593398908212}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59748,6 +59748,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6819291593398908212}
     m_Modifications:
+    - target: {fileID: 561383827947090306, guid: 256217ab361e103488d294a661432c49, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1563789194909297347, guid: 256217ab361e103488d294a661432c49, type: 3}
       propertyPath: m_Name
       value: Door4

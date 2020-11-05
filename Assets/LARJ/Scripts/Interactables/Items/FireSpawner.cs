@@ -4,10 +4,35 @@ using UnityEngine;
 
 public class FireSpawner : MonoBehaviour
 {
+    [SerializeField, Range(0, 10)] private int _difficulty = 1;
     [SerializeField] private ObjectPool _firePool = null;
     [SerializeField] private float _xSize = 10f;
     [SerializeField] private float _zSize = 10f;
     [SerializeField] private LayerMask _wallLayerMask;
+
+    private float _spawnChance;
+    private float _timer = 0f;
+
+    public int Difficulty { get => _difficulty; }
+
+    private void Awake()
+    {
+        _spawnChance = 0.025f * _difficulty;
+    }
+    private void Update()
+    {
+        _timer += Time.deltaTime;
+
+        if (_timer >= 5f)
+        {
+            _timer = 0f;
+
+            if (Random.value <= _spawnChance)
+            {
+                SpawnFireAtRandomPosition();
+            }
+        }
+    }
 
     public void SpawnFireAtRandomPosition()
     {

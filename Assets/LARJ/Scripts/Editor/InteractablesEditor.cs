@@ -36,6 +36,7 @@ public class InteractablesEditor : Editor
 
     //Pick up
     public SerializedProperty PickUpTransformProperty = null;
+    public SerializedProperty BottomTransformProperty = null;
 
     private void OnEnable()
     {
@@ -60,6 +61,7 @@ public class InteractablesEditor : Editor
         ProgressbarBackgroundProperty = serializedObject.FindProperty("ProgressbarBackground");
 
         PickUpTransformProperty = serializedObject.FindProperty("TransformForPickUp");
+        BottomTransformProperty = serializedObject.FindProperty("BottomTransform");
     } 
 
     public override void OnInspectorGUI()
@@ -75,6 +77,7 @@ public class InteractablesEditor : Editor
         {
             case InteractionType.PickUp:
                 EditorGUILayout.PropertyField(PickUpTransformProperty);
+                EditorGUILayout.PropertyField(BottomTransformProperty);
                 EditorGUILayout.PropertyField(KeyboardPressedButtonHintProperty);
                 EditorGUILayout.PropertyField(GamepadPressedButtonHintProperty);
                 interactables.CanInteractWhenPickedUp = EditorGUILayout.Toggle("CanInteractWhenPickedUp", interactables.CanInteractWhenPickedUp);

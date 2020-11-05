@@ -464,7 +464,7 @@ RectTransform:
   m_GameObject: {fileID: 1437155314492660577}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.05}
-  m_LocalScale: {x: 0.001, y: 0.001, z: 1}
+  m_LocalScale: {x: 0.0005, y: 0.0005, z: 1}
   m_Children:
   - {fileID: 1437155312906211387}
   - {fileID: 2619624351676907311}
@@ -479,7 +479,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.78}
+  m_AnchoredPosition: {x: 0, y: 0.834}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1437155314492660589
@@ -6905,6 +6905,7 @@ MonoBehaviour:
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
   TransformForPickUp: {fileID: 5475495455053248235}
+  BottomTransform: {fileID: 5475495455053248235}
   KeyboardReleaseButtonHintImage: {fileID: 0}
   KeyboardPressedButtonHintImage: {fileID: 3651269597262585531}
   GamepadReleaseButtonHintImage: {fileID: 0}

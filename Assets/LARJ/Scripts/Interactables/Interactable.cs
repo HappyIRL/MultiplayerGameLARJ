@@ -56,6 +56,7 @@ public abstract class Interactable : MonoBehaviour
     [HideInInspector] public Rigidbody Rb = null;
     [HideInInspector] public Outline OutlineRef = null;
     [HideInInspector] public Transform TransformForPickUp = null;
+    [HideInInspector] public Transform BottomTransform = null;
 
     #region Button hints
     //Button press hints
@@ -366,15 +367,16 @@ public abstract class Interactable : MonoBehaviour
     }
     private IEnumerator MoveToGround()
     {
-        Vector3 ground = TransformForPickUp.position;
-        ground.y = 0.3f;
+        float y = 0.25f;
+        Vector3 ground = new Vector3(TransformForPickUp.position.x, y, TransformForPickUp.position.z);
 
-        while (Vector3.Distance(ground, TransformForPickUp.position) > 0.01f)
+        while (Mathf.Abs(y - BottomTransform.position.y) > 0.1f)
         {
             TransformForPickUp.position = Vector3.MoveTowards(TransformForPickUp.position, ground, Time.deltaTime * 5f);
             yield return null;
         }
     }
+
     private bool CheckForDropZone()
     {
         Collider[] colliders = Physics.OverlapSphere(TransformForPickUp.position, 0.5f, LayerMask.GetMask("DropZone"));

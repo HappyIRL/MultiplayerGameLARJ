@@ -10,6 +10,7 @@ public class FireExtinguisher : Interactable
     [Header("FireExtinguisher")]
     [SerializeField] private ParticleSystem _foamParticles = null;
     [SerializeField] private AudioClip _extinguishSound = null;
+    [SerializeField] private LayerMask _fireLayer;
 
     private AudioSource _audioSource;
     private bool _isExtinguishing = false;
@@ -52,7 +53,7 @@ public class FireExtinguisher : Interactable
 
         while (_isExtinguishing)
         {
-            if (Physics.SphereCast(transform.position, 1f, transform.forward, out hit, 5f))
+            if (Physics.SphereCast(transform.position, 1f, transform.forward, out hit, 5f, _fireLayer))
             {
                 if (hit.collider.tag == "Fire")
                 {
