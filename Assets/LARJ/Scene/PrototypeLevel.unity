@@ -1183,11 +1183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0d01aa34cea0242ac8b7d73c3f3d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noOfWaves: 5
+  noOfWaves: 2
   waveCooldown: 5
   _customerPool: {fileID: 572083784}
   noOfCustomers: 2
-  perWaveMultiplier: 1.198
+  perWaveMultiplier: 1.184
   _spawnPoint: {fileID: 389938664}
   _despawnPoint: {fileID: 1071789256}
 --- !u!1 &282450312
@@ -3155,7 +3155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cff85b0951ccbbe4f9fb9b331a5a9c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _difficulty: 10
+  _difficulty: 1
   _firePool: {fileID: 1860757250}
   _xSize: 25
   _zSize: 15
