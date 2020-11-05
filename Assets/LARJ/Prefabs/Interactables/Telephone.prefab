@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4044187137241445878}
   - component: {fileID: 5894535082283320545}
   - component: {fileID: 7512472803643927533}
+  - component: {fileID: 3826104884249216314}
   m_Layer: 0
   m_Name: Telephone
   m_TagString: Untagged
@@ -231,6 +232,7 @@ MonoBehaviour:
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
   TransformForPickUp: {fileID: 0}
+  BottomTransform: {fileID: 0}
   KeyboardReleaseButtonHintImage: {fileID: 0}
   KeyboardPressedButtonHintImage: {fileID: 6651676241982262358}
   GamepadReleaseButtonHintImage: {fileID: 0}
@@ -274,6 +276,22 @@ MonoBehaviour:
   eraseRenderer: 0
   originalLayer: 0
   originalMaterials: []
+--- !u!114 &3826104884249216314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4450039970984984745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcd6c87044ae26d4abe5637047656138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewardMoney: 20
+  _lostMoneyOnFail: 10
+  _timeToFinishTask: 20
+  _taskType: 0
 --- !u!1001 &2899784465546827745
 PrefabInstance:
   m_ObjectHideFlags: 0

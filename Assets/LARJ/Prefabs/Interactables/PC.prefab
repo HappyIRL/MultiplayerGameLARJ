@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5291383747513813885}
   - component: {fileID: 7764389319381591149}
   - component: {fileID: 8389501005499365270}
+  - component: {fileID: 445886623683510357}
   m_Layer: 0
   m_Name: PC
   m_TagString: Untagged
@@ -247,6 +248,7 @@ MonoBehaviour:
   Rb: {fileID: 0}
   OutlineRef: {fileID: 0}
   TransformForPickUp: {fileID: 0}
+  BottomTransform: {fileID: 0}
   KeyboardReleaseButtonHintImage: {fileID: 7407910513109804769}
   KeyboardPressedButtonHintImage: {fileID: 5157756415654799456}
   GamepadReleaseButtonHintImage: {fileID: 8255084522470174385}
@@ -280,6 +282,22 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7cd4faf7d6edd51489eb1e85745585dc, type: 3}
   - {fileID: 8300000, guid: a8b31456cd662804193568916a633ca1, type: 3}
   _interactableID: 69
+--- !u!114 &445886623683510357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6181773461525399074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcd6c87044ae26d4abe5637047656138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewardMoney: 30
+  _lostMoneyOnFail: 15
+  _timeToFinishTask: 20
+  _taskType: 5
 --- !u!1001 &2624662032170751725
 PrefabInstance:
   m_ObjectHideFlags: 0
