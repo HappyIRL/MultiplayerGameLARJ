@@ -191,9 +191,12 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         _timer = 0;
         _currentCoroutine = StartCoroutine("LeaveAfterDelay");
-        var rot = transform.rotation.eulerAngles;
+        //var rot = transform.rotation.eulerAngles;
         _agent.updateRotation = false;
-        transform.Rotate(-rot);
+        //transform.Rotate(-rot);
+
+        transform.rotation = Quaternion.LookRotation(_deskWaypoint.forward * -1,transform.up);
+            
         if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
             TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
     }
