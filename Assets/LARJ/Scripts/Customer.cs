@@ -217,10 +217,13 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
             yield return null;
         }
         // Log Failed Task
-        _patienceImage.gameObject.SetActive(false);
-        _patienceImageBackground.gameObject.SetActive(false);
-        CustomerLeavesAngry();
-        _stateMachine.TransitionTo("Leaving");
+        if(_stateMachine.currentState.name != "Leaving")
+        {
+            _patienceImage.gameObject.SetActive(false);
+            _patienceImageBackground.gameObject.SetActive(false);
+            CustomerLeavesAngry();
+            _stateMachine.TransitionTo("Leaving");
+        }
     }
 
     #endregion
