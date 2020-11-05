@@ -4736,7 +4736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FirePool: {fileID: 0}
   FireSpawner: {fileID: 0}
-  _maxHealth: 10
+  _maxHealth: 5
   _chanceOfSpawningAnotherFire: 0.01
   _child1: {fileID: 4000010042286394}
   _child2: {fileID: 4000013730804486}
