@@ -22,11 +22,9 @@ public class Score : MonoBehaviour
         _score += positive ? reward : -reward;
         _scoreCountText.color = _score < 0 ? Color.black : Color.yellow;
         _scoreCountText.text = _score.ToString();
-
-        SaveMoney();
     }
 
-    private void SaveMoney()
+    public void SaveMoney()
     {
         int totalMoney = PlayerPrefs.GetInt("TotalMoneyScore", 0) + _score;
         PlayerPrefs.SetInt("TotalMoneyScore", totalMoney);

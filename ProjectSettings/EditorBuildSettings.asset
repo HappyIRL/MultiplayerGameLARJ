@@ -20,5 +20,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LARJ/Scene/PrototypeLevel.unity
     guid: 140f86d71a31c9e469aa8f1152085769
+  - enabled: 1
+    path: Assets/LARJ/Scene/Level2.unity
+    guid: 8f5a3a80430406b47bb2259facdf5bee
+  - enabled: 1
+    path: Assets/LARJ/Scene/Level3.unity
+    guid: 267cd0cfb5d8be047a94bbc586c82fa4
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 70eec2a8b7567cd49b878d9fe7be9831, type: 2}

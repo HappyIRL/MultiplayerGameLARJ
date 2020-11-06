@@ -12,6 +12,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameObject _startPlayScreen = null;
     [SerializeField] private GameObject _settingsScreen = null;
     [SerializeField] private GameObject _creditsScreen = null;
+    [SerializeField] private GameObject _localLevelSelectionScreen = null;
     [SerializeField] private GameObject _networkSectionScreen = null;
     [SerializeField] private GameObject _gameTitle = null;
     [SerializeField] private GameObject _connectionDialog;
@@ -73,6 +74,7 @@ public class UIHandler : MonoBehaviour
     {
         _mainMenuScreen.SetActive(false);
         _startPlayScreen.SetActive(true);
+        _localLevelSelectionScreen.SetActive(false);
     }
     public void OpenSettingsScreen()
     {
@@ -85,10 +87,23 @@ public class UIHandler : MonoBehaviour
         _creditsScreen.SetActive(true);
         _credits.StartCredits();
     }
+    public void OpenLocalLevelSelectionScreen()
+    {
+        _localLevelSelectionScreen.SetActive(true);
+        _startPlayScreen.SetActive(false);
+    }
 
-    public void StartGame()
+    public void Startlevel1()
     {
         _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void Startlevel2()
+    {
+        _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex + 2);
+    }
+    public void Startlevel3()
+    {
+        _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex + 3);
     }
 
     public void EnterLocalSection()

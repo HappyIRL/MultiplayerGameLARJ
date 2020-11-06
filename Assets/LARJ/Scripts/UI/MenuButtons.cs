@@ -17,10 +17,20 @@ public class MenuButtons : MonoBehaviour
         _uiHandler.OpenStartPlayScreen();
     }
 
-    public void OnClick_StartGame()
+    public void OnClick_StartLevel1()
     {
         _uiHandler.PlayButtonClickSound();
-        _uiHandler.StartGame();
+        _uiHandler.Startlevel1();
+    }
+    public void OnClick_StartLevel2()
+    {
+        _uiHandler.PlayButtonClickSound();
+        _uiHandler.Startlevel2();
+    }
+    public void OnClick_StartLevel3()
+    {
+        _uiHandler.PlayButtonClickSound();
+        _uiHandler.Startlevel3();
     }
 
     public void OnClick_OpenMainMenuScreen()
@@ -36,6 +46,11 @@ public class MenuButtons : MonoBehaviour
     public void OnClick_OpenCreditsScreen()
     {
         _uiHandler.OpenCreditsScreen();
+        _uiHandler.PlayButtonClickSound();
+    }
+    public void OnClick_OpenLocalLevelSelectionScreen()
+    {
+        _uiHandler.OpenLocalLevelSelectionScreen();
         _uiHandler.PlayButtonClickSound();
     }
 

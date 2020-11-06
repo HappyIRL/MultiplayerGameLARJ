@@ -44,6 +44,7 @@ public class DayManager : MonoBehaviour
     public void ActivateDayFinishedScoreBoard()
     {
         _dayFinishedScoreBoard.SetActive(true);
+        _score.SaveMoney();
         SetScoreTexts();
         Time.timeScale = 0;
     }
