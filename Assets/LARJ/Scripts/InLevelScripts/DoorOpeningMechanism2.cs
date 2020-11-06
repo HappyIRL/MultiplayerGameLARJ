@@ -79,7 +79,7 @@ public class DoorOpeningMechanism2 : MonoBehaviour
 
     private IEnumerator MoveDoor1(Vector3 ToPosition)
     {
-        while (Vector3.Distance(_door1.position, ToPosition) > 0.1f)
+        while (Vector3.Distance(_door1.position, ToPosition) > 0.01f)
         {
             _door1.position = Vector3.MoveTowards(_door1.position, ToPosition, _openingSpeed * Time.deltaTime);
             yield return null;
@@ -87,7 +87,7 @@ public class DoorOpeningMechanism2 : MonoBehaviour
     }
     private IEnumerator MoveDoor2(Vector3 ToPosition)
     {
-        while (Vector3.Distance(_door2.position, ToPosition) > 0.1f)
+        while (Vector3.Distance(_door2.position, ToPosition) > 0.01f)
         {
             _door2.position = Vector3.MoveTowards(_door2.position, ToPosition, _openingSpeed * Time.deltaTime);
             yield return null;
