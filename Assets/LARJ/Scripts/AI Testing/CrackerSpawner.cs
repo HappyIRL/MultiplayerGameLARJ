@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,13 @@ public class CrackerSpawner : MonoBehaviour
     [SerializeField] private ObjectPool _crackerPool;
     [SerializeField] private Transform _spawnPoint;
 
+    [Header("Difficulty")]
+    [SerializeField, Range(0, 10)] private int _difficulty = 0;
+    private float _spawnChance;
+    private float _timer = 0;
+    [HideInInspector] public bool AllStealed = false;
+    private bool _isActive = false;
+
     [Header("Particles")]
     [SerializeField] private ParticleSystem _dustParticles = null;
     [SerializeField] private ParticleSystem _dirtParticles = null;
@@ -16,13 +24,34 @@ public class CrackerSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> _crackImages = null;
 
 
-    private void Start()
+    private void Awake()
     {
-        StartSpawningCracker();
+        _spawnChance = _difficulty * 0.01f;
+    }
+    private void Update()
+    {
+        _timer += Time.deltaTime;
+
+        if (_timer >= 5f)
+        {
+            _timer = 0;
+
+            if (UnityEngine.Random.value <= _spawnChance)
+            {
+                if (!AllStealed)
+                {
+                    if (!_isActive)
+                    {
+                        StartSpawningCracker();
+                    }
+                }
+            }
+        }
     }
 
-    public void StartSpawningCracker()
+    private void StartSpawningCracker()
     {
+        _isActive = true;
         StartCoroutine(StartCrackerVisuals());
     }
     private IEnumerator StartCrackerVisuals()
@@ -74,5 +103,6 @@ public class CrackerSpawner : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
         _crackImages[0].SetActive(false);
+        _isActive = false;
     }
 }

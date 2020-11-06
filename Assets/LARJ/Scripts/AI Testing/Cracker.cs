@@ -52,6 +52,7 @@ public class Cracker : MonoBehaviour, IObjectPoolNotifier
             UpdateProgressbar();
         }
 
+        CrackerSpawner.AllStealed = true;
         DeactivateProgressbar();
         StealMoney();
         StartEscapeAnimation();
