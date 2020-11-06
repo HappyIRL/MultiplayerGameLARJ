@@ -23,10 +23,19 @@ public class CrackerSpawner : MonoBehaviour
     [Header("Cracks")]
     [SerializeField] private List<GameObject> _crackImages = null;
 
+    public int Difficulty
+    {
+        get => _difficulty;
+        set
+        {
+            _difficulty = value;
+            SetSpawnChance();
+        }
+    }
 
     private void Awake()
     {
-        _spawnChance = _difficulty * 0.01f;
+        SetSpawnChance();
     }
     private void Update()
     {
@@ -47,6 +56,11 @@ public class CrackerSpawner : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void SetSpawnChance()
+    {
+        _spawnChance = _difficulty * 0.01f;
     }
 
     private void StartSpawningCracker()

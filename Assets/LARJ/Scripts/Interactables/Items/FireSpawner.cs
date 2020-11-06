@@ -13,11 +13,19 @@ public class FireSpawner : MonoBehaviour
     private float _spawnChance;
     private float _timer = 0f;
 
-    public int Difficulty { get => _difficulty; }
+    public int Difficulty 
+    { 
+        get => _difficulty; 
+        set
+        {
+            _difficulty = value;
+            SetSpawnChance();
+        }
+    }
 
     private void Awake()
     {
-        _spawnChance = 0.025f * _difficulty;
+        SetSpawnChance();
     }
     private void Update()
     {
@@ -32,6 +40,10 @@ public class FireSpawner : MonoBehaviour
                 SpawnFireAtRandomPosition();
             }
         }
+    }
+    private void SetSpawnChance()
+    {
+        _spawnChance = 0.025f * _difficulty;
     }
 
     public void SpawnFireAtRandomPosition()
