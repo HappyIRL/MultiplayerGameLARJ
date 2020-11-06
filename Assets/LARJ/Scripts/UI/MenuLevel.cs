@@ -20,6 +20,7 @@ public class MenuLevel : MonoBehaviour
     [SerializeField] private GameObject _costUI = null;
     [SerializeField] private Button _playlevelButton = null;
     [SerializeField] private TextMeshProUGUI _costText = null;
+    [SerializeField] private TextMeshProUGUI _dayNumberText = null;
 
     private void Awake()
     {
