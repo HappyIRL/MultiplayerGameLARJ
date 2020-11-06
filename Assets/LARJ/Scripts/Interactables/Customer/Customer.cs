@@ -13,29 +13,26 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 {
     private StateMachine _stateMachine;
     NavMeshAgent _agent;
-
-    private Transform _deskWaypoint;
-
-    [HideInInspector] public Transform despawn;
-
-    private readonly float _range = 3f;
-    private int _queuePosition;
-    private bool _isWaiting;
-    private Coroutine _currentCoroutine;
-
-    private float _timeToFinishTask;
-    private float _timer;
-    public bool _isWaitingForMoney = false;
-    public bool _wasHitByBullet = false;
-
-    private CustomerManager cm;
+    
     [SerializeField] private List<GameObject> _customerModels = null;
     [SerializeField] private Image _patienceImage;
     [SerializeField] private Image _patienceImageBackground;
-
     [SerializeField] private GameObject _speechBubble = null;
     [SerializeField] private GameObject _moneyImage = null;
     [SerializeField] private TextMeshProUGUI _customerSpeechText = null;
+
+    private CustomerManager cm;
+    private Transform _deskWaypoint;
+    [HideInInspector] public Transform despawn;
+    private readonly float _range = 3f;
+    
+    private int _queuePosition;
+    private Coroutine _currentCoroutine;
+    private float _timer;
+    private float _timeToFinishTask;
+
+    public bool _isWaitingForMoney = false;
+    public bool _wasHitByBullet = false;
 
     public override void Awake()
     {
