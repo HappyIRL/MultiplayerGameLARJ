@@ -8,7 +8,6 @@ public class Score : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreCountText;
     [SerializeField] private TextMeshProUGUI _scoreAddText;
-    [SerializeField] private TextMeshProUGUI _scoreText;
 
     private int _score = 0;
     public int ScoreCount { get => _score; }
@@ -21,9 +20,15 @@ public class Score : MonoBehaviour
         _scoreAddText.CrossFadeAlpha(1, 0, false);
         _scoreAddText.CrossFadeAlpha(0, 1, false);
         _score += positive ? reward : -reward;
-        _scoreText.color = _score < 0 ? Color.black : Color.yellow;
         _scoreCountText.color = _score < 0 ? Color.black : Color.yellow;
-        _scoreText.text = _score < 0 ? "Debt:" : "Money:";
         _scoreCountText.text = _score.ToString();
+
+        SaveMoney();
+    }
+
+    private void SaveMoney()
+    {
+        int totalMoney = PlayerPrefs.GetInt("TotalMoneyScore", 0) + _score;
+        PlayerPrefs.SetInt("TotalMoneyScore", totalMoney);
     }
 }
