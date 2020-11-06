@@ -41,6 +41,7 @@ public class MenuLevel : MonoBehaviour
         _lockScreen.SetActive(false);
         _costUI.SetActive(false);
         _playlevelButton.interactable = true;
+        _dayNumberText.gameObject.SetActive(true);
     }
     private void LockLevel()
     {
@@ -49,6 +50,7 @@ public class MenuLevel : MonoBehaviour
         _costUI.SetActive(true);
         _playlevelButton.interactable = false;
         _costText.text = Cost.ToString();
+        _dayNumberText.gameObject.SetActive(false);
     }
 
     public void BuyLevel()
