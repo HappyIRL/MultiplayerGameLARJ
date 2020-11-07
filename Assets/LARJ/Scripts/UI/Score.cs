@@ -20,7 +20,6 @@ public class Score : MonoBehaviour
         _scoreAddText.CrossFadeAlpha(1, 0, false);
         _scoreAddText.CrossFadeAlpha(0, 1, false);
         _score += positive ? reward : -reward;
-        _scoreCountText.color = _score < 0 ? Color.black : Color.yellow;
         _scoreCountText.text = _score.ToString();
     }
 

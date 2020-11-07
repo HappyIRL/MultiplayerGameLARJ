@@ -21,6 +21,7 @@ namespace Tasks
         [SerializeField] private Sprite _moneyIcon = null;
         [SerializeField] private Sprite _printerIcon = null;
         [SerializeField] private Sprite _paperboxIcon = null;
+        [SerializeField] private Sprite _documentIcon = null;
 
         private List<TaskUI> _activeUITasks = new List<TaskUI>();
 
@@ -48,10 +49,6 @@ namespace Tasks
                     title = "Print Documents!";
                     icon = _printerIcon;
                     break;
-                //case TaskType.Customer:
-                //    title = "Serve Customer!";
-                //    icon = _customerIcon;
-                //    break;
                 case TaskType.Cleaning:
                     title = "Pick up Garbage!";
                     icon = _cleaningIcon;
@@ -59,6 +56,10 @@ namespace Tasks
                 case TaskType.Money:
                     title = "Bring the Customer Money";
                     icon = _moneyIcon;
+                    break;
+                case TaskType.Document:
+                    title = "Give the customer a document";
+                    icon = _documentIcon;
                     break;
                 case TaskType.Mail:
                     title = "Reply E-Mail";

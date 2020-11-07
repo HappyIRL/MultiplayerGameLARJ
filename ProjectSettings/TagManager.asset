@@ -13,6 +13,7 @@ TagManager:
   - Money
   - PaperBox
   - Safe
+  - Paper
   layers:
   - Default
   - TransparentFX

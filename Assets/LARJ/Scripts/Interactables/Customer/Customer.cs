@@ -19,6 +19,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     [SerializeField] private Image _patienceImageBackground;
     [SerializeField] private GameObject _speechBubble = null;
     [SerializeField] private GameObject _moneyImage = null;
+    [SerializeField] private GameObject _documentImage = null;
     [SerializeField] private TextMeshProUGUI _customerSpeechText = null;
 
     private CustomerManager cm;
@@ -32,6 +33,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private float _timeToFinishTask;
 
     public bool _isWaitingForMoney = false;
+    public bool _isWaitingForDocument = false;
     public bool _wasHitByBullet = false;
 
     public override void Awake()
@@ -55,7 +57,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         var MoveToDesk = _stateMachine.CreateState("MoveToDesk", MoveToDeskStart, MoveToDeskUpdate);
         var AtDesk = _stateMachine.CreateState("AtDesk", AtDeskStart, AtDeskUpdate, AtDeskExit);
         var Leaving = _stateMachine.CreateState("Leaving", LeavingStart, LeavingUpdate);
-        var WaitForMoney = _stateMachine.CreateState("WaitForMoney", WaitForMoneyStart, null ,WaitForMoneyExit);
+        var WaitForMoney = _stateMachine.CreateState("WaitForMoney", WaitForMoneyStart, null, WaitForMoneyExit);
+        var WaitForDocument = _stateMachine.CreateState("WaitForDocument", WaitForDocumnetStart, null, WaitForDocumentExit);
 
         _agent.enabled = true;
     }
@@ -65,11 +68,20 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         {
             if (collision.gameObject.tag == "Money")
             {
+                if (_currentCoroutine != null)StopCoroutine(_currentCoroutine);
+
                 collision.gameObject.SetActive(false);
-                if (_currentCoroutine != null)
-                {
-                    StopCoroutine(_currentCoroutine);
-                }
+                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+                _stateMachine.TransitionTo("Leaving");
+            }
+        }
+        else if (_isWaitingForDocument)
+        {
+            if (collision.gameObject.tag == "Paper")
+            {
+                if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
+
+                collision.gameObject.SetActive(false);
                 TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
                 _stateMachine.TransitionTo("Leaving");
             }
@@ -112,6 +124,33 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         }
         _speechBubble.SetActive(false);
         _moneyImage.SetActive(false);
+    }
+
+    #endregion
+    #region WaitForDocument State
+    private void WaitForDocumnetStart()
+    {
+        if (_currentCoroutine != null)
+        {
+            StopCoroutine(_currentCoroutine);
+        }
+
+        _speechBubble.SetActive(true);
+        _documentImage.SetActive(true);
+
+        _isWaitingForDocument = true;
+        StartCoroutine(LeaveAfterDelay());
+        TaskManager.TaskManagerSingelton.StartDocumentTask(GetComponent<Task>());
+    }
+
+    private void WaitForDocumentExit()
+    {
+        if (_currentCoroutine != null)
+        {
+            StopCoroutine(_currentCoroutine);
+        }
+        _speechBubble.SetActive(false);
+        _documentImage.SetActive(false);
     }
 
     #endregion
@@ -369,13 +408,28 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     public override void PressEvent()
     {
         base.PressEvent();
-        if (!_isWaitingForMoney)
+
+        if (!_isWaitingForDocument)
         {
-            _isWaitingForMoney = true;
-            _timer = 0;
-            TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
-            _stateMachine.TransitionTo("WaitForMoney");
+            if (!_isWaitingForMoney)
+            {
+                _timer = 0;
+                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+
+                if (UnityEngine.Random.value > 0.5f)
+                {
+                    _isWaitingForMoney = true;
+                    _stateMachine.TransitionTo("WaitForMoney");
+            
+                }
+                else
+                {
+                    _isWaitingForDocument = true;
+                    _stateMachine.TransitionTo("WaitForDocument");
+                }
+            }
         }
+        
     }
 
     #endregion

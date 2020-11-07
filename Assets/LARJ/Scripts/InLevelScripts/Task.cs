@@ -15,6 +15,7 @@ namespace Tasks
         Money,
         Mail,
         Paper,
+        Document,
         NotAssigned
     }
     public class Task : MonoBehaviour

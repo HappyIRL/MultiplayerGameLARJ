@@ -125,7 +125,7 @@ public class Printer : Interactable
 
         if(paper != null)
 		{
-            TaskManager.TaskManagerSingelton.StartTask(paper.GetComponent<Task>());
+            if(UnityEngine.Random.value < 0.5f) TaskManager.TaskManagerSingelton.StartTask(paper.GetComponent<Task>());
             PlaySound(_printerOutSound);
             _audioSource.loop = false;
             DisableButtonHints();

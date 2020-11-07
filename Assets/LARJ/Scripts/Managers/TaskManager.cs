@@ -157,5 +157,13 @@ namespace Tasks
             task.StartTask();
             OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
+        public void StartDocumentTask(Task task)
+        {
+            task.IsTaskActive = true;
+            TaskUI taskUI = TaskManagerUI.SpawnUITask(TaskType.Document, task.GetRewardMoney, task.GetTimeToFinishTask);
+            task.TaskUI = taskUI;
+            task.StartTask();
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+        }
     }
 }
