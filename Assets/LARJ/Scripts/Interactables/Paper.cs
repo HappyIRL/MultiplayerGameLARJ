@@ -14,11 +14,10 @@ public class Paper : Interactable
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag =="PaperBox")
+        if (collision.gameObject.tag == "PaperBox")
         {
             TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
             gameObject.SetActive(false);
-            //Destroy(gameObject);
         }
     }
 	public override InteractableObjectID InteractableID { get => InteractableObjectID.Paper; protected set => base.InteractableID = value; }

@@ -74,12 +74,4 @@ public class CleaningBroom : Interactable
     {
         StopCleaning();
     }
-
-    public override void StartInteractible()
-    {
-    }
-
-    public override void StopInteractible()
-    {
-    }
 }

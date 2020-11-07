@@ -419,21 +419,42 @@ public abstract class Interactable : MonoBehaviour
     }
     private void SetRandomCorrectKeyInteraction(string currentPlayerControlScheme)
     {
-        int rnd = UnityEngine.Random.Range(0, 4);
-        switch (rnd)
+        bool keyFound = false;
+
+        while (!keyFound)
         {
-            case 0:
-                _currentCorrectKey = CorrectKeysInteraction.Up;
-                break;
-            case 1:
-                _currentCorrectKey = CorrectKeysInteraction.Left;
-                break;
-            case 2:
-                _currentCorrectKey = CorrectKeysInteraction.Down;
-                break;
-            case 3:
-                _currentCorrectKey = CorrectKeysInteraction.Right;
-                break;
+            int rnd = UnityEngine.Random.Range(0, 4);
+            switch (rnd)
+            {
+                case 0:
+                    if (_currentCorrectKey != CorrectKeysInteraction.Up)
+                    {
+                        _currentCorrectKey = CorrectKeysInteraction.Up;
+                        keyFound = true;
+                    }
+                    break;
+                case 1:
+                    if (_currentCorrectKey != CorrectKeysInteraction.Left)
+                    {
+                        _currentCorrectKey = CorrectKeysInteraction.Left;
+                        keyFound = true;
+                    }
+                    break;
+                case 2:
+                    if (_currentCorrectKey != CorrectKeysInteraction.Down)
+                    {
+                        _currentCorrectKey = CorrectKeysInteraction.Down;
+                        keyFound = true;
+                    }
+                    break;
+                case 3:
+                    if (_currentCorrectKey != CorrectKeysInteraction.Right)
+                    {
+                        _currentCorrectKey = CorrectKeysInteraction.Right;
+                        keyFound = true;
+                    }
+                    break;
+            }
         }
         SetCurrentCorrectKeyUI(currentPlayerControlScheme);
     }

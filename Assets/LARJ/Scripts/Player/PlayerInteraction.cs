@@ -204,8 +204,6 @@ public class PlayerInteraction : MonoBehaviour
         if (!_isPickedUp)
         {
             interactable.DisableButtonHints();
-            _canInteract = true;
-            _holdingButton = false;
 
             if (interactable == ObjectToInteract)
             {

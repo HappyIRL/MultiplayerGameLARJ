@@ -295,15 +295,17 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
 
     private void OnEnterTalk()
     {
+        if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
     }
     private void OnFinishedTalk()
     {
-        // Log Successful Talk
+        if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
         _stateMachine.TransitionTo("Leaving");
-    } // SUCCESSFUL TALK
+    }
 
     private void OnFailedTalk()
     {
+        _currentCoroutine = StartCoroutine(LeaveAfterDelay());
     }
 
 

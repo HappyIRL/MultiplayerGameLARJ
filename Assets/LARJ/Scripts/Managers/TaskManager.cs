@@ -101,6 +101,8 @@ namespace Tasks
 
         public void OnTaskCompleted(Task task)
         {
+            if (!task.IsTaskActive) return;
+
             task.IsTaskActive = false;
             task.StopTask();
             TaskManagerUI.RemoveUITask(task.TaskUI);
@@ -113,6 +115,8 @@ namespace Tasks
 
         public void OnTaskFailed(Task task)
         {
+            if (!task.IsTaskActive) return;
+
             task.IsTaskActive = false;
             task.StopTask();
             TaskManagerUI.RemoveUITask(task.TaskUI);
