@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class MusicManager : MonoBehaviour
 {
     [SerializeField] private Toggle _musicToggle = null;
+    [SerializeField] private AudioSource _audioSource = null;
+    [SerializeField] private AudioClip _backgroundMusic = null;
 
     private static MusicManager _instance;
     private bool _musicOn = true;
@@ -14,6 +16,10 @@ public class MusicManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        _audioSource.loop = true;
+        _audioSource.playOnAwake = false;
+        _audioSource.volume = 0.01f;
+        _audioSource.clip = _backgroundMusic;
 
         if (PlayerPrefs.GetInt("MusicOn", 1) == 1)
         {
@@ -30,11 +36,13 @@ public class MusicManager : MonoBehaviour
     public void EnableMusic()
     {
         _musicOn = true;
+        _audioSource.Play();
         PlayerPrefs.SetInt("MusicOn", 1);
     }
     public void DisableMusic()
     {
         _musicOn = false;
+        _audioSource.Stop();
         PlayerPrefs.SetInt("MusicOn", 0);
     }
     public void OnPressMusicToggle()

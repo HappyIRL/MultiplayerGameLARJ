@@ -54,6 +54,21 @@ public class Shotgun : Interactable
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 rb.AddForce(bullet.transform.forward * 40f, ForceMode.Impulse);
+
+                RaycastHit hit;
+                if (Physics.Raycast(_bulletSpawnPoint.position, bullet.transform.forward, out hit))
+                {
+                    if (hit.collider.tag == "Cracker")
+                    {
+                        Cracker cracker = hit.collider.GetComponent<Cracker>();
+                        if (cracker != null) cracker.StopCracker();
+                    }
+                    else if (hit.collider.tag == "Player")
+                    {
+                        BulletImpact bulletImpact = hit.collider.GetComponent<BulletImpact>();
+                        if (bulletImpact != null) bulletImpact.AddForce(Rb.velocity, 10f);
+                    }
+                }
             }
 
             StartCoroutine(GunRecoil());

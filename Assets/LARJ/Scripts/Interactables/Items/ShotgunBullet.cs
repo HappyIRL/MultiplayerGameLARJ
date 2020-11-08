@@ -17,12 +17,6 @@ public class ShotgunBullet : MonoBehaviour, IObjectPoolNotifier
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
-        {
-            BulletImpact bulletImpact = collision.gameObject.GetComponent<BulletImpact>();
-            if (bulletImpact != null) bulletImpact.AddForce(Rb.velocity, 10f);
-        }
-
         if (_lastCoroutine != null)
         {
             StopCoroutine(_lastCoroutine);

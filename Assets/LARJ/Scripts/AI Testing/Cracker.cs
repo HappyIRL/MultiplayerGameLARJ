@@ -30,14 +30,6 @@ public class Cracker : MonoBehaviour, IObjectPoolNotifier
         
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Bullet")
-        {
-            StopCracker();
-        }
-    }
-
     public void StartCracking()
     {
         _crackingCoroutine = StartCoroutine(CrackingCoroutine());
