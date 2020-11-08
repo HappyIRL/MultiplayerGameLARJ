@@ -53,8 +53,11 @@ public class CustomerSpawner : MonoBehaviour
 
             while (count < currentNoOfCustomers)
             {
-                yield return new WaitForSeconds(_spawnTimer);
-                SpawnCustomer();
+                if (_difficulty > 0)
+                {
+                    yield return new WaitForSeconds(_spawnTimer);
+                    SpawnCustomer();
+                }
                 count++;
             }
             yield return new WaitForSeconds(waveCooldown);
@@ -63,7 +66,7 @@ public class CustomerSpawner : MonoBehaviour
     }
     private void SetSpawnCooldown()
     {
-
+        _spawnTimer = 11 - _difficulty;
     }
 
 
