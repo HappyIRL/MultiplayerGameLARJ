@@ -32,6 +32,17 @@ public class CustomerSpawner : MonoBehaviour
     public delegate void LARjCustomerSpawnEvent(GameObject go, InteractionType type);
     public event LARjCustomerSpawnEvent OnCustomerSpawn;
 
+    [SerializeField, Range(0, 10)] private int _difficulty = 1;
+    public int Difficulty
+    {
+        get => _difficulty;
+        set
+        {
+            _difficulty = value;
+            SetSpawnCooldown();
+        }
+    }
+
     IEnumerator Start()
     {
         for (int i = 0; i < noOfWaves; i++)
@@ -48,6 +59,10 @@ public class CustomerSpawner : MonoBehaviour
             }
             yield return new WaitForSeconds(waveCooldown);
         }
+
+    }
+    private void SetSpawnCooldown()
+    {
 
     }
 

@@ -6,6 +6,7 @@ using UnityEngine;
 public class DayTimeManager : MonoBehaviour
 {
     [SerializeField] private DayManager _dayManager = null;
+    [SerializeField] private GameManager _gameManager = null;
 
     [Header("Times"), Tooltip("Hours in 24h format (0-24)")]
     public int DayStartTime = 6;
@@ -290,5 +291,6 @@ public class DayTimeManager : MonoBehaviour
     private void EndDay()
     {
         _dayManager.ActivateDayFinishedScoreBoard();
+        PlayerPrefs.SetInt($"{_gameManager.LevelType}CurrentDay", PlayerPrefs.GetInt($"{_gameManager.LevelType}CurrentDay", 1) + 1);
     }
 }

@@ -19,7 +19,7 @@ namespace Tasks
         [SerializeField] private int _openTasks = 0;
         [SerializeField] private Task[] _startingTasks;
         [SerializeField] private Task[] _followUpTasks;
-        [SerializeField] private float _delayBetweenTasks;
+        private float _delayBetweenTasks;
         [SerializeField] private float _variationOfTaskDelay;
         [SerializeField] private TaskManagerUI _taskManagerUI;
         public TaskManagerUI TaskManagerUI { get => _taskManagerUI; }
@@ -36,6 +36,17 @@ namespace Tasks
         private int _completedTasks = 0;
         public int FailedTaks { get => _failedTasks; }
         public int CompletedTasks { get => _completedTasks; }
+
+        [SerializeField, Range(0, 10)] private int _difficulty = 1;
+        public int Difficulty
+        {
+            get => _difficulty;
+            set
+            {
+                _difficulty = value;
+                UpdateDalayBetweenTasks();
+            }
+        }
 
         private void Awake()
         {
@@ -61,6 +72,8 @@ namespace Tasks
 
         private void UpdateDalayBetweenTasks()
         {
+            if (_difficulty == 0) _delayBetweenTasks = 1000000;
+            else _delayBetweenTasks = ((float)1/(float)_difficulty) * 30f;
             _currentDelay = UnityEngine.Random.Range(_delayBetweenTasks - _variationOfTaskDelay, _delayBetweenTasks + _variationOfTaskDelay);
         }
 

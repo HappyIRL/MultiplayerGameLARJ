@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+public enum LevelType
+{
+    Level1,
+    Level2,
+    Level3
+}
 
 public class MenuLevel : MonoBehaviour
 {
-    private enum LevelType
-    {
-        Level1,
-        Level2,
-        Level3
-    }
 
     public int Cost = 0;
     public bool Bought = false;
