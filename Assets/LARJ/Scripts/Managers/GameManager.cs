@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Tasks;
 using Photon.Pun.UtilityScripts;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,12 +22,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerInputManager _playerInputManager = null; //Get local Player Count & reset Difficulty when someone joins
     [SerializeField] private TaskManager _taskManager = null;//Set Task delay
 
+    [Header("DayUI")]
+    [SerializeField] private TextMeshProUGUI _sceneChangerDayText = null;
+    private int currentDay;
+
     public LevelType LevelType { get => _levelType; }
 
 
     private void Start()
     {
         CalculateDifficulties();
+        ShowDayText();
     }
 
     #region Called by PlayerInputManager
@@ -45,11 +51,16 @@ public class GameManager : MonoBehaviour
         int playerCount = _playerInputManager.playerCount;
 
         //get current day (number)
-        int currentDay = PlayerPrefs.GetInt($"{_levelType}CurrentDay", 1);
+        currentDay = PlayerPrefs.GetInt($"{_levelType}CurrentDay", 1);
 
         //Set day time (random start & end?)/ Length of day based on day number
 
         //Calculate Difficulty on FireSpawner, CustomerSpawner, CrackerSpawner
     }
-
+    private void ShowDayText()
+    {
+        _sceneChangerDayText.gameObject.SetActive(true);
+        _sceneChangerDayText.text = $"Day {currentDay}";
+        _sceneChangerDayText.CrossFadeAlpha(0,3f, true);
+    }
 }
