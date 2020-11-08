@@ -85,7 +85,7 @@ public class DayManager : MonoBehaviour
     {
         _sFXManager.PlaySound(_audioSource, _buttonClickSound);
         _pausedScreen.SetActive(true);
-        Time.timeScale = 0;
+        Time.timeScale = 1;
     }
     public void ResumeGame()
     {

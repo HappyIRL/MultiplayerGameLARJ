@@ -87,5 +87,11 @@ public class GameManager : MonoBehaviour
         _sceneChangerDayText.gameObject.SetActive(true);
         _sceneChangerDayText.text = $"Day {currentDay}";
         _sceneChangerDayText.CrossFadeAlpha(0,3f, true);
+        StartCoroutine(WaitToDeactivateDayText(3f));
+    }
+    private IEnumerator WaitToDeactivateDayText(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _sceneChangerDayText.gameObject.SetActive(false);
     }
 }
