@@ -16,6 +16,7 @@ public class CustomerManager : MonoBehaviour
 
     [Header ("Desks")]
     [SerializeField] private List<Transform> _deskWaypoints;
+    [SerializeField] private List<GameObject> _deskClosedImages;
     public List<Transform> DeskWaypoints { get { return _deskWaypoints; } }
     [SerializeField] private int _activeDesks;
     private Dictionary<Transform, bool> _deskKvps = new Dictionary<Transform, bool>();
@@ -45,8 +46,6 @@ public class CustomerManager : MonoBehaviour
     {
         instance = this;
 
-        SetActiveDesks();
-
         _queueWaypoints.Add(_queueStart.position);
     }
 
@@ -56,11 +55,13 @@ public class CustomerManager : MonoBehaviour
         {
             if (i < _activeDesks)
             {
-                _deskKvps.Add(_deskWaypoints[i], true);
+                if(!_deskKvps.ContainsKey(_deskWaypoints[i])) _deskKvps.Add(_deskWaypoints[i], true);
+                _deskClosedImages[i].SetActive(false);
             }
             else
             {
-                _deskKvps.Add(_deskWaypoints[i], false);
+                if (!_deskKvps.ContainsKey(_deskWaypoints[i])) _deskKvps.Add(_deskWaypoints[i], false);
+                _deskClosedImages[i].SetActive(true);
             }
         }
     }

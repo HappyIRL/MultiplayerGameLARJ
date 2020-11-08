@@ -5311,7 +5311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48eb1591fbbd5a14388e9b83c40c6dd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cost: 0
+  Cost: 1000
   Bought: 0
   _levelType: 1
   _lockScreen: {fileID: 8204297707083844873}
@@ -6824,7 +6824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48eb1591fbbd5a14388e9b83c40c6dd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cost: 0
+  Cost: 2000
   Bought: 0
   _levelType: 2
   _lockScreen: {fileID: 6041014551514039640}

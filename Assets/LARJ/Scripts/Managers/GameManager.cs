@@ -50,8 +50,8 @@ public class GameManager : MonoBehaviour
     {
         //Check if Local or Network!
 
-
         int playerCount = _playerInputManager.playerCount;
+
 
         //get current day (number)
         currentDay = PlayerPrefs.GetInt($"{_levelType}CurrentDay", 1);
@@ -60,13 +60,48 @@ public class GameManager : MonoBehaviour
 
         //Calculate Difficulty on FireSpawner, CustomerSpawner, CrackerSpawner
 
-        if (currentDay == 1)
+        switch (currentDay)
         {
+            case 1: 
+                SetDifficulties(0,0,1,1,1);
+                break;
+            case 2: 
+                SetDifficulties(0, 1, 1, 2, 2);
+                break;
+            case 3:
+                SetDifficulties(1, 1, 1, 1, 2);
+                break;
+            case 4:
+                SetDifficulties(1, 2, 2, 2, 2);
+                break;
+            case 5:
+                SetDifficulties(2, 3, 3, 3, 2);
+                break;
+            case 6:
+                SetDifficulties(3, 4, 4, 4, 2);
+                break;
+            case 7:
+                SetDifficulties(4, 5, 5, 5, 3);
+                break;
+            case 8:
+                SetDifficulties(5, 6, 6, 6, 3);
+                break;
+            case 9:
+                SetDifficulties(6, 6, 6, 6, 4);
+                break;
+            case 10:
+                SetDifficulties(7, 7, 7, 7, 4);
+                break;
+            case 11:
+                SetDifficulties(8, 8, 8, 8, 5);
+                break;
+            case 12:
+                SetDifficulties(9, 9, 9, 9, 5);
+                break;
 
-        }
-        else
-        {
-
+            default:
+                SetDifficulties(10, 10, 10, 10, 6);
+                break;
         }
     }
     private void SetDifficulties(int crackerDifficulty, int fireDifficulty, int taskDifficulty, int customerDifficulty, int activeDesks)
