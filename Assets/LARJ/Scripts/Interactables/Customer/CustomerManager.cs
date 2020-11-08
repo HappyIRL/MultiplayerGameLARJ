@@ -28,13 +28,30 @@ public class CustomerManager : MonoBehaviour
     private List<Vector3> _queueWaypoints = new List<Vector3>();
     public List<Vector3> QueueWaypoints { get { return _queueWaypoints; } }
 
+    public int ActiveDesks 
+    {
+        get => _activeDesks;
+        set
+        {
+            _activeDesks = value;
+            SetActiveDesks();
+        }
+    }
+
 
 
 
     private void Awake()
     {
         instance = this;
-        
+
+        SetActiveDesks();
+
+        _queueWaypoints.Add(_queueStart.position);
+    }
+
+    private void SetActiveDesks()
+    {
         for (int i = 0; i < _deskWaypoints.Count; i++)
         {
             if (i < _activeDesks)
@@ -46,9 +63,8 @@ public class CustomerManager : MonoBehaviour
                 _deskKvps.Add(_deskWaypoints[i], false);
             }
         }
-
-        _queueWaypoints.Add(_queueStart.position);
     }
+
     public void EnqueueCustomer(GameObject go)
     {
         var notifiers = go.GetComponents<IQueueUpdateNotifier>();

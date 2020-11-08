@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
 
     private void CalculateDifficulties()
     {
+        //Check if Local or Network!
+
+
         int playerCount = _playerInputManager.playerCount;
 
         //get current day (number)
@@ -56,7 +59,29 @@ public class GameManager : MonoBehaviour
         //Set day time (random start & end?)/ Length of day based on day number
 
         //Calculate Difficulty on FireSpawner, CustomerSpawner, CrackerSpawner
+
+        if (currentDay == 1)
+        {
+
+        }
+        else
+        {
+
+        }
     }
+    private void SetDifficulties(int crackerDifficulty, int fireDifficulty, int taskDifficulty, int customerDifficulty, int activeDesks)
+    {
+        _crackerSpawner.Difficulty = crackerDifficulty;
+        _fireSpawner.Difficulty = fireDifficulty;
+        _taskManager.Difficulty = taskDifficulty;
+        _customerSpawner.Difficulty = customerDifficulty;
+        _customerManager.ActiveDesks = activeDesks;
+    }
+    private void SetDayTime(int start, int end, int realTimeLength)
+    {
+        _dayTimeManager.SetStartValues(start, end, realTimeLength);
+    }
+
     private void ShowDayText()
     {
         _sceneChangerDayText.gameObject.SetActive(true);

@@ -35,20 +35,10 @@ public class DayTimeManager : MonoBehaviour
     public int CurrentHour { get; private set; }
     public int CurrentMinutes { get; private set; }
 
-    private void Awake()
-	{
-        CurrentMinutes = 0;
-        CurrentHour = DayStartTime;
-        _timeForOneInGameMinuteInRealSecs = 1 / (float)((DayEndTime - DayStartTime) / (float)RealtimeLengthInMinutes);
-
-        SetTimeForAllClocks(DayStartTime);
-        SetLights();
-    }
 
 	private void Start()
 	{
-        _sunXRotation = ((15 * CurrentHour - 90f) + 0.25f * CurrentMinutes);
-        RotateSun(_sunXRotation);
+        SetStartValues(DayStartTime, DayEndTime, RealtimeLengthInMinutes);
     }
 
 	void Update()
@@ -92,6 +82,22 @@ public class DayTimeManager : MonoBehaviour
                 RotateSun(angle - _currentSunAngle);
             }
         }
+    }
+    public void SetStartValues(int startTime, int endTime, int realTimeLength)
+    {
+        DayStartTime = startTime;
+        DayEndTime = endTime;
+        RealtimeLengthInMinutes = realTimeLength;
+
+        CurrentMinutes = 0;
+        CurrentHour = DayStartTime;
+        _timeForOneInGameMinuteInRealSecs = 1 / (float)((DayEndTime - DayStartTime) / (float)RealtimeLengthInMinutes);
+
+        SetTimeForAllClocks(DayStartTime);
+        SetLights();
+
+        _sunXRotation = ((15 * CurrentHour - 90f) + 0.25f * CurrentMinutes);
+        RotateSun(_sunXRotation);
     }
     private void RotateSun(float angle)
     {
