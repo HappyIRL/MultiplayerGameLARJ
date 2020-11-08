@@ -1759,41 +1759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcb4014aa0e9ca4c9c245845ad9215c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!84 &409469974
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 3
-  m_Width: 1920
-  m_Height: 1080
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthFormat: 1
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &420845852
 GameObject:
   m_ObjectHideFlags: 0
@@ -3249,6 +3214,41 @@ MonoBehaviour:
   _wallLayerMask:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!84 &779768101
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 3
+  m_Width: 1983
+  m_Height: 777
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 1
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!108 &798058575 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 6819291592713920766, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
@@ -4232,6 +4232,41 @@ MonoBehaviour:
   _printerIcon: {fileID: 21300000, guid: 5864528ff1b544747899a54bd4055b71, type: 3}
   _paperboxIcon: {fileID: 21300000, guid: 41e50b96c203b2e49a47268c005301ae, type: 3}
   _documentIcon: {fileID: 21300000, guid: 6b53c2792c0318842b099c3f23fd0ad9, type: 3}
+--- !u!84 &1069706909
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 3
+  m_Width: 1983
+  m_Height: 777
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 1
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &1071789255
 GameObject:
   m_ObjectHideFlags: 0
@@ -4685,41 +4720,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204387295}
   m_CullTransparentMesh: 0
---- !u!84 &1219955274
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 3
-  m_Width: 1920
-  m_Height: 1080
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthFormat: 1
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1001 &1262458913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8376,8 +8376,8 @@ MonoBehaviour:
   sourceCamera: {fileID: 2015392393}
   outlineCamera: {fileID: 2071236651}
   outlineShaderMaterial: {fileID: 0}
-  renderTexture: {fileID: 409469974}
-  extraRenderTexture: {fileID: 1219955274}
+  renderTexture: {fileID: 1069706909}
+  extraRenderTexture: {fileID: 779768101}
 --- !u!1 &2039338546 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6337622394811994253, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
@@ -8463,7 +8463,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 0
   m_RenderingPath: 1
-  m_TargetTexture: {fileID: 409469974}
+  m_TargetTexture: {fileID: 1069706909}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
@@ -8933,6 +8933,10 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 1428284033520617802, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1513232999463430815, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: _failedToAnswerEvent.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -9041,9 +9045,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: MugModel3
       objectReference: {fileID: 0}
+    - target: {fileID: 3359564516982897768, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3383091189336496705, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.245
+      objectReference: {fileID: 0}
+    - target: {fileID: 3438115416900219100, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3465063183650127562, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: m_IsActive
@@ -9165,6 +9177,10 @@ PrefabInstance:
       propertyPath: _interactableID
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 5416793583697698187, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5649223163674842925, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: _interactableID
       value: 15
@@ -9216,6 +9232,10 @@ PrefabInstance:
     - target: {fileID: 6546507888011734179, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: m_Size.z
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752116434548796109, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6756058104439619351, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: _interactableID
@@ -9345,6 +9365,14 @@ PrefabInstance:
       propertyPath: _highlightInteractables
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7035367447172548533, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7077812680125435621, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7177865064380381360, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: _interactableID
       value: 14
@@ -9364,6 +9392,10 @@ PrefabInstance:
     - target: {fileID: 7775715911863170790, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: m_Size.x
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8908439564531323212, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8945280160344989002, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: m_Size.y
