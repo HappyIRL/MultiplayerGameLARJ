@@ -80,7 +80,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
             if (collision.gameObject.tag == "Paper")
             {
                 if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
-
+                var task = collision.gameObject.GetComponent<Task>();
+                if (task.IsTaskActive) TaskManager.TaskManagerSingelton.OnTaskCancelled(task);
                 collision.gameObject.SetActive(false);
                 TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
                 _stateMachine.TransitionTo("Leaving");

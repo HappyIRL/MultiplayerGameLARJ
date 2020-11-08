@@ -182,5 +182,12 @@ namespace Tasks
             task.StartTask();
             OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
+        public void OnTaskCancelled(Task task)
+        {
+            task.IsTaskActive = false;
+            task.StopTask();
+            TaskManagerUI.RemoveUITask(task.TaskUI);
+            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
+        }
     }
 }
