@@ -19,6 +19,7 @@ namespace Tasks
         [Header("Audio")]
         [SerializeField] private AudioSource _audioSource = null;
         [SerializeField] private AudioClip _cashSound = null;
+        [SerializeField] private AudioClip _taskFailedSound = null;
         private SFXManager _sFXManager;
 
         [SerializeField] private int _openTasks = 0;
@@ -61,7 +62,7 @@ namespace Tasks
         }
         private void Start()
         {
-            _sFXManager = SFXManager.Instance;
+            //_sFXManager = SFXManager.Instance;
         }
         void Update()
         {
@@ -126,8 +127,8 @@ namespace Tasks
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetRewardMoney, true);
             OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
-           
-            _sFXManager.PlaySound(_audioSource, _cashSound);
+            SFXManager.Instance.PlaySound(_audioSource, _cashSound);
+            //_sFXManager.PlaySound(_audioSource, _cashSound); what is better?
             _completedTasks++;
         }
 
@@ -141,7 +142,7 @@ namespace Tasks
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetLostMoneyOnFail, false);
             OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed);
-
+            SFXManager.Instance.PlaySound(_audioSource, _taskFailedSound);
             _failedTasks++;
         }
         public void StartTask(Task task)
