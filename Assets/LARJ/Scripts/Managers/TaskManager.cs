@@ -17,7 +17,7 @@ namespace Tasks
     public class TaskManager : MonoBehaviour
     {
         [Header("Audio")]
-        [SerializeField] private AudioSource _audioSorce = null;
+        [SerializeField] private AudioSource _audioSource = null;
         [SerializeField] private AudioClip _cashSound = null;
         private SFXManager _sFXManager;
 
@@ -55,6 +55,7 @@ namespace Tasks
 
         private void Awake()
         {
+            _audioSource.volume = 0.01f;
             _currentDelay = _delayBetweenTasks;
             TaskManagerSingelton = this;
         }
@@ -125,8 +126,8 @@ namespace Tasks
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetRewardMoney, true);
             OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
-
-            _sFXManager.PlaySound(_audioSorce, _cashSound);
+           
+            _sFXManager.PlaySound(_audioSource, _cashSound);
             _completedTasks++;
         }
 

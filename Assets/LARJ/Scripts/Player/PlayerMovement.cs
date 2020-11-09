@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private ParticleSystem _moveParticles = null;
     [SerializeField] private ParticleSystem _dashParticles = null;
     [SerializeField] private AudioClip _dashSound = null;
-    [SerializeField] private AudioSource _audioSouce = null;
+    [SerializeField] private AudioSource _audioSource = null;
 
     private BoxCollider _boxCollider;
     private CharacterController _controller;
@@ -113,7 +113,8 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Dash());
             _dashParticles.Play();
-            _sFXManager.PlaySound(_audioSouce, _dashSound);
+            _audioSource.volume = 0.1f;
+            _sFXManager.PlaySound(_audioSource, _dashSound);
         }
     }
     IEnumerator Dash()

@@ -427,6 +427,7 @@ public class PlayerInteraction : MonoBehaviour
         _isPickedUp = false;
         _objectToInteract.DropObject();
 
+        _audioSource.volume = 0.05f;
         _sFXManager.PlaySound(_audioSource, _dropSound);
 
 
