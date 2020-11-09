@@ -91,9 +91,9 @@ public class Telephone : Interactable
 
     private void ChangeMaterial(Material material)
     {
-        Material[] materials = _meshRenderer.materials;
-        materials[_meshRenderer.materials.Length - 1] = material;
-        _meshRenderer.materials = materials;
+        //Material[] materials = _meshRenderer.materials;
+       // materials[_meshRenderer.materials.Length - 1] = material;
+        //_meshRenderer.materials = materials;
     }
 
     public void AnswerCall()

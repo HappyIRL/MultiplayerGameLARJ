@@ -47,7 +47,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4450039970984984745}
-  m_Mesh: {fileID: 4300000, guid: 0bae4f35a5b343c45af58790b4bde558, type: 3}
+  m_Mesh: {fileID: -2231653495231759998, guid: 0f43dffebc419c44784c23d48bed9637, type: 3}
 --- !u!23 &4450039970987187817
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -67,9 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7649336b692da6b48ad9d02ce143c193, type: 2}
-  - {fileID: 2100000, guid: 59f7e7ebc565806469169157dd769854, type: 2}
-  - {fileID: 2100000, guid: 8d43a69e0ee7c1b45a3d5750b9b8143e, type: 2}
+  - {fileID: 2100000, guid: af2dd672928226a4f909c25fb75d3a82, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -269,13 +267,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4450039970984984745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: 0
-  eraseRenderer: 0
-  originalLayer: 0
-  originalMaterials: []
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!114 &3826104884249216314
 MonoBehaviour:
   m_ObjectHideFlags: 0
