@@ -95,6 +95,8 @@ public abstract class Interactable : MonoBehaviour
     private bool _correctKeyEventStarted = false;
     private GameObject _playerWhoPickedThisUp = null;
 
+    private bool _isMovingToGround = false;
+
     public GameObject PlayerWhoPickedThisUp { get => _playerWhoPickedThisUp; }
 
     public virtual InteractableObjectID InteractableID { get; protected set; }
@@ -365,6 +367,7 @@ public abstract class Interactable : MonoBehaviour
     }
     private IEnumerator MoveToGround()
     {
+        _isMovingToGround = true;
         float y = 0.25f;
         Vector3 ground = new Vector3(TransformForPickUp.position.x, y, TransformForPickUp.position.z);
 

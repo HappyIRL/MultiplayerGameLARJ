@@ -86,6 +86,8 @@ public class Printer : Interactable
         RaycastHit hit;
         if (Physics.Raycast(position, direction, out hit))
         {
+            Debug.Log(Vector3.Distance(position, hit.point));
+            Debug.Log(hit.collider.name);
             if (Vector3.Distance(position, hit.point) < 3f)
             {
                 return false;

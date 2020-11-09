@@ -40,7 +40,7 @@ namespace Tasks
         {
             while (transform.position.x > positionX)
             {
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(positionX, transform.position.y, transform.position.z), 2000f * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(positionX, transform.position.y, transform.position.z), Screen.width * Time.deltaTime);
                 yield return null;
             }
         }
