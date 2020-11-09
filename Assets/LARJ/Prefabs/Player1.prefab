@@ -744,7 +744,7 @@ MonoBehaviour:
   _moveParticles: {fileID: 6011130765243759440}
   _dashParticles: {fileID: 3084402425683921526}
   _dashSound: {fileID: 8300000, guid: 45faadaf4b2806944baf0aa37656d038, type: 3}
-  _audioSouce: {fileID: 625497919038637171}
+  _audioSource: {fileID: 625497919038637171}
 --- !u!65 &4748318635019737820
 BoxCollider:
   m_ObjectHideFlags: 0

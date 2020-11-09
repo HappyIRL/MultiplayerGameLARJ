@@ -267,7 +267,7 @@ MonoBehaviour:
   Progressbar: {fileID: 5345270629873988225}
   ProgressbarBackground: {fileID: 3210414521047619440}
   HoldingTime: 5
-  PressCountToFinishTask: 50
+  PressCountToFinishTask: 30
   CorrectKeysPressedCountToFinishTask: 10
   CanInteractWhenPickedUp: 0
   _singleKeyboardTypingSounds:
