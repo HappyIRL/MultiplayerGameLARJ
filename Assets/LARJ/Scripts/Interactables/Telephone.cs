@@ -16,11 +16,9 @@ public class Telephone : Interactable
     [SerializeField] private InteractableObjectID _interactableID;
 
     [Header("References")]
-    [SerializeField] private Material _redScreenMaterial = null;
-    [SerializeField] private Material _standardScreenMaterial = null;
+    [SerializeField] private GameObject _redScreenImage = null;
     [SerializeField] private AudioClip _ringingSound = null;
 
-    private MeshRenderer _meshRenderer;
     private AudioSource _audioSource;
     private bool _callAnswered = false;
     private Coroutine _lastCoroutine;
@@ -37,7 +35,6 @@ public class Telephone : Interactable
     public override void Start()
     {
         base.Start();
-        _meshRenderer = GetComponent<MeshRenderer>();
         _sFXManager = SFXManager.Instance;
     }
 
@@ -63,12 +60,12 @@ public class Telephone : Interactable
 
                 if (lightIsNormal)
                 {
-                    ChangeMaterial(_redScreenMaterial);
+                    ChangeMaterial(false);
                     lightIsNormal = false;
                 }
                 else
                 {
-                    ChangeMaterial(_standardScreenMaterial);
+                    ChangeMaterial(true);
                     lightIsNormal = true;
                 }
             }
@@ -85,15 +82,20 @@ public class Telephone : Interactable
     {
         _sFXManager.StopAudioSource(_audioSource);
         _callAnswered = true;
-        ChangeMaterial(_standardScreenMaterial);
+        ChangeMaterial(false);
         DisableButtonHints();
     }
 
-    private void ChangeMaterial(Material material)
+    private void ChangeMaterial(bool activateRedScreen)
     {
-        //Material[] materials = _meshRenderer.materials;
-       // materials[_meshRenderer.materials.Length - 1] = material;
-        //_meshRenderer.materials = materials;
+        if (activateRedScreen)
+        {
+            _redScreenImage.SetActive(true);
+        }
+        else
+        {
+            _redScreenImage.SetActive(false);
+        }
     }
 
     public void AnswerCall()
@@ -104,7 +106,7 @@ public class Telephone : Interactable
         }
 
         EndCall();
-        ChangeMaterial(_standardScreenMaterial);
+        ChangeMaterial(false);
     }
 
     public override void HoldingFailedEvent()
