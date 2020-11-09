@@ -678,7 +678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 203291832}
   _cashSound: {fileID: 8300000, guid: 79dadf24e597c924e81fcbddf5c8de63, type: 3}
-  _taskFailedSound: {fileID: 0}
+  _taskFailedSound: {fileID: 8300000, guid: 5939bb4caa386c8478be2e948f00a8e3, type: 3}
   _openTasks: 0
   _startingTasks:
   - {fileID: 6819291593348545427}
