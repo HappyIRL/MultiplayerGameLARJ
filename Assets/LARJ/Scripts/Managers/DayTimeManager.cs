@@ -97,7 +97,8 @@ public class DayTimeManager : MonoBehaviour
         SetLights();
 
         _sunXRotation = ((15 * CurrentHour - 90f) + 0.25f * CurrentMinutes);
-        RotateSun(_sunXRotation);
+        if (_sunXRotation < 0) _sunXRotation = 360 + _sunXRotation;
+        _sunLight.transform.rotation = Quaternion.Euler(_sunXRotation, 90, 0);
     }
     private void RotateSun(float angle)
     {
@@ -132,7 +133,7 @@ public class DayTimeManager : MonoBehaviour
                 {
                     StopCoroutine(_lastSunLightCoroutine);
                 }
-                _lastSunLightCoroutine = StartCoroutine(ChangeSunLightShadowStrengthCoroutine(0.5f));
+                _lastSunLightCoroutine = StartCoroutine(ChangeSunLightShadowStrengthCoroutine(0.3f));
 
                 for (int i = 0; i < _lights.Count; i++)
                 {
@@ -196,7 +197,7 @@ public class DayTimeManager : MonoBehaviour
                 for (int i = 0; i < _lights.Count; i++)
                 {
                     _lights[i].gameObject.SetActive(true);
-                    _lights[i].intensity = 0.5f;
+                    _lights[i].intensity = 10f;
                 }
                 for (int i = 0; i < _postLampsLights.Count; i++)
                 {
