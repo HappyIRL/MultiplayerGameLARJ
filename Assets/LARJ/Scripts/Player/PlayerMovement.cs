@@ -16,6 +16,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _bodyTransform = null;
     [SerializeField] private ParticleSystem _moveParticles = null;
     [SerializeField] private ParticleSystem _dashParticles = null;
+    [SerializeField] private AudioClip _dashSound = null;
+    [SerializeField] private AudioSource _audioSouce = null;
+
     private BoxCollider _boxCollider;
     private CharacterController _controller;
     private PlayerTeaEffects _playerTeaEffects;
@@ -33,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     private Coroutine _dashEffectCoroutine;
     private Coroutine _badEffectCoroutine;
 
+    private SFXManager _sFXManager;
 
     private void Awake()
     {
@@ -42,6 +46,10 @@ public class PlayerMovement : MonoBehaviour
         _initialYPosition = transform.position.y;
         _prevSpeed = _movementSpeed;
         _prevDashCooldown = _dashCooldown;
+    }
+    private void Start()
+    {
+        _sFXManager = SFXManager.Instance;     
     }
     public int GetPlayerIndex()
     {
@@ -105,6 +113,7 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Dash());
             _dashParticles.Play();
+            _sFXManager.PlaySound(_audioSouce, _dashSound);
         }
     }
     IEnumerator Dash()

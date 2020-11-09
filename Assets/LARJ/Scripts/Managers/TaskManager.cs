@@ -16,6 +16,11 @@ namespace Tasks
 
     public class TaskManager : MonoBehaviour
     {
+        [Header("Audio")]
+        [SerializeField] private AudioSource _audioSorce = null;
+        [SerializeField] private AudioClip _cashSound = null;
+        private SFXManager _sFXManager;
+
         [SerializeField] private int _openTasks = 0;
         [SerializeField] private Task[] _startingTasks;
         [SerializeField] private Task[] _followUpTasks;
@@ -55,8 +60,7 @@ namespace Tasks
         }
         private void Start()
         {
-            //if done in start, will be faster than network can handle
-            //StartRandomTask();
+            _sFXManager = SFXManager.Instance;
         }
         void Update()
         {
@@ -122,6 +126,7 @@ namespace Tasks
             _score.UpdateScore(task.GetRewardMoney, true);
             OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
 
+            _sFXManager.PlaySound(_audioSorce, _cashSound);
             _completedTasks++;
         }
 

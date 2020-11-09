@@ -19,6 +19,11 @@ public class DayTimeManager : MonoBehaviour
     [Header("Lights")]
     [SerializeField] private Light _sunLight = null;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _audioSource = null;
+    [SerializeField] private AudioClip _endSound = null;
+    private SFXManager _sFXManager;
+
     [SerializeField] private List<Light> _indirectLights = new List<Light>();
     [SerializeField] private List<Light> _lights = new List<Light>();
     [SerializeField] private List<GameObject> _postLampsLights = new List<GameObject>();
@@ -38,6 +43,7 @@ public class DayTimeManager : MonoBehaviour
 
 	private void Start()
 	{
+        _sFXManager = SFXManager.Instance;
         SetStartValues(DayStartTime, DayEndTime, RealtimeLengthInMinutes);
     }
 
@@ -297,6 +303,7 @@ public class DayTimeManager : MonoBehaviour
 
     private void EndDay()
     {
+        _sFXManager.PlaySound(_audioSource, _endSound);
         _dayManager.ActivateDayFinishedScoreBoard();
         PlayerPrefs.SetInt($"{_gameManager.LevelType}CurrentDay", PlayerPrefs.GetInt($"{_gameManager.LevelType}CurrentDay", 1) + 1);
     }

@@ -21,6 +21,11 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private Transform _objectHolder = null;
     [SerializeField] private DayManager _dayManager = null;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _audioSource = null; 
+    [SerializeField] private AudioClip _dropSound = null;
+    private SFXManager _sFXManager;
+
     private bool _holdingButton = false;
     private bool _holdingWasFinished = false;
     private float _holdingTimer = 0;
@@ -59,6 +64,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Start()
     {
+        _sFXManager = SFXManager.Instance;
         TaskManager.TaskManagerSingelton.OnTask += ActivateInteractable;
     }
 
@@ -420,6 +426,8 @@ public class PlayerInteraction : MonoBehaviour
 
         _isPickedUp = false;
         _objectToInteract.DropObject();
+
+        _sFXManager.PlaySound(_audioSource, _dropSound);
 
 
         if (_objectToInteract.CanInteractWhenPickedUp)
