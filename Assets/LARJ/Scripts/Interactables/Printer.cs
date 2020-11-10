@@ -83,12 +83,12 @@ public class Printer : Interactable
     }
     private bool CheckIfPointIsValid(Vector3 position, Vector3 direction)
     {
+        position.y = 0.5f;
+
         RaycastHit hit;
         if (Physics.Raycast(position, direction, out hit))
         {
-            Debug.Log(Vector3.Distance(position, hit.point));
-            Debug.Log(hit.collider.name);
-            if (Vector3.Distance(position, hit.point) < 3f)
+            if (Vector3.Distance(position, hit.point) < 2f)
             {
                 return false;
             }

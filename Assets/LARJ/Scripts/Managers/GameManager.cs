@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     }
     public void OnLocalPlayerLeft()
     {
-        CalculateDifficulties();
+        if(_playerInputManager.playerCount > 0) CalculateDifficulties();
     }
     #endregion
 
