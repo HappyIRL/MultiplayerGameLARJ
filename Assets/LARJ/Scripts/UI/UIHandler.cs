@@ -13,6 +13,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameObject _settingsScreen = null;
     [SerializeField] private GameObject _creditsScreen = null;
     [SerializeField] private GameObject _localLevelSelectionScreen = null;
+    [SerializeField] private GameObject _networkedLevelSelectionScreen = null;
     [SerializeField] private GameObject _networkSectionScreen = null;
     [SerializeField] private GameObject _gameTitle = null;
     [SerializeField] private GameObject _connectionDialog;
@@ -93,6 +94,12 @@ public class UIHandler : MonoBehaviour
         _startPlayScreen.SetActive(false);
     }
 
+    public void OpenNetworkedLevelSelectionScreen()
+	{
+        _networkedLevelSelectionScreen.SetActive(true);
+        _waitingForPlayersScreen.SetActive(false);
+    }
+
     public void Startlevel1()
     {
         _sceneChanger.FadeToScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -143,6 +150,7 @@ public class UIHandler : MonoBehaviour
     public void WaitingRoomJoined()
     {
         _waitingForPlayersScreen.SetActive(true);
+        _networkedLevelSelectionScreen.SetActive(false);
         _networkSectionScreen.SetActive(false);
     }
     

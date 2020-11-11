@@ -54,6 +54,12 @@ public class MenuButtons : MonoBehaviour
         _uiHandler.PlayButtonClickSound();
     }
 
+    public void OnClick_OpenNetworkedLevelSelectionScreen()
+    {
+        _uiHandler.OpenNetworkedLevelSelectionScreen();
+        _uiHandler.PlayButtonClickSound();
+    }
+
     public void OnClick_EnterLocalSection()
 	{
         _uiHandler.PlayButtonClickSound();
@@ -70,6 +76,12 @@ public class MenuButtons : MonoBehaviour
 	{
         _uiHandler.EnableFailedToConnectDialog(false);
 	}
+
+    public void OnClick_BackToWaitingForPlayers()
+	{
+        _uiHandler.WaitingRoomJoined();
+        _uiHandler.UpdatePlayerList();
+    }
 
     public void OnClick_LeaveRoom()
 	{
