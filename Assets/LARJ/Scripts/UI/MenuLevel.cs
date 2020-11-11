@@ -22,6 +22,10 @@ public class MenuLevel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _costText = null;
     [SerializeField] private TextMeshProUGUI _dayNumberText = null;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _audioSource = null;
+    [SerializeField] private AudioClip _buySound = null;
+
     private void Awake()
     {
         if (Bought)
@@ -60,6 +64,9 @@ public class MenuLevel : MonoBehaviour
         if(money >= Cost)
         {
             UnlockLevel();
+
+            SFXManager.Instance.PlaySound(_audioSource, _buySound);
+
             money -= Cost;
             PlayerPrefs.SetInt("TotalMoneyScore", money);
             PlayerPrefs.SetInt($"{_levelType}Bought", 1);
