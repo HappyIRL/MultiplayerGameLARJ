@@ -63,15 +63,7 @@ namespace Tasks
         {         
             while (_timer < _timeToFinishTask)
             {
-                if (Time.timeScale != 0)
-                {
-                    _timer += Time.deltaTime;
-                }
-                else
-                {
-                    StopCoroutine(_cooldownCoroutine);
-                    break;
-                }
+                _timer += Time.deltaTime;
                 yield return null;
             }
             TaskManager.TaskManagerSingelton.OnTaskFailed(this);

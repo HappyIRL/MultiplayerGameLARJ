@@ -26,7 +26,6 @@ public class Printer : Interactable
 
     private AudioSource _audioSource;
     private Coroutine _lastCoroutine;
-    private GameObject _papergameObject;
     private SFXManager _sFXManager;
 
 	public override void Awake()
@@ -151,8 +150,11 @@ public class Printer : Interactable
             PlaySound(_printerOutSound);
             _audioSource.loop = false;
             InstantiateManager.Instance.SpawnGarbageHealthbar(go);
-            HighlightInteractables.Instance.AddInteractable(go.GetComponent<Interactable>());
             DisableButtonHints();
+
+            Interactable interactable = go.GetComponent<Interactable>();
+            if (interactable == null) interactable = go.GetComponentInChildren<Interactable>();
+            HighlightInteractables.Instance.AddInteractable(interactable);
         }
 
     }

@@ -173,8 +173,19 @@ public abstract class Interactable : MonoBehaviour
     {
         if (currentPlayerControlScheme == "Keyboard")
         {
-            KeyboardPressedButtonHintImage.SetActive(true);
-            EnableAdditionalButtonHintsForKeyboard();
+            if (InteractionType == InteractionType.PressTheCorrectKeys)
+            {
+                if (_currentCorrectKeysPressedCount == 0)
+                {
+                    KeyboardPressedButtonHintImage.SetActive(true);
+                }
+                EnableAdditionalButtonHintsForKeyboard();
+            }
+            else
+            {
+                KeyboardPressedButtonHintImage.SetActive(true);
+                EnableAdditionalButtonHintsForKeyboard();
+            }
         }
         else if (currentPlayerControlScheme == "Gamepad")
         {
