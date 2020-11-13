@@ -254,8 +254,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         {
             _patienceImageBackground.fillAmount = 1 - _timer / _timeToFinishTask;
             _timer += Time.deltaTime;
+
             yield return null;
         }
+
         // Log Failed Task
         if(_stateMachine.currentState.name != "Leaving")
         {
@@ -378,12 +380,14 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         base.HoldingStartedEvent();
         OnEnterTalk();
+        GetComponent<Task>().StopTaskCoolDown();
     }
 
     public override void HoldingFailedEvent()
     {
         base.HoldingFailedEvent();
         OnFailedTalk();
+        GetComponent<Task>().StartTaskCooldown();
     }
 
     public override void HoldingFinishedEvent()

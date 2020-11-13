@@ -27,6 +27,8 @@ namespace Tasks
         private bool _isTaskActive = false;
         private Interactable _interactable;
         private Coroutine _cooldownCoroutine;
+        private int _timer = 0;
+
         public TaskType GetTaskType { get => _taskType; set => _taskType = value; }
 
         public TaskUI TaskUI { get; set; }
@@ -43,21 +45,27 @@ namespace Tasks
         }
         public void StartTask()
         {
+            _timer = 0;
             _interactable.StartInteractible();
+            StartTaskCooldown();
+        }
+
+        public void StartTaskCooldown()
+        {
             if (_cooldownCoroutine != null)
             {
                 StopCoroutine(_cooldownCoroutine);
             }
-            _cooldownCoroutine = StartCoroutine(StartTaskCooldown());
+            _cooldownCoroutine = StartCoroutine(StartTaskCooldownCoroutine());
         }
-        IEnumerator StartTaskCooldown()
-        {
-            int timer = 0;
-            while (timer < _timeToFinishTask)
+
+        IEnumerator StartTaskCooldownCoroutine()
+        {         
+            while (_timer < _timeToFinishTask)
             {
                 if (Time.timeScale != 0)
                 {
-                timer++;
+                    _timer++;
                 }
                 else
                 {
@@ -70,7 +78,7 @@ namespace Tasks
             yield return null;
         }
 
-        private void StopTaskCoolDown()
+        public void StopTaskCoolDown()
         {
             if (_cooldownCoroutine != null)
             {
@@ -81,7 +89,6 @@ namespace Tasks
         {
             StopTaskCoolDown();
             _interactable.StopInteractible();
-
         }
     }
 }
