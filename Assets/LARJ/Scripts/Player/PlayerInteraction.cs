@@ -213,8 +213,21 @@ public class PlayerInteraction : MonoBehaviour
 
             if (interactable == ObjectToInteract)
             {
+                if (interactable.InteractionType == InteractionType.Hold)
+                {
+                    interactable.HoldingFailedEvent();
+                    _holdingButton = false;
+                }
                 ObjectToInteract = null;
             }
+        }
+        else if (_duplicator != null)
+        {
+            _duplicator.DisableButtonHints();
+            _duplicator.HoldingFailedEvent();
+            _duplicator.DisableProgressbar();
+            _holdingButton = false;
+            _duplicator = null;
         }
     }
 
