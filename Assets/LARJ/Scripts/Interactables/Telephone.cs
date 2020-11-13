@@ -23,6 +23,7 @@ public class Telephone : Interactable
     private bool _callAnswered = false;
     private Coroutine _lastCoroutine;
     private SFXManager _sFXManager;
+    float _timer = 0f;
 
     public override void Awake()
     {
@@ -42,21 +43,21 @@ public class Telephone : Interactable
     {
         _sFXManager.PlaySound(_audioSource, _ringingSound);
         _callAnswered = false;
+        _timer = 0f;
         _lastCoroutine = StartCoroutine(TelephoneRingingCoroutine());
     }
 
     private IEnumerator TelephoneRingingCoroutine()
     {
-        float timer = 0f;
         float lightSwitchTimer = _lightSwitchTimeInSecs;
         bool lightIsNormal = true;
 
-        while (timer <= _ringingTimeInSecs)
+        while (_timer <= _ringingTimeInSecs)
         {
-            timer += Time.deltaTime;
-            if (timer >= lightSwitchTimer)
+            _timer += Time.deltaTime;
+            if (_timer >= lightSwitchTimer)
             {
-                lightSwitchTimer = timer + _lightSwitchTimeInSecs;
+                lightSwitchTimer = _timer + _lightSwitchTimeInSecs;
 
                 if (lightIsNormal)
                 {
@@ -109,8 +110,22 @@ public class Telephone : Interactable
         ChangeMaterial(false);
     }
 
+    public override void HoldingStartedEvent()
+    {
+        base.HoldingStartedEvent();
+
+        Task task = GetComponent<Task>();
+        task.StopTaskCoolDown();
+        task.TaskUI.StopTaskUITimer();
+        if (_lastCoroutine != null) StopCoroutine(_lastCoroutine);
+    }
     public override void HoldingFailedEvent()
     {
+        Task task = GetComponent<Task>();
+        task.StartTaskCooldown();
+        task.TaskUI.StartTaskUITimer();
+        _lastCoroutine = StartCoroutine(TelephoneRingingCoroutine());
+
         EndCall();
     }
 
