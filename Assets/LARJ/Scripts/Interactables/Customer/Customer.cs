@@ -22,6 +22,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     [SerializeField] private GameObject _documentImage = null;
     [SerializeField] private TextMeshProUGUI _customerSpeechText = null;
 
+    private CustomerTalkingVisuals _customerTalkingVisuals;
     private CustomerManager cm;
     private Transform _deskWaypoint;
     [HideInInspector] public Transform despawn;
@@ -43,6 +44,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         _agent = GetComponent<NavMeshAgent>();
         _agent.enabled = false;
         _timeToFinishTask = GetComponent<Task>().GetTimeToFinishTask;
+        _customerTalkingVisuals = GetComponent<CustomerTalkingVisuals>();
     }
     private void Update()
     {
@@ -380,6 +382,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         _customerSpeechText.gameObject.SetActive(false);
         _speechBubble.SetActive(false);
     }
+ 
 
     #region Interactable Events
     public override void HoldingStartedEvent()
@@ -387,6 +390,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         base.HoldingStartedEvent();
         OnEnterTalk();
         GetComponent<Task>().StopTaskCoolDown();
+        _customerTalkingVisuals.ActivateTalkingVisuals();
     }
 
     public override void HoldingFailedEvent()
@@ -394,6 +398,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         base.HoldingFailedEvent();
         OnFailedTalk();
         GetComponent<Task>().StartTaskCooldown();
+        _customerTalkingVisuals.DeactivateTalkingVisuals();
     }
 
     public override void HoldingFinishedEvent()
@@ -401,6 +406,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         base.HoldingFinishedEvent();
         OnFinishedTalk();
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+        _customerTalkingVisuals.DeactivateTalkingVisuals();
     }
     public override void OnNetworkHoldingFinishedEvent()
     {
