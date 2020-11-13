@@ -82,7 +82,6 @@ public class Telephone : Interactable
     private void EndCall()
     {
         _sFXManager.StopAudioSource(_audioSource);
-        _callAnswered = true;
         ChangeMaterial(false);
         DisableButtonHints();
     }
@@ -105,6 +104,7 @@ public class Telephone : Interactable
         {
             StopCoroutine(_lastCoroutine);
         }
+        _callAnswered = true;
 
         EndCall();
         ChangeMaterial(false);

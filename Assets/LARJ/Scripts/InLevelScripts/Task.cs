@@ -27,7 +27,7 @@ namespace Tasks
         private bool _isTaskActive = false;
         private Interactable _interactable;
         private Coroutine _cooldownCoroutine;
-        private int _timer = 0;
+        private float _timer = 0;
 
         public TaskType GetTaskType { get => _taskType; set => _taskType = value; }
 
@@ -65,14 +65,14 @@ namespace Tasks
             {
                 if (Time.timeScale != 0)
                 {
-                    _timer++;
+                    _timer += Time.deltaTime;
                 }
                 else
                 {
                     StopCoroutine(_cooldownCoroutine);
                     break;
                 }
-                yield return new WaitForSeconds(1);
+                yield return null;
             }
             TaskManager.TaskManagerSingelton.OnTaskFailed(this);
             yield return null;
