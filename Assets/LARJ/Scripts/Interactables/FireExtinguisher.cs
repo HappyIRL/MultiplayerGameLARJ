@@ -70,11 +70,15 @@ public class FireExtinguisher : Interactable
 
     public override void MousePressEvent()
     {
+        base.MousePressEvent();
+
         StartExtinguishing();
     }
 
     public override void MouseReleaseEvent()
     {
+        base.MouseReleaseEvent();
+
         StopExtinguishing();
     }
 }

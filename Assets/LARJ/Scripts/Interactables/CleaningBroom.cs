@@ -67,11 +67,15 @@ public class CleaningBroom : Interactable
 
     public override void MousePressEvent()
     {
+        base.MousePressEvent();
+
         StartCleaning();
     }
 
     public override void MouseReleaseEvent()
     {
+        base.MouseReleaseEvent();
+
         StopCleaning();
     }
 }

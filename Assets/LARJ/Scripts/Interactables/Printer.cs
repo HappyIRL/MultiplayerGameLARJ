@@ -140,6 +140,7 @@ public class Printer : Interactable
             StopCoroutine(_lastCoroutine);
         }
 
+        objectToSpawn.GetComponent<Interactable>().DisableOutline();
         GameObject go = InstantiateManager.Instance.Instantiate (objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
 
         if(go != null)
@@ -147,6 +148,7 @@ public class Printer : Interactable
             PlaySound(_printerOutSound);
             _audioSource.loop = false;
             InstantiateManager.Instance.SpawnGarbageHealthbar(go);
+            HighlightInteractables.Instance.AddInteractable(go.GetComponent<Interactable>());
             DisableButtonHints();
         }
 
@@ -164,21 +166,29 @@ public class Printer : Interactable
 
     public override void HoldingStartedEvent()
     {
+        base.HoldingStartedEvent();
+
         StartPrinting();
     }
 
     public override void HoldingFailedEvent()
     {
+        base.HoldingFailedEvent();
+
         CancelPrinting();
     }
 
     public override void HoldingFinishedEvent()
     {
+        base.HoldingFinishedEvent();
+
         FinishPrinting();
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
     public override void HoldingFinishedEvent(GameObject pickUpObject)
     {
+        base.HoldingFinishedEvent(pickUpObject);
+
         FinishPrinting(pickUpObject);
     }
 

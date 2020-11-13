@@ -272,10 +272,15 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     #region Leaving State
     private void LeavingStart()
     {
+        if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
+
         _isWaitingForMoney = false;
+        _isWaitingForDocument = false;
         _agent.destination = despawn.position;
+
         _patienceImage.gameObject.SetActive(false);
         _patienceImageBackground.gameObject.SetActive(false);
+
         cm.LeftDesk(_deskWaypoint);
         cm.DequeueCustomer();
     } // MOVE TO DESPAWN
@@ -303,6 +308,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     private void OnFinishedTalk()
     {
         if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
+
         _stateMachine.TransitionTo("Leaving");
     }
 

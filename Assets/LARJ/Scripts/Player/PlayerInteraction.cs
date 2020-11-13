@@ -119,8 +119,6 @@ public class PlayerInteraction : MonoBehaviour
 
             if (_holdingTimer >= objectToHold.HoldingTime)
             {
-                objectToHold.DisableProgressbar();
-
                 _holdingTimer = 0f;
                 _holdingButton = false;
                 _holdingWasFinished = true;
@@ -149,13 +147,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!_isPickedUp)
             {
-                if (AllowedInteractables.Instance.Interactables.Contains(interactable) /* true*/)
+                if (AllowedInteractables.Instance.Interactables.Contains(interactable))
                 {
-                    ObjectToInteract = interactable;
-                    InteractableInteractionType = interactable.InteractionType;
-                    _canInteract = true;
-
-                    if (InteractableInteractionType != InteractionType.PressTheCorrectKeys) _canUseArrowKeys = false;
+                    ObjectToInteract = interactable;               
                 }
             }
             else if (other.tag == "Printer")
@@ -165,7 +159,6 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
-
     private void OnTriggerStay(Collider other)
     {
         Interactable interactable = other.GetComponent<Interactable>();
@@ -174,13 +167,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (ObjectToInteract == null)
             {
-                if (AllowedInteractables.Instance.Interactables.Contains(interactable)/* true*/)
+                if (AllowedInteractables.Instance.Interactables.Contains(interactable))
                 {
                     ObjectToInteract = interactable;
-                    InteractableInteractionType = interactable.InteractionType;
-                    _canInteract = true;
-
-                    if (InteractableInteractionType == InteractionType.PressTheCorrectKeys) _canUseArrowKeys = false;
                 }
             }
         }
@@ -215,7 +204,10 @@ public class PlayerInteraction : MonoBehaviour
             {
                 if (interactable.InteractionType == InteractionType.Hold)
                 {
-                    interactable.HoldingFailedEvent();
+                    if (!_holdingWasFinished)
+                    {
+                        interactable.HoldingFailedEvent();
+                    }
                     _holdingButton = false;
                 }
                 ObjectToInteract = null;
@@ -223,9 +215,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (_duplicator != null)
         {
-            _duplicator.DisableButtonHints();
             _duplicator.HoldingFailedEvent();
-            _duplicator.DisableProgressbar();
             _holdingButton = false;
             _duplicator = null;
         }
@@ -237,8 +227,13 @@ public class PlayerInteraction : MonoBehaviour
 
         if (_objectToInteract != null)
         {
+            InteractableInteractionType = value.InteractionType;
+            _canInteract = true;
+
             if (!_isPickedUp)
                 _objectToInteract.EnableButtonHints(_playerInput.currentControlScheme);
+
+            if (InteractableInteractionType != InteractionType.PressTheCorrectKeys) _canUseArrowKeys = false;
 
             _objectToInteract.EnableOutline();
         }
@@ -326,6 +321,7 @@ public class PlayerInteraction : MonoBehaviour
             if (!_holdingWasFinished)
             {
                 if (objectToRelease == null) return;
+
                 objectToRelease.HoldingFailedEvent();
                 LARJInteractableUse?.Invoke(InteractableUseType.HoldFailed, objectToRelease.UniqueInstanceID, InteractableObjectID.None);
                 objectToRelease.EnableButtonHints(_playerInput.currentControlScheme);
@@ -349,7 +345,6 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         _objectToInteract.MousePressEvent();
                         LARJInteractableUse?.Invoke(InteractableUseType.MousePress, _objectToInteract.UniqueInstanceID, InteractableObjectID.None);
-                        _objectToInteract.DisablePickedUpButtonHints();
                     }
                 }
             }
@@ -459,23 +454,21 @@ public class PlayerInteraction : MonoBehaviour
         LARJInteractableUse?.Invoke(InteractableUseType.Press, _objectToInteract.UniqueInstanceID, InteractableObjectID.None);
         _objectToInteract.PressEvent();
     }
-
     private void MultiPressInteraction()
     {
         if (_objectToInteract == null) return;
 
         _objectToInteract.MultiPressEvent();
     }
-
     private void HoldingInteraction(Interactable objectToInteract)
     {
         if (_objectToInteract == null) return;
 
         _holdingButton = true;
         _holdingWasFinished = false;
-        _objectToInteract.UpdateProgressbar(0f);
+
         objectToInteract.HoldingStartedEvent();
-        objectToInteract.DisableButtonHints();
+
         LARJInteractableUse?.Invoke(InteractableUseType.HoldStart, objectToInteract.UniqueInstanceID, InteractableObjectID.None);
     }
     private void PressTheCorrectKeysInteraction()

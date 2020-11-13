@@ -121,6 +121,8 @@ public class Telephone : Interactable
     }
     public override void HoldingFailedEvent()
     {
+        base.HoldingFailedEvent();
+
         Task task = GetComponent<Task>();
         task.StartTaskCooldown();
         task.TaskUI.StartTaskUITimer();
@@ -131,6 +133,8 @@ public class Telephone : Interactable
 
     public override void HoldingFinishedEvent()
     {
+        base.HoldingFinishedEvent();
+
         AnswerCall();
         TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
         TaskManager.TaskManagerSingelton.StartRandomFollowUpTask();

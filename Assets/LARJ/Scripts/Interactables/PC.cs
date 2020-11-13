@@ -83,6 +83,8 @@ public class PC : Interactable
 
     public override void MultiPressEvent()
     {
+        base.MultiPressEvent();
+
         StartTyping();
     }
 

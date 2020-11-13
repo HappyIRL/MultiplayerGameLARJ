@@ -47,6 +47,8 @@ public class WaterCooler : Interactable
 
     public override void PressEvent()
     {
+        base.PressEvent();
+
         PlayParticles();
     }
 

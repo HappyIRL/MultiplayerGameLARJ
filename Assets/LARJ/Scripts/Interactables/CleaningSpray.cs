@@ -47,6 +47,8 @@ public class CleaningSpray : Interactable
 
     public override void MousePressEvent()
     {
+        base.MousePressEvent();
+
         Clean();
     }
 }

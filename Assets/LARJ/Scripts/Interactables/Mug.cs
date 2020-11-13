@@ -110,10 +110,14 @@ public class Mug : Interactable
     }
     public override void MousePressEvent()
     {
+        base.MousePressEvent();
+
         StartDrinking();
     }
     public override void MouseReleaseEvent()
     {
+        base.MouseReleaseEvent();
+
         StopDrinking();
     }
 

@@ -24,6 +24,8 @@ public class Stamp : Interactable
 
     public override void MousePressEvent()
     {
+        base.MousePressEvent();
+
         if (StampingFinished)
         {
             Animator.enabled = true;

@@ -310,6 +310,7 @@ public abstract class Interactable : MonoBehaviour
     }
     #endregion
 
+
     public void EnableColliders()
     {
         Rb.useGravity = true;
@@ -458,18 +459,28 @@ public abstract class Interactable : MonoBehaviour
         SetCurrentCorrectKeyUI(currentPlayerControlScheme);
     }
 
+
     #region Events
-    public virtual void HoldingStartedEvent() { }
-    public virtual void HoldingFailedEvent() { }
-    public virtual void HoldingFinishedEvent() { }
-    public virtual void HoldingFinishedEvent(GameObject pickUpObject) { }
+    public virtual void HoldingStartedEvent() 
+    {
+        UpdateProgressbar(0f);
+        DisableButtonHints();
+    }
+    public virtual void HoldingFailedEvent() 
+    {
+        DisableButtonHints();
+        DisableProgressbar();
+    }
+    public virtual void HoldingFinishedEvent() 
+    {
+        DisableProgressbar();
+    }
+    public virtual void HoldingFinishedEvent(GameObject pickUpObject) 
+    {
+        DisableProgressbar();
+    }
     public virtual void PressEvent() { }
     public virtual void MultiPressEvent() { }
-
-    /// <summary>
-    /// Call base to set first random correct key!
-    /// </summary>
-    /// <param name="currentPlayerControlScheme"></param>
     public virtual void PressTheCorrectKeysStartedEvent(string currentPlayerControlScheme)
     {
         _correctKeyEventStarted = true;
@@ -482,7 +493,10 @@ public abstract class Interactable : MonoBehaviour
     {
         _correctKeyEventStarted = false;
     }
-    public virtual void MousePressEvent() { }
+    public virtual void MousePressEvent() 
+    {
+        DisablePickedUpButtonHints();
+    }
     public virtual void MouseReleaseEvent() { }
     public virtual void StartInteractible() { }
     public virtual void StopInteractible() { }

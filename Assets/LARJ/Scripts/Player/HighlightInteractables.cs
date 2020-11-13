@@ -47,6 +47,6 @@ public class HighlightInteractables : MonoBehaviour
 
 		_interactables.Add(interactable);
 
-		interactable.OutlineRef.enabled = false;
+		interactable.OutlineRef.enabled = OutlineEnabled;
 	}
 }

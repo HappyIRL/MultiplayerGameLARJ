@@ -107,6 +107,8 @@ public class Shotgun : Interactable
 
     public override void MousePressEvent()
     {
+        base.MousePressEvent();
+
         Shoot();
     }
 
