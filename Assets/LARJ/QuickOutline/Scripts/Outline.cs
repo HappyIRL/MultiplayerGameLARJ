@@ -101,7 +101,10 @@ public class Outline : MonoBehaviour {
 
   void OnEnable() {
     foreach (var renderer in renderers) {
-
+      
+      //if renderer is on a particleSystem return
+      if (renderer.GetComponent<ParticleSystem>()) return;
+        
       // Append outline shaders
       var materials = renderer.sharedMaterials.ToList();
 

@@ -53,7 +53,7 @@ public class FireExtinguisher : Interactable
 
         while (_isExtinguishing)
         {
-            if (Physics.SphereCast(transform.position, 1f, transform.forward, out hit, 5f, _fireLayer))
+            if (Physics.SphereCast(transform.position, 1.5f, transform.forward, out hit, 6f, _fireLayer))
             {
                 if (hit.collider.tag == "Fire")
                 {
