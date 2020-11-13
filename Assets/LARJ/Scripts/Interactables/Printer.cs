@@ -140,7 +140,10 @@ public class Printer : Interactable
             StopCoroutine(_lastCoroutine);
         }
 
-        objectToSpawn.GetComponent<Interactable>().DisableOutline();
+        Outline outline = objectToSpawn.GetComponent<Outline>();
+        if (outline == null) outline = objectToSpawn.GetComponentInChildren<Outline>();
+        outline.enabled = false;
+
         GameObject go = InstantiateManager.Instance.Instantiate (objectToSpawn, _printerOutputPoint.position, _printerOutputPoint.rotation);
 
         if(go != null)
