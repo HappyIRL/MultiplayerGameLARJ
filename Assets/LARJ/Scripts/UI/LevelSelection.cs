@@ -15,7 +15,7 @@ public class LevelSelection : MonoBehaviour
 
     private void Awake()
     {
-        ActivateLevel();
+        //ActivateLevel();
         UpdateMoneyText();
     }
     private void ActivateLevel()
@@ -23,10 +23,13 @@ public class LevelSelection : MonoBehaviour
         if (_currentIndex == 0)
         {
             _leftButton.interactable = false;
+            _rightButton.Select();
+            
         }
         else if(_currentIndex == _levels.Count - 1)
         {
             _rightButton.interactable = false;
+            _leftButton.Select();
         }
         else
         {
