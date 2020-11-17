@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class Fire : MonoBehaviour, IObjectPoolNotifier
 {
     [HideInInspector] public ObjectPool FirePool = null;
-    [HideInInspector] public FireSpawner FireSpawner = null;
 
     [SerializeField] private float _maxHealth = 10f;
     [SerializeField] private float _chanceOfSpawningAnotherFire = 0.01f;
@@ -54,13 +53,6 @@ public class Fire : MonoBehaviour, IObjectPoolNotifier
                 _healthbarImage.gameObject.SetActive(false);
                 _healthbarBackground.gameObject.SetActive(false);
             }
-
-            float rnd = Random.Range(0f, 100f);
-
-            if (rnd <= _chanceOfSpawningAnotherFire)
-            {
-                SpawnAnotherFire();
-            }
         }
     }
 
@@ -69,14 +61,6 @@ public class Fire : MonoBehaviour, IObjectPoolNotifier
         _healthbarImage.gameObject.SetActive(true);
         _healthbarBackground.gameObject.SetActive(true);
         _healthbarImage.fillAmount = _health / _maxHealth;
-    }
-
-    private void SpawnAnotherFire()
-    {
-        Vector3 pos = Random.insideUnitSphere;
-        pos.y = transform.position.y;
-
-        FireSpawner.SpawnFireAt(pos);
     }
 
     public void TryToExtinguish(float damage)

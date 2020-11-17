@@ -345,6 +345,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         }
 
         ChooseRandomModel();
+        _patienceImageBackground.gameObject.SetActive(false);
+        _patienceImage.gameObject.SetActive(false);
     }
 
 

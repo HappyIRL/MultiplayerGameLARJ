@@ -34,13 +34,16 @@ public class CleaningSpray : Interactable
         _sprayParticles.Play();
         _sFXManager.PlaySound(_audioSource, _spraySound);
 
-        RaycastHit hit;
-        if (Physics.SphereCast(_cleaningPoint.position, 1f, _cleaningPoint.forward, out hit, 5f, _playerLayer))
+
+        RaycastHit[] hits = Physics.SphereCastAll(_cleaningPoint.position, 1f, _cleaningPoint.forward, 5f, _playerLayer);
         {
-            var obj = hit.collider.GetComponent<PlayerMovement>();
-            if (obj != null)
+            for (int i = 0; i < hits.Length; i++)
             {
-                obj.RemoveAllEffects();
+                var obj = hits[i].collider.GetComponent<PlayerMovement>();
+                if (obj != null)
+                {
+                    obj.RemoveAllEffects();
+                }           
             }
         }
     }

@@ -49,7 +49,6 @@ public class FireSpawner : MonoBehaviour
     public void SpawnFireAtRandomPosition()
     {
         GameObject obj = _firePool.GetObject();
-        obj.GetComponent<Fire>().FireSpawner = this;
 
         Vector3 pos;
         do
@@ -66,7 +65,6 @@ public class FireSpawner : MonoBehaviour
     public void SpawnFireAt(Vector3 position)
     {
         GameObject obj = _firePool.GetObject();
-        obj.GetComponent<Fire>().FireSpawner = this;
 
         obj.transform.position = position;
     }

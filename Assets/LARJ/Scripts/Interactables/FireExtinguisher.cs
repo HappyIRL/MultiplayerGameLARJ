@@ -49,20 +49,20 @@ public class FireExtinguisher : Interactable
 
     private IEnumerator ExtinguishCoroutine()
     {
-        RaycastHit hit;
-
         while (_isExtinguishing)
         {
-            if (Physics.SphereCast(transform.position, 1.5f, transform.forward, out hit, 6f, _fireLayer))
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, 1.5f, transform.forward, 6f, _fireLayer);
+
+            for (int i = 0; i < hits.Length; i++)
             {
-                if (hit.collider.tag == "Fire")
+                if (hits[i].collider.tag == "Fire")
                 {
-                    Fire fire = hit.collider.gameObject.GetComponent<Fire>();
+                    Fire fire = hits[i].collider.gameObject.GetComponent<Fire>();
 
                     fire.TryToExtinguish(2f * Time.deltaTime);
                 }
             }
-
+           
             yield return null;
         }
     }
