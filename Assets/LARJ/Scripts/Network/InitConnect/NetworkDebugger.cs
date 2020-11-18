@@ -177,7 +177,7 @@ public class NetworkDebugger : MonoBehaviourPunCallbacks
 
 	private void OnGUI()
 	{
-		GUI.color = Color.black;
+		GUI.color = Color.white;
 
 		if (_toggleDebugUI)
 		{
