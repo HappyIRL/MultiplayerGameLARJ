@@ -412,7 +412,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     }
     public override void OnNetworkHoldingFinishedEvent()
     {
-        Debug.Log("Received in Customer: OnNetworkHoldingFinishedEvent");
         base.OnNetworkHoldingFinishedEvent();
         OnFinishedTalk();
         _customerTalkingVisuals.DeactivateTalkingVisuals();
@@ -438,7 +437,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
             if (!_isWaitingForMoney)
             {
                 _timer = 0;
-                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+                //TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
 
                 if (UnityEngine.Random.value > 0.5f)
                 {

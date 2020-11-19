@@ -476,6 +476,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				if (AllowedInteractables.Instance.Interactables.Contains(interactable))
 					if (!interactable.AlwaysInteractable)
 						AllowedInteractables.Instance.Interactables.Remove(interactable);
+
 				task.IsTaskActive = false;
 				task.StopTask();
 				taskManagerUI.RemoveUITask(task.TaskUI);
@@ -496,7 +497,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				if (!AllowedInteractables.Instance.Interactables.Contains(interactable))
 					AllowedInteractables.Instance.AddInteractable(interactable);
 				task.TaskUI = taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
-				
+				task.IsTaskActive = true;
+				task.StartTask();
 				break;
 		}
 	}

@@ -199,6 +199,8 @@ public class Printer : Interactable
 
     public override void OnNetworkHoldingFinishedEvent()
     {
+        base.OnNetworkHoldingFinishedEvent();
+
         FinishPrinting();
     }
 

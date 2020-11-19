@@ -31,6 +31,7 @@ public class Telephone : Interactable
         InteractableID = _interactableID;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _ringingSound;
+        AlwaysInteractable = false;
         
     }
     public override void Start()
@@ -152,6 +153,8 @@ public class Telephone : Interactable
 
     public override void OnNetworkHoldingFinishedEvent()
     {
+        base.HoldingFinishedEvent();
+
         AnswerCall();
     }
 }

@@ -120,7 +120,11 @@ namespace Tasks
 
         public void OnTaskCompleted(Task task)
         {
-            if (!task.IsTaskActive) return;
+            if (!task.IsTaskActive)
+			{
+                Debug.Log("Task not active");
+                return;
+			}
 
             task.IsTaskActive = false;
             task.StopTask();
@@ -170,7 +174,6 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            Debug.Log("StartRandomFollowUpTask: " + task.name);
             OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
         public void StartMoneyTask(Task task)

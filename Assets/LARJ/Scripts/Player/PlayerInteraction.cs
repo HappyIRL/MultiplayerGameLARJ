@@ -82,6 +82,7 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
                         DisableInteraction(interactable);
+                        Debug.Log("Removing Interactable");
                     }
                     OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
                 }
