@@ -58,6 +58,6 @@ public class NetworkCharacterSetup : MonoBehaviourPunCallbacks
 		PhotonPeer.RegisterType(typeof(ClockNetworkData), (byte)LARJNetworkEvents.ClockUpdate, ClockNetworkData.SerializeMethod, ClockNetworkData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(NotMasterClientInstantiateData), (byte)LARJNetworkEvents.InstantiateOnMaster, NotMasterClientInstantiateData.SerializeMethod, NotMasterClientInstantiateData.DeserializeMethod);
 		PhotonPeer.RegisterType(typeof(NotMasterClientInstantiateData), (byte)LARJNetworkEvents.InstantiateOnOther, NotMasterClientInstantiateData.SerializeMethod, NotMasterClientInstantiateData.DeserializeMethod);
-		PhotonPeer.RegisterType(typeof(InteractableTransformNetworkData), (byte)LARJNetworkEvents.SyncInteractablesFromMaster, InteractableTransformNetworkData.SerializeMethod, InteractableTransformNetworkData.DeserializeMethod);
+		PhotonPeer.RegisterType(typeof(OnStartClientNetworkData), (byte)LARJNetworkEvents.SyncOnStartFromMaster, OnStartClientNetworkData.SerializeMethod, OnStartClientNetworkData.DeserializeMethod);
 	}
 }

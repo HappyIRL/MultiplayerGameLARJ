@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using Tasks;
 using Photon.Pun.UtilityScripts;
 using TMPro;
+using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     [Header("DayUI")]
     [SerializeField] private TextMeshProUGUI _sceneChangerDayText = null;
+
     private int currentDay;
 
     public LevelType LevelType { get => _levelType; }
@@ -50,9 +52,13 @@ public class GameManager : MonoBehaviour
     {
         //Check if Local or Network!
 
-        int playerCount = _playerInputManager.playerCount;
+        int playerCount;
 
-
+        if (!PhotonNetwork.IsConnected)
+            playerCount = _playerInputManager.playerCount;
+        else
+            playerCount = 2;
+        
         //get current day (number)
         currentDay = PlayerPrefs.GetInt($"{_levelType}CurrentDay", 1);
 

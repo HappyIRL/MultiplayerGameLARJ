@@ -14,7 +14,7 @@ public enum LARJNetworkEvents
 	ClockUpdate = 132,
 	InstantiateOnMaster = 133,
 	InstantiateOnOther = 134,
-	SyncInteractablesFromMaster = 135,
+	SyncOnStartFromMaster = 135,
 	NotifyMasterOnSceneLoad = 136
 
 }
@@ -83,9 +83,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	}
 	#region Private - Methods
 
-	private void OnCustomerSpawn(GameObject go, InteractionType type)
+	private void OnCustomerSpawn(GameObject go, InteractionType type, bool WantsMoney)
 	{
-		RaiseNetworkedCustomer(AddInstanceToObjectLists(go), type);
+		RaiseNetworkedCustomer(AddInstanceToObjectLists(go), type, WantsMoney);
 	}
 
 	private int AddInstanceToObjectLists(GameObject go)
@@ -188,7 +188,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void RaiseOnSceneLoad()
 	{
-
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
 			Receivers = ReceiverGroup.MasterClient,
@@ -208,7 +207,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.NotifyMasterOnSceneLoad, clientNetworkData, raiseEventOptions, sendOptions);
 	}
 
-	private void RaiseOnStartInteractablePositions(GameObject go, byte objectID)
+	private void RaiseOnStartOnClient(GameObject go, byte objectID)
 	{
 		Vector3 position = go.transform.position;
 		Vector3 rotation = go.transform.eulerAngles;
@@ -225,15 +224,17 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			Reliability = true
 		};
 
-		InteractableTransformNetworkData interactableTransform = new InteractableTransformNetworkData()
+		OnStartClientNetworkData interactableTransform = new OnStartClientNetworkData()
 		{
 			Position = position,
 			Rotation = rotation,
 			LocalScale = localScale,
-			ObjectIndex = objectID
+			ObjectIndex = objectID,
+			//Seed = Seed
+
 		};
 
-		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.SyncInteractablesFromMaster, interactableTransform, raiseEventOptions, sendOptions);
+		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.SyncOnStartFromMaster, interactableTransform, raiseEventOptions, sendOptions);
 	}
 
 	private void UpdateLocalPlayerController()
@@ -311,7 +312,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.TaskUpdate, taskNetworkData, raiseEventOptions, sendOptions);
 	}
 
-	private void RaiseNetworkedCustomer(int _uniqueInstanceID, InteractionType type)
+	private void RaiseNetworkedCustomer(int _uniqueInstanceID, InteractionType type, bool wantsMoney)
 	{
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
@@ -327,7 +328,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		CustomerNetworkData interactableNetworkData = new CustomerNetworkData()
 		{
 			UniqueInstanceID = _uniqueInstanceID,
-			Type = type
+			Type = type,
+			WantsMoney = wantsMoney
 		};
 
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.CustomerSpawn, interactableNetworkData, raiseEventOptions, sendOptions);
@@ -505,7 +507,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveCustomerSpawn(CustomerNetworkData data)
 	{
-		AddInstanceToObjectList(_customerSpawner.SpawnNetworkedCustomer(data.Type), data.UniqueInstanceID);
+		AddInstanceToObjectList(_customerSpawner.SpawnNetworkedCustomer(data.Type, data.WantsMoney), data.UniqueInstanceID);
 	}
 
 	private void ReceiveInteractableEvent(InteractableNetworkData data)
@@ -594,12 +596,14 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	}
 
-	private void ReceiveInteractableTransformOfMasterClient(InteractableTransformNetworkData data)
+	private void ReceiveSyncDataOfMasterClient(OnStartClientNetworkData data)
 	{
 		GameObject goToSync = _syncOnStartGOs[data.ObjectIndex];
 		goToSync.transform.position = data.Position;
 		goToSync.transform.eulerAngles = data.Rotation;
 		goToSync.transform.localScale = data.LocalScale;
+		//Seed = data.Seed;
+		//Random.InitState(Seed);
 	}
 
 	public void OnEvent(EventData photonEvent)
@@ -629,13 +633,13 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			case LARJNetworkEvents.InstantiateOnOther:
 				ReceiveInstantiateOnOther((NotMasterClientInstantiateData)photonEvent.CustomData);
 				break;
-			case LARJNetworkEvents.SyncInteractablesFromMaster:
-				ReceiveInteractableTransformOfMasterClient((InteractableTransformNetworkData)photonEvent.CustomData);
+			case LARJNetworkEvents.SyncOnStartFromMaster:
+				ReceiveSyncDataOfMasterClient((OnStartClientNetworkData)photonEvent.CustomData);
 				break;
 			case LARJNetworkEvents.NotifyMasterOnSceneLoad:
 				for (int i = 0; i < _syncOnStartGOs.Count; i++)
 				{
-					RaiseOnStartInteractablePositions(_syncOnStartGOs[i], (byte)i);
+					RaiseOnStartOnClient(_syncOnStartGOs[i], (byte)i);
 				}
 				break;
 

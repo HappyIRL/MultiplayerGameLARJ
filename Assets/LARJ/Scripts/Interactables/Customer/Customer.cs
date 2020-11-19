@@ -36,6 +36,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     public bool _isWaitingForMoney = false;
     public bool _isWaitingForDocument = false;
     public bool _wasHitByBullet = false;
+    public bool WantsMoney;
 
     public override void Awake()
     {
@@ -439,17 +440,17 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
                 _timer = 0;
                 //TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
 
-                if (UnityEngine.Random.value > 0.5f)
-                {
-                    _isWaitingForMoney = true;
+                if(WantsMoney)
+				{
                     _stateMachine.TransitionTo("WaitForMoney");
-            
-                }
+                    _isWaitingForMoney = true;
+				}
                 else
-                {
-                    _isWaitingForDocument = true;
+				{
                     _stateMachine.TransitionTo("WaitForDocument");
-                }
+                    _isWaitingForDocument = true;
+				}
+
             }
         }
         

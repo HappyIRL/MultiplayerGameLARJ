@@ -28,9 +28,7 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] Transform _despawnPoint;
     public Transform DespawnPoint { get { return _despawnPoint; } }
 
-    private bool _isLocal = true;
-    public delegate void LARjCustomerSpawnEvent(GameObject go, InteractionType type);
-    public event LARjCustomerSpawnEvent OnCustomerSpawn;
+    public event Action<GameObject, InteractionType, bool> OnCustomerSpawn;
 
     [SerializeField, Range(0, 10)] private int _difficulty = 1;
     public int Difficulty
@@ -70,12 +68,14 @@ public class CustomerSpawner : MonoBehaviour
     }
 
 
-    public GameObject SpawnNetworkedCustomer(InteractionType type)
+    public GameObject SpawnNetworkedCustomer(InteractionType type, bool wantsMoney)
     {
         var go = _customerPool.GetObject();
         var customer = go.GetComponent<Customer>();
 
         customer.InteractionType = type;
+
+        customer.WantsMoney = wantsMoney;
 
         go.transform.position = _spawnPoint.position;
 
@@ -91,6 +91,7 @@ public class CustomerSpawner : MonoBehaviour
             var go = _customerPool.GetObject();
             var customer = go.GetComponent<Customer>();
             int i = UnityEngine.Random.Range(0, 3);
+            bool wantsMoney = false;
             switch (i)
             {
                 case 0:
@@ -98,6 +99,7 @@ public class CustomerSpawner : MonoBehaviour
                     break;
                 case 1:
                     customer.InteractionType = InteractionType.Press;
+                    wantsMoney = UnityEngine.Random.value > 0.5;
                     break;
                 case 2:
                     customer.InteractionType = InteractionType.PressTheCorrectKeys;
@@ -110,7 +112,9 @@ public class CustomerSpawner : MonoBehaviour
 
             go.transform.position = _spawnPoint.position;
 
-            OnCustomerSpawn?.Invoke(go, customer.InteractionType);
+            customer.WantsMoney = wantsMoney;
+
+            OnCustomerSpawn?.Invoke(go, customer.InteractionType, wantsMoney);
         }
     }
 }

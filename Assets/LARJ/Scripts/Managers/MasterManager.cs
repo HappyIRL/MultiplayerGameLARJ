@@ -9,7 +9,6 @@ public class MasterManager : ScriptableObject
 	public GameSettings GameSettings { get { return Instance._gameSettings; } }
 
 	private static MasterManager _instance = null;
-	public int PlayerCount { get; private set; }
 
 	public static MasterManager Instance
 	{
