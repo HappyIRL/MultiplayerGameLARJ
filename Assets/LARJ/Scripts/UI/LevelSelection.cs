@@ -15,7 +15,7 @@ public class LevelSelection : MonoBehaviour
 
     private void Awake()
     {
-        //ActivateLevel();
+        ActivateLevel();
         UpdateMoneyText();
     }
     private void ActivateLevel()
