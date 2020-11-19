@@ -12,7 +12,10 @@ public enum InteractableUseType
     HoldFailed,
     HoldFinish,
     MousePress,
-    MouseRelease
+    MouseRelease,
+    PressTheCorrectKeysFinished,
+    PressTheCorrectKeysFailed
+
 }
 
 [RequireComponent(typeof(PlayerInput))]
@@ -377,7 +380,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (_objectToInteract == null) return;
 
-            _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Up, _playerInput.currentControlScheme);
+            CheckIfKeyInteractionFinished(_objectToInteract, _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Up, _playerInput.currentControlScheme));
         }
     }
     public void OnPressLeftArrow()
@@ -386,7 +389,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (_objectToInteract == null) return;
 
-            _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Left, _playerInput.currentControlScheme);
+            CheckIfKeyInteractionFinished(_objectToInteract, _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Left, _playerInput.currentControlScheme));
         }
     }
     public void OnPressDownArrow()
@@ -395,7 +398,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (_objectToInteract == null) return;
 
-            _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Down, _playerInput.currentControlScheme);
+            CheckIfKeyInteractionFinished(_objectToInteract, _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Down, _playerInput.currentControlScheme));
         }
     }
     public void OnPressRightArrow()
@@ -404,9 +407,24 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (_objectToInteract == null) return;
 
-            _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Right, _playerInput.currentControlScheme);
+            CheckIfKeyInteractionFinished(_objectToInteract, _objectToInteract.PressCorrectKeyInteraction(CorrectKeysInteraction.Right, _playerInput.currentControlScheme));
         }
     }
+
+    private void CheckIfKeyInteractionFinished(Interactable objectToInteract, bool? x)
+	{
+        if (x == null) return;
+
+        if(x.Value)
+		{
+            LARJInteractableUse?.Invoke(InteractableUseType.PressTheCorrectKeysFinished, objectToInteract.UniqueInstanceID, InteractableObjectID.None);
+        }
+        else
+		{
+            LARJInteractableUse?.Invoke(InteractableUseType.PressTheCorrectKeysFailed, objectToInteract.UniqueInstanceID, InteractableObjectID.None);
+        }
+	}
+
     public void OnPressESC()
     {
         _dayManager.PressESCInteraction();

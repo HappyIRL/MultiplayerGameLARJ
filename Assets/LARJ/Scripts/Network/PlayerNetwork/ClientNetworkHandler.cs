@@ -437,10 +437,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		simulatedInteractable.HoldingFailedEvent();
 	}
 
-	private void ReceiveSimulatedPlayerFinishHold(Interactable simulatedInteractable, GameObject simulatedInteractableGO)
+	private void ReceiveSimulatedPlayerFinishHold(Interactable simulatedInteractable, InteractableObjectID itemInHand)
 	{
-		//BIG FKN SHIIIIT  - Takes care of paper or duplication being done twice
-		if (simulatedInteractableGO == null)
+		if(itemInHand == InteractableObjectID.None)
 			simulatedInteractable.OnNetworkHoldingFinishedEvent();
 	}
 
@@ -452,6 +451,16 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 	private void ReceiveSimulatedPlayerMouseRelease(Interactable simulatedInteractable)
 	{
 		simulatedInteractable.MouseReleaseEvent();
+	}
+
+	private void ReceivePressTheCorrectKeysFinished(Interactable simulatedInteractable)
+	{
+		simulatedInteractable.PressTheCorrectKeysFinishedEvent();
+	}
+
+	private void ReceivePressTheCorrectKeysFailed(Interactable simulatedInteractable)
+	{
+		simulatedInteractable.PressTheCorrectKeysFailedEvent();
 	}
 
 	private void ReceiveTaskEvent(TaskNetworkData data)
@@ -494,19 +503,14 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveCustomerSpawn(CustomerNetworkData data)
 	{
-		var go = _customerSpawner.SpawnNetworkedCustomer(data.Type);
-		go.GetComponentInChildren<Interactable>().UniqueInstanceID = _uniqueInstanceID;
-		if (!_instanceIDs.ContainsKey(data.UniqueInstanceID))
-		{
-			_instanceIDs.Add(data.UniqueInstanceID, go);
-		}
+		AddInstanceToObjectList(_customerSpawner.SpawnNetworkedCustomer(data.Type), data.UniqueInstanceID);
 	}
 
 	private void ReceiveInteractableEvent(InteractableNetworkData data)
 	{
-
 		GameObject simulatedPlayerGO = GetPlayerFromID((LARJNetworkID)data.ID);
 		GameObject simulatedPlayerObjectHolder = simulatedPlayerGO.GetComponentInChildren<PlayerCharacterAppearance>()._objectHolder;
+		InteractableObjectID itemInHand = (InteractableObjectID)data.ItemInHandID;
 		Interactable simulatedInteractable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponentInChildren<Interactable>();
 		GameObject simulatedInteractableGO = simulatedInteractable.gameObject;
 
@@ -531,13 +535,19 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 				ReceiveSimulatedPlayerFailedHold(simulatedInteractable);
 				break;
 			case InteractableUseType.HoldFinish:
-				ReceiveSimulatedPlayerFinishHold(simulatedInteractable, simulatedInteractableGO);
+				ReceiveSimulatedPlayerFinishHold(simulatedInteractable, itemInHand);
 				break;
 			case InteractableUseType.MousePress:
 				ReceiveSimulatedPlayerMousePress(simulatedInteractable);
 				break;
 			case InteractableUseType.MouseRelease:
 				ReceiveSimulatedPlayerMouseRelease(simulatedInteractable);
+				break;
+			case InteractableUseType.PressTheCorrectKeysFinished:
+				ReceivePressTheCorrectKeysFinished(simulatedInteractable);
+				break;
+			case InteractableUseType.PressTheCorrectKeysFailed:
+				ReceivePressTheCorrectKeysFailed(simulatedInteractable);
 				break;
 		}
 	}

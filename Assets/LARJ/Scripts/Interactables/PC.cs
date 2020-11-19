@@ -87,11 +87,5 @@ public class PC : Interactable
 
         StartTyping();
     }
-
-    public override void OnNetworkHoldingFinishedEvent()
-    {
-        StopTyping();
-    }
-
 }
 

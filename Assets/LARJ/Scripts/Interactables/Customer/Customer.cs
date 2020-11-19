@@ -235,10 +235,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         //transform.Rotate(-rot);
 
         transform.rotation = Quaternion.LookRotation(_deskWaypoint.forward * -1,transform.up);
-            
-        if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
-            TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
-    }
+
+		if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
+			TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
+	}
     private void AtDeskUpdate()
     {
 
@@ -307,7 +307,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
     }
-    private void OnFinishedTalk()
+    public void OnFinishedTalk()
     {
         if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
 
@@ -412,7 +412,10 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     }
     public override void OnNetworkHoldingFinishedEvent()
     {
+        Debug.Log("Received in Customer: OnNetworkHoldingFinishedEvent");
+        base.OnNetworkHoldingFinishedEvent();
         OnFinishedTalk();
+        _customerTalkingVisuals.DeactivateTalkingVisuals();
     }
 
     public override void PressTheCorrectKeysFinishedEvent()
@@ -426,7 +429,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         base.PressTheCorrectKeysStartedEvent(currentPlayerControlScheme);
     }
-    public override void PressEvent()
+	public override void PressEvent()
     {
         base.PressEvent();
 

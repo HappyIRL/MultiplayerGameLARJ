@@ -405,9 +405,9 @@ public abstract class Interactable : MonoBehaviour
         }
         return false;
     }
-    public void PressCorrectKeyInteraction(CorrectKeysInteraction pressedKey, string currentPlayerControlScheme)
+    public bool? PressCorrectKeyInteraction(CorrectKeysInteraction pressedKey, string currentPlayerControlScheme)
     {
-        if (_correctKeyEventStarted == false) return;
+        if (_correctKeyEventStarted == false) return null;
 
         if (pressedKey == _currentCorrectKey)
         {
@@ -417,6 +417,7 @@ public abstract class Interactable : MonoBehaviour
             {
                 DeactivateArrowUI();
                 PressTheCorrectKeysFinishedEvent();
+                return true;
             }
             else
             {
@@ -426,7 +427,9 @@ public abstract class Interactable : MonoBehaviour
         else
         {
             PressTheCorrectKeysFailedEvent();
+            return false;
         }
+        return null;
     }
     private void SetRandomCorrectKeyInteraction(string currentPlayerControlScheme)
     {
@@ -511,6 +514,9 @@ public abstract class Interactable : MonoBehaviour
     public virtual void MouseReleaseEvent() { }
     public virtual void StartInteractible() { }
     public virtual void StopInteractible() { }
-    public virtual void OnNetworkHoldingFinishedEvent() { }
+    public virtual void OnNetworkHoldingFinishedEvent()
+    {
+        DisableProgressbar();
+    }
     #endregion
 }
