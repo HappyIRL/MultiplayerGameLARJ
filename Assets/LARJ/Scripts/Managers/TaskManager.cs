@@ -122,7 +122,7 @@ namespace Tasks
         {
             if (!task.IsTaskActive)
 			{
-                Debug.Log("Task not active");
+                Debug.Log("Task not active: " + task);
                 return;
 			}
 

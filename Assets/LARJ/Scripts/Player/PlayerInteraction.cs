@@ -42,7 +42,7 @@ public class PlayerInteraction : MonoBehaviour
     public delegate void LARJInteractableUseEvent(InteractableUseType type, int objectInstanceID, InteractableObjectID itemInHandID);
     public event LARJInteractableUseEvent LARJInteractableUse;
 
-    public event Action<InteractableObjectID, LARJTaskState, int> OnNetworkTaskEvent;
+    public event Action<LARJTaskState, int> OnNetworkTaskEvent;
 
     //Object to interact
     private Interactable _objectToInteract;
@@ -82,9 +82,9 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
                         DisableInteraction(interactable);
-                        Debug.Log("Removing Interactable");
+                        Debug.Log("Removing Interactable: " + interactable.name);
                     }
-                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
+                    OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID);
                 }
                 break;
             case LARJTaskState.TaskFailed:
@@ -95,7 +95,7 @@ public class PlayerInteraction : MonoBehaviour
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
                         DisableInteraction(interactable);
                     }
-                    OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
+                    OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID);
                 }
                 break;
             case LARJTaskState.TaskStart:
@@ -103,7 +103,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     AllowedInteractables.Instance.AddInteractable(interactable);
                 }
-                OnNetworkTaskEvent?.Invoke(interactable.InteractableID, state, interactable.UniqueInstanceID);
+                OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID);
 
                 break;
         }

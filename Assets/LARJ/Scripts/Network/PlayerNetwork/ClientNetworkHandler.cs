@@ -229,8 +229,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			Position = position,
 			Rotation = rotation,
 			LocalScale = localScale,
-			ObjectIndex = objectID,
-			//Seed = Seed
+			ObjectIndex = objectID
 
 		};
 
@@ -290,7 +289,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.ClockUpdate, clockNetworkData, raiseEventOptions, sendOptions);
 	}
 
-	private void RaiseNetworkedTask(InteractableObjectID id, LARJTaskState state, int objectInstanceID)
+	private void RaiseNetworkedTask(LARJTaskState state, int objectInstanceID)
 	{
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
@@ -306,7 +305,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		{
 			ID = (byte)_myID,
 			TaskState = (byte)state,
-			InteractableID = (byte)id,
 			ObjectInstanceID = objectInstanceID
 		};
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.TaskUpdate, taskNetworkData, raiseEventOptions, sendOptions);
@@ -467,10 +465,13 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveTaskEvent(TaskNetworkData data)
 	{
+
 		Interactable interactable = GetInteractableGOFromID(data.ObjectInstanceID).GetComponentInChildren<Interactable>();
 		Task task = interactable.GetComponentInChildren<Task>();
 		TaskManagerUI taskManagerUI = TaskManager.TaskManagerSingelton.TaskManagerUI;
 		Score score = TaskManager.TaskManagerSingelton.Score;
+
+		Debug.LogError("ReceiveTaskEvent: " + data.ObjectInstanceID + "Interactable: " + interactable.name + "Task: " + task.name + "State: " + (LARJTaskState)data.TaskState);
 
 		switch ((LARJTaskState)data.TaskState)
 		{
@@ -602,8 +603,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		goToSync.transform.position = data.Position;
 		goToSync.transform.eulerAngles = data.Rotation;
 		goToSync.transform.localScale = data.LocalScale;
-		//Seed = data.Seed;
-		//Random.InitState(Seed);
 	}
 
 	public void OnEvent(EventData photonEvent)

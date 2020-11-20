@@ -429,6 +429,14 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         base.PressTheCorrectKeysStartedEvent(currentPlayerControlScheme);
     }
+
+	public override void StopInteractible()
+	{
+		base.StopInteractible();
+        OnFinishedTalk();
+        _customerTalkingVisuals.DeactivateTalkingVisuals();
+    }
+
 	public override void PressEvent()
     {
         base.PressEvent();

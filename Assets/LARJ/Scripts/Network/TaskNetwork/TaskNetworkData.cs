@@ -7,7 +7,6 @@ public class TaskNetworkData
 {
     public byte ID;
     public byte TaskState;
-    public byte InteractableID;
 	public int ObjectInstanceID;
 
 	public static byte[] SerializeMethod(object customObject)
@@ -18,8 +17,7 @@ public class TaskNetworkData
 
 		result[0] = data.ID;
 		result[1] = data.TaskState;
-		result[2] = data.InteractableID;
-		instanceID.CopyTo(result, 3);
+		instanceID.CopyTo(result, 2);
 
 		return result;
 	}
@@ -30,8 +28,7 @@ public class TaskNetworkData
 
 		data.ID = input[0];
 		data.TaskState = input[1];
-		data.InteractableID = input[2];
-		data.ObjectInstanceID = BitConverter.ToInt32(input, 3);
+		data.ObjectInstanceID = BitConverter.ToInt32(input, 2);
 
 		return data;
 	}
