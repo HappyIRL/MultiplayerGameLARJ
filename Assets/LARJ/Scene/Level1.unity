@@ -9432,6 +9432,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClosedImages3
       objectReference: {fileID: 0}
+    - target: {fileID: 4829251449185546887, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4829251449359365714, guid: c06ff7243b7691049bb00ab6b5c382b5, type: 3}
       propertyPath: m_Name
       value: ClosedImages2

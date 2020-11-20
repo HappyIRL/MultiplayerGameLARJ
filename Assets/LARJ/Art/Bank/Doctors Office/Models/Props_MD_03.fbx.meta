@@ -1,59 +1,155 @@
 fileFormatVersion: 2
 guid: b2a5649b688066243a3b1ddb7c0a048e
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: First Aid Kit
-    100002: Molding Base_MD_01_04.L
-    100004: Molding Base_MD_01_04.R
-    100006: //RootNode
-    100008: Sanitizer Dispenser
-    100010: Sanitizer Dispenser.001
-    100012: Sanitizer Dispenser_MD_01
-    100014: Sanitizer Dispenser_MD_02
-    100016: Trash
-    100018: Trash Bag
-    400000: First Aid Kit
-    400002: Molding Base_MD_01_04.L
-    400004: Molding Base_MD_01_04.R
-    400006: //RootNode
-    400008: Sanitizer Dispenser
-    400010: Sanitizer Dispenser.001
-    400012: Sanitizer Dispenser_MD_01
-    400014: Sanitizer Dispenser_MD_02
-    400016: Trash
-    400018: Trash Bag
-    2100000: No Name
-    2300000: First Aid Kit
-    2300002: Molding Base_MD_01_04.L
-    2300004: Molding Base_MD_01_04.R
-    2300006: Sanitizer Dispenser
-    2300008: Sanitizer Dispenser.001
-    2300010: Sanitizer Dispenser_MD_01
-    2300012: Sanitizer Dispenser_MD_02
-    2300014: Trash
-    2300016: Trash Bag
-    3300000: First Aid Kit
-    3300002: Molding Base_MD_01_04.L
-    3300004: Molding Base_MD_01_04.R
-    3300006: Sanitizer Dispenser
-    3300008: Sanitizer Dispenser.001
-    3300010: Sanitizer Dispenser_MD_01
-    3300012: Sanitizer Dispenser_MD_02
-    3300014: Trash
-    3300016: Trash Bag
-    4300000: Sanitizer Dispenser_MD_01
-    4300002: Sanitizer Dispenser.001
-    4300004: Sanitizer Dispenser_MD_02
-    4300006: Sanitizer Dispenser
-    4300008: Trash
-    4300010: Trash Bag
-    4300012: Molding Base_MD_01_04.R
-    4300014: Molding Base_MD_01_04.L
-    4300016: First Aid Kit
+  serializedVersion: 20101
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: First Aid Kit
+  - first:
+      1: 100002
+    second: Molding Base_MD_01_04.L
+  - first:
+      1: 100004
+    second: Molding Base_MD_01_04.R
+  - first:
+      1: 100006
+    second: //RootNode
+  - first:
+      1: 100008
+    second: Sanitizer Dispenser
+  - first:
+      1: 100010
+    second: Sanitizer Dispenser.001
+  - first:
+      1: 100012
+    second: Sanitizer Dispenser_MD_01
+  - first:
+      1: 100014
+    second: Sanitizer Dispenser_MD_02
+  - first:
+      1: 100016
+    second: Trash
+  - first:
+      1: 100018
+    second: Trash Bag
+  - first:
+      4: 400000
+    second: First Aid Kit
+  - first:
+      4: 400002
+    second: Molding Base_MD_01_04.L
+  - first:
+      4: 400004
+    second: Molding Base_MD_01_04.R
+  - first:
+      4: 400006
+    second: //RootNode
+  - first:
+      4: 400008
+    second: Sanitizer Dispenser
+  - first:
+      4: 400010
+    second: Sanitizer Dispenser.001
+  - first:
+      4: 400012
+    second: Sanitizer Dispenser_MD_01
+  - first:
+      4: 400014
+    second: Sanitizer Dispenser_MD_02
+  - first:
+      4: 400016
+    second: Trash
+  - first:
+      4: 400018
+    second: Trash Bag
+  - first:
+      21: 2100000
+    second: No Name
+  - first:
+      23: 2300000
+    second: First Aid Kit
+  - first:
+      23: 2300002
+    second: Molding Base_MD_01_04.L
+  - first:
+      23: 2300004
+    second: Molding Base_MD_01_04.R
+  - first:
+      23: 2300006
+    second: Sanitizer Dispenser
+  - first:
+      23: 2300008
+    second: Sanitizer Dispenser.001
+  - first:
+      23: 2300010
+    second: Sanitizer Dispenser_MD_01
+  - first:
+      23: 2300012
+    second: Sanitizer Dispenser_MD_02
+  - first:
+      23: 2300014
+    second: Trash
+  - first:
+      23: 2300016
+    second: Trash Bag
+  - first:
+      33: 3300000
+    second: First Aid Kit
+  - first:
+      33: 3300002
+    second: Molding Base_MD_01_04.L
+  - first:
+      33: 3300004
+    second: Molding Base_MD_01_04.R
+  - first:
+      33: 3300006
+    second: Sanitizer Dispenser
+  - first:
+      33: 3300008
+    second: Sanitizer Dispenser.001
+  - first:
+      33: 3300010
+    second: Sanitizer Dispenser_MD_01
+  - first:
+      33: 3300012
+    second: Sanitizer Dispenser_MD_02
+  - first:
+      33: 3300014
+    second: Trash
+  - first:
+      33: 3300016
+    second: Trash Bag
+  - first:
+      43: 4300000
+    second: Sanitizer Dispenser_MD_01
+  - first:
+      43: 4300002
+    second: Sanitizer Dispenser.001
+  - first:
+      43: 4300004
+    second: Sanitizer Dispenser_MD_02
+  - first:
+      43: 4300006
+    second: Sanitizer Dispenser
+  - first:
+      43: 4300008
+    second: Trash
+  - first:
+      43: 4300010
+    second: Trash Bag
+  - first:
+      43: 4300012
+    second: Molding Base_MD_01_04.R
+  - first:
+      43: 4300014
+    second: Molding Base_MD_01_04.L
+  - first:
+      43: 4300016
+    second: First Aid Kit
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -86,25 +182,32 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -113,10 +216,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -126,13 +229,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
