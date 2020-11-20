@@ -77,14 +77,10 @@ namespace Tasks
                 StopCoroutine(_cooldownCoroutine);
             }
         }
-        public void StopTask(bool stopInteractable)
+        public void StopTask()
         {
             StopTaskCoolDown();
-            if(stopInteractable)
-			{
-                Debug.LogError("Stopping Interactable");
-                _interactable.StopInteractible();  
-			}
+            _interactable.StopInteractible();  
 
         }
     }

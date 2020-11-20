@@ -64,7 +64,7 @@ public class PC : Interactable
     {
         _pressCount = 0;
         StopTyping();
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
         DisableButtonHints();
     }
 

@@ -75,6 +75,15 @@ public class CustomerSpawner : MonoBehaviour
 
         customer.InteractionType = type;
 
+        if(type == InteractionType.Press)
+		{
+            customer.HasPress = true;
+        }
+        else
+		{
+            customer.HasPress = false;
+        }
+
         customer.WantsMoney = wantsMoney;
 
         go.transform.position = _spawnPoint.position;

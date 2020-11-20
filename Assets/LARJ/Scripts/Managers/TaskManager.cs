@@ -31,7 +31,7 @@ namespace Tasks
         public TaskManagerUI TaskManagerUI { get => _taskManagerUI; }
         [SerializeField] private Score _score;
         public Score Score { get => _score; }
-        public event Action<Interactable, LARJTaskState, bool> OnTask;
+        public event Action<Interactable, LARJTaskState> OnTask;
         //[SerializeField] private TextMeshProUGUI[] _tasksListText;
         public static TaskManager TaskManagerSingelton;
         private float _timer = 0f;
@@ -101,7 +101,7 @@ namespace Tasks
                 TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
                 task.TaskUI = taskUI;
                 task.StartTask();
-                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
+                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
             }
         }
 
@@ -117,25 +117,21 @@ namespace Tasks
             return false;
         }
 
-        public void OnTaskCompleted(Task task, bool stopInteractable)
+        public void OnTaskCompleted(Task task)
         {
             if (!task.IsTaskActive)
 			{
-                Debug.Log("Task not active: " + task);
+                Debug.LogError("Task not active: " + task);
                 return;
 			}
-
-            if(stopInteractable)
-			{
-                TaskManagerUI.RemoveUITask(task.TaskUI);
-                _score.UpdateScore(task.GetRewardMoney, true);
-			}
-            task.StopTask(stopInteractable);
+            TaskManagerUI.RemoveUITask(task.TaskUI);
+            _score.UpdateScore(task.GetRewardMoney, true);
             task.IsTaskActive = false;
-            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete, stopInteractable);
             SFXManager.Instance.PlaySound(_audioSource, _cashSound);
             //_sFXManager.PlaySound(_audioSource, _cashSound); what is better?
             _completedTasks++;
+            task.StopTask();
+            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
         }
 
 
@@ -148,10 +144,10 @@ namespace Tasks
 			}
 
             task.IsTaskActive = false;
-            task.StopTask(true);
+            task.StopTask();
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetLostMoneyOnFail, false);
-            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed, true);
+            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed);
             SFXManager.Instance.PlaySound(_audioSource, _taskFailedSound);
             _failedTasks++;
         }
@@ -161,7 +157,7 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
         public void StartRandomFollowUpTask()
         {
@@ -180,30 +176,36 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
         }
         public void StartMoneyTask(Task task)
         {
             task.IsTaskActive = true;
             TaskUI taskUI = TaskManagerUI.SpawnUITask(TaskType.Money, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
-            task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
+            if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
+			{
+                task.StartTask();
+                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+			}
         }
         public void StartDocumentTask(Task task)
         {
             task.IsTaskActive = true;
             TaskUI taskUI = TaskManagerUI.SpawnUITask(TaskType.Document, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
-            task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
+            if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
+            {
+                task.StartTask();
+                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            }
         }
         public void OnTaskCancelled(Task task)
         {
             task.IsTaskActive = false;
-            task.StopTask(true);
+            task.StopTask();
             TaskManagerUI.RemoveUITask(task.TaskUI);
-            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete, true);
+            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
         }
     }
 }

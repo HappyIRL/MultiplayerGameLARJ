@@ -480,6 +480,12 @@ public abstract class Interactable : MonoBehaviour
         UpdateProgressbar(0f);
         DisableButtonHints();
     }
+
+    public virtual void NetworkedHoldingStartedEvent()
+	{
+        DisableButtonHints();
+    }
+
     public virtual void HoldingFailedEvent() 
     {
         DisableButtonHints();

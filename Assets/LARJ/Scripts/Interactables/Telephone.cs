@@ -120,6 +120,16 @@ public class Telephone : Interactable
         task.TaskUI.StopTaskUITimer();
         if (_lastCoroutine != null) StopCoroutine(_lastCoroutine);
     }
+
+    public override void NetworkedHoldingStartedEvent()
+    {
+        base.NetworkedHoldingStartedEvent();
+
+        Task task = GetComponent<Task>();
+        task.StopTaskCoolDown();
+        task.TaskUI.StopTaskUITimer();
+        if (_lastCoroutine != null) StopCoroutine(_lastCoroutine);
+    }
     public override void HoldingFailedEvent()
     {
         base.HoldingFailedEvent();
@@ -137,7 +147,7 @@ public class Telephone : Interactable
         base.HoldingFinishedEvent();
 
         AnswerCall();
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
         TaskManager.TaskManagerSingelton.StartRandomFollowUpTask();
     }
 

@@ -289,7 +289,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.ClockUpdate, clockNetworkData, raiseEventOptions, sendOptions);
 	}
 
-	private void RaiseNetworkedTask(LARJTaskState state, int objectInstanceID, bool stopInteractable)
+	private void RaiseNetworkedTask(LARJTaskState state, int objectInstanceID)
 	{
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
@@ -306,7 +306,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			ID = (byte)_myID,
 			TaskState = (byte)state,
 			ObjectInstanceID = objectInstanceID,
-			StopInteractable = stopInteractable
 		};
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.TaskUpdate, taskNetworkData, raiseEventOptions, sendOptions);
 	}
@@ -430,7 +429,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 
 	private void ReceiveSimulatedPlayerStartHold(Interactable simulatedInteractable)
 	{
-		simulatedInteractable.HoldingStartedEvent();
+		simulatedInteractable.NetworkedHoldingStartedEvent();
 	}
 
 	private void ReceiveSimulatedPlayerFailedHold(Interactable simulatedInteractable)
@@ -479,10 +478,10 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 					if (!interactable.AlwaysInteractable)
 						AllowedInteractables.Instance.Interactables.Remove(interactable);
 
-				task.IsTaskActive = false;
-				task.StopTask(data.StopInteractable);
 				taskManagerUI.RemoveUITask(task.TaskUI);
 				score.UpdateScore(task.GetRewardMoney, true);
+				task.IsTaskActive = false;
+				task.StopTask();
 				break;
 
 			case LARJTaskState.TaskFailed:
@@ -490,7 +489,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 					if (!interactable.AlwaysInteractable)
 						AllowedInteractables.Instance.Interactables.Remove(interactable);
 				task.IsTaskActive = false;
-				task.StopTask(data.StopInteractable);
+				task.StopTask();
 				taskManagerUI.RemoveUITask(task.TaskUI);
 				score.UpdateScore(task.GetLostMoneyOnFail, false);
 				break;
@@ -498,7 +497,9 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 			case LARJTaskState.TaskStart:
 				if (!AllowedInteractables.Instance.Interactables.Contains(interactable))
 					AllowedInteractables.Instance.AddInteractable(interactable);
-				task.TaskUI = taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
+
+				if(!(task.GetTaskType == TaskType.Customer))
+					task.TaskUI = taskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
 				task.IsTaskActive = true;
 				task.StartTask();
 				break;

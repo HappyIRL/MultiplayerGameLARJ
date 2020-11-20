@@ -176,6 +176,13 @@ public class Printer : Interactable
         StartPrinting();
     }
 
+    public override void NetworkedHoldingStartedEvent()
+    {
+        base.NetworkedHoldingStartedEvent();
+
+        StartPrinting();
+    }
+
     public override void HoldingFailedEvent()
     {
         base.HoldingFailedEvent();
@@ -188,7 +195,7 @@ public class Printer : Interactable
         base.HoldingFinishedEvent();
 
         FinishPrinting();
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
     }
     public override void HoldingFinishedEvent(GameObject pickUpObject)
     {

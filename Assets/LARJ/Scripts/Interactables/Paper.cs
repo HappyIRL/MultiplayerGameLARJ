@@ -16,7 +16,7 @@ public class Paper : Interactable
     {
         if (collision.gameObject.tag == "PaperBox")
         {
-            TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
+            TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
             gameObject.SetActive(false);
         }
     }
