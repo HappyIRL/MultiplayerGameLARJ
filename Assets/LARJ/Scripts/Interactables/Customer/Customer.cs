@@ -37,6 +37,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     public bool _isWaitingForDocument = false;
     public bool _wasHitByBullet = false;
     public bool WantsMoney;
+    public bool HasPress;
 
     public override void Awake()
     {
@@ -67,14 +68,15 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     }
     void OnCollisionEnter(Collision collision)
     {
+        Debug.LogError("OnCollisionEnter");
         if (_isWaitingForMoney)
         {
             if (collision.gameObject.tag == "Money")
             {
                 if (_currentCoroutine != null)StopCoroutine(_currentCoroutine);
 
+                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
                 collision.gameObject.SetActive(false);
-                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
                 _stateMachine.TransitionTo("Leaving");
             }
         }
@@ -82,11 +84,15 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         {
             if (collision.gameObject.tag == "Paper")
             {
+
+                Debug.LogError("PAPER COLLISION");
+
                 if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
+
                 var task = collision.gameObject.GetComponent<Task>();
                 if (task.IsTaskActive) TaskManager.TaskManagerSingelton.OnTaskCancelled(task);
+                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
                 collision.gameObject.SetActive(false);
-                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
                 _stateMachine.TransitionTo("Leaving");
             }
         }
@@ -107,6 +113,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     #region WaitForMoney State
     private void WaitForMoneyStart()
     {
+        _isWaitingForMoney = true;
+
         if (_currentCoroutine != null)
         {
             StopCoroutine(_currentCoroutine);
@@ -115,7 +123,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         _speechBubble.SetActive(true);
         _moneyImage.SetActive(true);
 
-        _isWaitingForMoney = true;
         StartCoroutine(LeaveAfterDelay());
         TaskManager.TaskManagerSingelton.StartMoneyTask(GetComponent<Task>());
     }
@@ -134,6 +141,8 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     #region WaitForDocument State
     private void WaitForDocumnetStart()
     {
+        _isWaitingForDocument = true;
+
         if (_currentCoroutine != null)
         {
             StopCoroutine(_currentCoroutine);
@@ -142,7 +151,6 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         _speechBubble.SetActive(true);
         _documentImage.SetActive(true);
 
-        _isWaitingForDocument = true;
         StartCoroutine(LeaveAfterDelay());
         TaskManager.TaskManagerSingelton.StartDocumentTask(GetComponent<Task>());
     }
@@ -238,7 +246,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         transform.rotation = Quaternion.LookRotation(_deskWaypoint.forward * -1,transform.up);
 
 		if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
-			TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
+	        TaskManager.TaskManagerSingelton.StartTask(GetComponent<Task>());
 	}
     private void AtDeskUpdate()
     {
@@ -408,7 +416,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
     {
         base.HoldingFinishedEvent();
         OnFinishedTalk();
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
         _customerTalkingVisuals.DeactivateTalkingVisuals();
     }
     public override void OnNetworkHoldingFinishedEvent()
@@ -423,7 +431,7 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
         base.PressTheCorrectKeysFinishedEvent();
 
         OnFinishedTalk();
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
     }
     public override void PressTheCorrectKeysStartedEvent(string currentPlayerControlScheme)
     {
@@ -446,22 +454,20 @@ public class Customer : Interactable, IObjectPoolNotifier, IQueueUpdateNotifier
             if (!_isWaitingForMoney)
             {
                 _timer = 0;
-                //TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+
+                TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), false);
 
                 if(WantsMoney)
 				{
                     _stateMachine.TransitionTo("WaitForMoney");
-                    _isWaitingForMoney = true;
 				}
                 else
 				{
                     _stateMachine.TransitionTo("WaitForDocument");
-                    _isWaitingForDocument = true;
 				}
 
             }
         }
-        
     }
 
     #endregion

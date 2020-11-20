@@ -96,13 +96,16 @@ public class CustomerSpawner : MonoBehaviour
             {
                 case 0:
                     customer.InteractionType = InteractionType.Hold;
+                    customer.HasPress = false;
                     break;
                 case 1:
                     customer.InteractionType = InteractionType.Press;
                     wantsMoney = UnityEngine.Random.value > 0.5;
+                    customer.HasPress = true;
                     break;
                 case 2:
                     customer.InteractionType = InteractionType.PressTheCorrectKeys;
+                    customer.HasPress = false;
                     break;
                 default:
                     break;

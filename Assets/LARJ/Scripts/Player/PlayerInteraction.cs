@@ -42,7 +42,7 @@ public class PlayerInteraction : MonoBehaviour
     public delegate void LARJInteractableUseEvent(InteractableUseType type, int objectInstanceID, InteractableObjectID itemInHandID);
     public event LARJInteractableUseEvent LARJInteractableUse;
 
-    public event Action<LARJTaskState, int> OnNetworkTaskEvent;
+    public event Action<LARJTaskState, int, bool> OnNetworkTaskEvent;
 
     //Object to interact
     private Interactable _objectToInteract;
@@ -71,7 +71,7 @@ public class PlayerInteraction : MonoBehaviour
         TaskManager.TaskManagerSingelton.OnTask += ActivateInteractable;
     }
 
-    private void ActivateInteractable(Interactable interactable, LARJTaskState state)
+    private void ActivateInteractable(Interactable interactable, LARJTaskState state, bool stopTask)
     {
         switch (state)
         {
@@ -82,9 +82,8 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
                         DisableInteraction(interactable);
-                        Debug.Log("Removing Interactable: " + interactable.name);
                     }
-                    OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID);
+                    OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID, stopTask);
                 }
                 break;
             case LARJTaskState.TaskFailed:
@@ -95,7 +94,7 @@ public class PlayerInteraction : MonoBehaviour
                         AllowedInteractables.Instance.Interactables.Remove(interactable);
                         DisableInteraction(interactable);
                     }
-                    OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID);
+                    OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID, stopTask);
                 }
                 break;
             case LARJTaskState.TaskStart:
@@ -103,8 +102,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     AllowedInteractables.Instance.AddInteractable(interactable);
                 }
-                OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID);
-
+                OnNetworkTaskEvent?.Invoke(state, interactable.UniqueInstanceID, stopTask);
                 break;
         }
     }

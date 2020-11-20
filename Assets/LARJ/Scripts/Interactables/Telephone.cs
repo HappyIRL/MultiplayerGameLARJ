@@ -137,7 +137,7 @@ public class Telephone : Interactable
         base.HoldingFinishedEvent();
 
         AnswerCall();
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
         TaskManager.TaskManagerSingelton.StartRandomFollowUpTask();
     }
 

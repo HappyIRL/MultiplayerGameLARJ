@@ -31,8 +31,7 @@ namespace Tasks
         public TaskManagerUI TaskManagerUI { get => _taskManagerUI; }
         [SerializeField] private Score _score;
         public Score Score { get => _score; }
-        public delegate void LARJTaskEvent(Interactable interactable, LARJTaskState state);
-        public event LARJTaskEvent OnTask;
+        public event Action<Interactable, LARJTaskState, bool> OnTask;
         //[SerializeField] private TextMeshProUGUI[] _tasksListText;
         public static TaskManager TaskManagerSingelton;
         private float _timer = 0f;
@@ -102,7 +101,7 @@ namespace Tasks
                 TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
                 task.TaskUI = taskUI;
                 task.StartTask();
-                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+                OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
             }
         }
 
@@ -118,7 +117,7 @@ namespace Tasks
             return false;
         }
 
-        public void OnTaskCompleted(Task task)
+        public void OnTaskCompleted(Task task, bool stopInteractable)
         {
             if (!task.IsTaskActive)
 			{
@@ -126,11 +125,14 @@ namespace Tasks
                 return;
 			}
 
+            if(stopInteractable)
+			{
+                TaskManagerUI.RemoveUITask(task.TaskUI);
+                _score.UpdateScore(task.GetRewardMoney, true);
+			}
+            task.StopTask(stopInteractable);
             task.IsTaskActive = false;
-            task.StopTask();
-            TaskManagerUI.RemoveUITask(task.TaskUI);
-            _score.UpdateScore(task.GetRewardMoney, true);
-            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
+            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete, stopInteractable);
             SFXManager.Instance.PlaySound(_audioSource, _cashSound);
             //_sFXManager.PlaySound(_audioSource, _cashSound); what is better?
             _completedTasks++;
@@ -139,13 +141,17 @@ namespace Tasks
 
         public void OnTaskFailed(Task task)
         {
-            if (!task.IsTaskActive) return;
+            if (!task.IsTaskActive)
+			{
+                Debug.Log("OnTaskFailed is not active");
+                return;
+			}
 
             task.IsTaskActive = false;
-            task.StopTask();
+            task.StopTask(true);
             TaskManagerUI.RemoveUITask(task.TaskUI);
             _score.UpdateScore(task.GetLostMoneyOnFail, false);
-            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed);
+            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskFailed, true);
             SFXManager.Instance.PlaySound(_audioSource, _taskFailedSound);
             _failedTasks++;
         }
@@ -155,7 +161,7 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
         }
         public void StartRandomFollowUpTask()
         {
@@ -174,7 +180,7 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(task.GetTaskType, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
         }
         public void StartMoneyTask(Task task)
         {
@@ -182,7 +188,7 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(TaskType.Money, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
         }
         public void StartDocumentTask(Task task)
         {
@@ -190,14 +196,14 @@ namespace Tasks
             TaskUI taskUI = TaskManagerUI.SpawnUITask(TaskType.Document, task.GetRewardMoney, task.GetTimeToFinishTask);
             task.TaskUI = taskUI;
             task.StartTask();
-            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart);
+            OnTask?.Invoke(task.GetInteractable, LARJTaskState.TaskStart, true);
         }
         public void OnTaskCancelled(Task task)
         {
             task.IsTaskActive = false;
-            task.StopTask();
+            task.StopTask(true);
             TaskManagerUI.RemoveUITask(task.TaskUI);
-            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete);
+            OnTask.Invoke(task.GetInteractable, LARJTaskState.TaskComplete, true);
         }
     }
 }

@@ -289,7 +289,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.ClockUpdate, clockNetworkData, raiseEventOptions, sendOptions);
 	}
 
-	private void RaiseNetworkedTask(LARJTaskState state, int objectInstanceID)
+	private void RaiseNetworkedTask(LARJTaskState state, int objectInstanceID, bool stopInteractable)
 	{
 		RaiseEventOptions raiseEventOptions = new RaiseEventOptions
 		{
@@ -305,7 +305,8 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		{
 			ID = (byte)_myID,
 			TaskState = (byte)state,
-			ObjectInstanceID = objectInstanceID
+			ObjectInstanceID = objectInstanceID,
+			StopInteractable = stopInteractable
 		};
 		PhotonNetwork.RaiseEvent((byte)LARJNetworkEvents.TaskUpdate, taskNetworkData, raiseEventOptions, sendOptions);
 	}
@@ -471,8 +472,6 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 		TaskManagerUI taskManagerUI = TaskManager.TaskManagerSingelton.TaskManagerUI;
 		Score score = TaskManager.TaskManagerSingelton.Score;
 
-		Debug.LogError("ReceiveTaskEvent: " + data.ObjectInstanceID + "Interactable: " + interactable.name + "Task: " + task.name + "State: " + (LARJTaskState)data.TaskState);
-
 		switch ((LARJTaskState)data.TaskState)
 		{
 			case LARJTaskState.TaskComplete:
@@ -481,7 +480,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 						AllowedInteractables.Instance.Interactables.Remove(interactable);
 
 				task.IsTaskActive = false;
-				task.StopTask();
+				task.StopTask(data.StopInteractable);
 				taskManagerUI.RemoveUITask(task.TaskUI);
 				score.UpdateScore(task.GetRewardMoney, true);
 				break;
@@ -491,7 +490,7 @@ public class ClientNetworkHandler : MonoBehaviour, IOnEventCallback
 					if (!interactable.AlwaysInteractable)
 						AllowedInteractables.Instance.Interactables.Remove(interactable);
 				task.IsTaskActive = false;
-				task.StopTask();
+				task.StopTask(data.StopInteractable);
 				taskManagerUI.RemoveUITask(task.TaskUI);
 				score.UpdateScore(task.GetLostMoneyOnFail, false);
 				break;

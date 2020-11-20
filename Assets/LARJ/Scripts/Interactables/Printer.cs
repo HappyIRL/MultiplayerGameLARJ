@@ -188,7 +188,7 @@ public class Printer : Interactable
         base.HoldingFinishedEvent();
 
         FinishPrinting();
-        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>());
+        TaskManager.TaskManagerSingelton.OnTaskCompleted(GetComponent<Task>(), true);
     }
     public override void HoldingFinishedEvent(GameObject pickUpObject)
     {
