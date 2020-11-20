@@ -174,11 +174,11 @@ public class GameManager : MonoBehaviour
                     SetDifficulties(8, 8, 8, 8, 5);
                     break;
                 case 9:
-                    SetDifficulties(9, 9, 9, 9, 5);
+                    SetDifficulties(8, 8, 8, 8, 5);
                     break;
 
                 default:
-                    SetDifficulties(10, 10, 10, 10, 6);
+                    SetDifficulties(8, 8, 8, 8, 6);
                     break;
             }
         }       
